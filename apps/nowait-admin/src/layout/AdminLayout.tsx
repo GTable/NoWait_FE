@@ -3,9 +3,9 @@ import AdminSidebar from "../components/AdminSidebar";
 
 const AdminLayout = () => {
   return (
-    <div className="flex">
+    <div className="flex [@media(max-width:431px)]:px-[15px]">
       <AdminSidebar />
-      <main className="flex-1 bg-[#F2F6F9] min-h-screen p-6">
+      <main className="flex justify-between bg-[#F2F6F9 mx-auto min-h-screen py-6 md:px-[30px]">
         <Outlet />
       </main>
     </div>

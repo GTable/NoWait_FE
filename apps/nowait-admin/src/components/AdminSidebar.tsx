@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Clock, Layers, BarChart2 } from "lucide-react";
 import { useWindowWidth } from "../hooks/useWindowWidth";
 import nwIcon from "../assets/nwLogo.svg";
+import nwTextIcon from "../assets/nw_text_logo.svg";
 import profile from "../assets/profile.png";
 
 const AdminSidebar = () => {
@@ -10,8 +11,9 @@ const AdminSidebar = () => {
 
   // 375px 이하에서는 사이드바 완전히 숨김
   if (width <= 375) return null;
+  if (width < 768) return null;
 
-  const isCompact = width <= 768;
+  const isCompact = width < 1024;
 
   return (
     <aside
@@ -29,7 +31,9 @@ const AdminSidebar = () => {
               <img src={nwIcon} />
             </div>
           ) : (
-            <h1 className="text-2xl font-extrabold">노웨잇</h1>
+            <div className="flex">
+              <img src={nwTextIcon} />
+            </div>
           )}
         </div>
 
@@ -84,6 +88,7 @@ const NavItem = ({ to, icon, label, compact }: NavItemProps) => {
   return (
     <NavLink
       to={to}
+      end
       className={({ isActive }) =>
         `flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold justify-center ${
           isActive ? "bg-gray-100 text-black" : "text-gray-400"
