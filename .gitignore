@@ -9,6 +9,8 @@ dist-ssr
 .cache
 server/dist
 public/dist
-
+.yarn/install-state.gz
+yarn.lock
 .pnp
 .pnp.js
+.pnp.cjs
