@@ -1,9 +1,7 @@
-import React from "react";
 import SuccessMessagePage from "../../components/common/SuccessMessagePage";
 import { useNavigate } from "react-router-dom";
 
 const ReserveSuccessPage = () => {
-
   const navigate = useNavigate();
 
   return (

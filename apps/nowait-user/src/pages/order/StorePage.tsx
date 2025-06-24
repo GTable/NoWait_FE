@@ -1,5 +1,3 @@
-import React from "react";
-import { Button } from "@repo/ui";
 import { useNavigate } from "react-router-dom";
 
 const dummyData = [

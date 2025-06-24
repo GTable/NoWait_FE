@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import copy from "../../assets/icon/copy.svg";
 import useThrottle from "../../hooks/useThrottle";

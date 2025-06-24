@@ -1,5 +1,3 @@
-import React from "react";
-
 interface PropsType {
   message: string;
 }

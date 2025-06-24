@@ -1,8 +1,5 @@
-import React from "react";
 import minus from "../../assets/icon/minus.svg";
 import plus from "../../assets/icon/plus.svg";
-
-interface PropsType {}
 
 const QuantitySelector = () => {
   const decreaseQuantity = () => {};

@@ -1,4 +1,3 @@
-import React from "react";
 import QuantitySelector from "../../components/common/QuantitySelector";
 
 const AddMenuPage = () => {

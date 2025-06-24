@@ -13,7 +13,6 @@ import StoreReservePage from "../pages/reserve/StoreReservePage";
 import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
-import Layout from "../layout/Layout";
 
 const Router = () => {
   return (

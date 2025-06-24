@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@repo/ui";
 import Portal from "../common/modal/Portal";
 
@@ -10,10 +9,7 @@ interface PropsType {
 const ConfirmModal = ({ open, close }: PropsType) => {
   return (
     <Portal>
-      <div
-        onClick={close}
-        className="fixed inset-0 z-50 bg-black/30"
-      >
+      <div onClick={close} className="fixed inset-0 z-50 bg-black/30">
         <div className="absolute left-1/2 bottom-8 -translate-x-1/2 w-[calc(100%-20px)] max-w-[430px] bg-white rounded-[20px] px-5 pt-9">
           <h1 className="text-headline-22-bold mb-2">이체 완료 하셨나요?</h1>
           <h2 className="text-16-regular text-black-70 mb-12">

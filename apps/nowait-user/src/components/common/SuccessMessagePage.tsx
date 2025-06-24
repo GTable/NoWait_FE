@@ -1,4 +1,3 @@
-import React from "react";
 import PageFooterButton from "../order/PageFooterButton";
 
 interface PropsType {
@@ -27,7 +26,9 @@ const SuccessMessagePage = ({
           alt={imageAlt}
         />
         <h1 className="text-headline-24-bold mb-2">{title}</h1>
-        <h2 className="whitespace-pre-line text-16-regular text-black-70">{message}</h2>
+        <h2 className="whitespace-pre-line text-16-regular text-black-70">
+          {message}
+        </h2>
       </div>
       <PageFooterButton onClick={onClick}>{buttonText}</PageFooterButton>
     </div>

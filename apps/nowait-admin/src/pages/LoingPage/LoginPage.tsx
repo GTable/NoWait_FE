@@ -1,4 +1,3 @@
-import React from "react";
 import loginLogo from "../../assets/login_logo.svg";
 import { useState } from "react";
 
