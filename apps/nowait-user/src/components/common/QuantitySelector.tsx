@@ -11,31 +11,34 @@ interface storeProps {
   mode: "store";
   id: string;
   quantity: number;
-  increaseQuantity: (id: string) => void;
-  decreaseQuantity: (id: string) => void;
+  price: number;
+  increaseQuantity: (id: string, price: number) => void;
+  decreaseQuantity: (id: string, price: number) => void;
 }
 type PropsType = stateProps | storeProps;
 
 const QuantitySelector = (props: PropsType) => {
   const increaseQuantityButton = () => {
     if (props.mode === "store") {
-      props.increaseQuantity(props.id);
+      props.increaseQuantity(props.id, props.price);
     } else if (props.mode === "state") {
-      props.setQuantity((prev) => prev + 1);
+      props.setQuantity(props.quantity + 1);
     }
   };
   const decreaseQuantityButton = () => {
     if (props.mode === "store") {
-      props.decreaseQuantity(props.id);
+      props.decreaseQuantity(props.id, props.price);
     } else if (props.mode === "state") {
-      props.setQuantity((prev) => prev - 1);
+      props.setQuantity(props.quantity - 1);
     }
   };
 
   return (
     <div className="flex items-center justify-end gap-0.5">
       <button
-        className={`bg-[#F2F6F9] rounded-[7px] w-[28px] h-[28px] flex items-center justify-center ${props.quantity === 1 ? "bg-[#e6e8eb]" :"bg-[#F2F6F9]"}`}
+        className={`bg-[#F2F6F9] rounded-[7px] w-[28px] h-[28px] flex items-center justify-center ${
+          props.quantity === 1 ? "bg-[#e6e8eb]" : "bg-[#F2F6F9]"
+        }`}
         disabled={props.quantity === 1}
         onClick={decreaseQuantityButton}
       >

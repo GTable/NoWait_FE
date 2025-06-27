@@ -37,7 +37,7 @@ const StorePage = () => {
 
   return (
     <div>
-      <div className="mt-8 pb-[124px]">
+      <div className="px-5 mt-8 pb-[124px]">
         <div className="flex justify-between items-start mb-12">
           <div>
             <h1 className="text-headline-24-bold">스페이시스</h1>
@@ -85,7 +85,7 @@ const StorePage = () => {
       {cart && cart.length > 0 && (
         <PageFooterButton>
           <Button textColor="white" onClick={() => navigate("/:storeId/order")}>
-            <TotalButton />
+            <TotalButton mode="store"/>
           </Button>
         </PageFooterButton>
       )}

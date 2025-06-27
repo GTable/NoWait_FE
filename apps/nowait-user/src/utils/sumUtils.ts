@@ -9,7 +9,7 @@ export const sumQuantity = <T, K extends keyof T>(
 
 export const sumTotalPrice = (items: CartItem[]) => {
   const totalPrice = items.reduce(
-    (acc, cur) => acc + cur.quantity * cur.price,
+    (acc, cur) => acc + cur.price,
     0
   );
   return totalPrice.toLocaleString();

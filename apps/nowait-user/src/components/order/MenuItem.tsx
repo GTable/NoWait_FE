@@ -30,6 +30,7 @@ const MenuItem = ({ id, name, price, quantity }: PropsType) => {
           mode="store"
           id={id}
           quantity={quantity}
+          price={price / quantity}
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
         />
