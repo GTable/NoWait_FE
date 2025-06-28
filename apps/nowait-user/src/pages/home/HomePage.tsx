@@ -41,7 +41,7 @@ const HomePage = () => {
         <div className="mt-2.5">
           <div
             ref={scrollRef}
-            className="overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+            className="overflow-x-auto scrollbar-hide snap-x snap-mandatory rounded-2xl"
           >
             <div className="flex">
               {Array.from({ length: 3 }, (_, index) => (

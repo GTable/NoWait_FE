@@ -7,7 +7,7 @@ interface HomeWaitingCardProps {
 
 const HomeWaitingCard = ({ storeName, queueNumber }: HomeWaitingCardProps) => {
   return (
-    <div className="rounded-2xl bg-primary flex text-start pl-5.25 pb-2.75 relative overflow-hidden w-full">
+    <div className="bg-primary flex text-start pl-5.25 pb-2.75 relative overflow-hidden w-full">
       <div className="flex flex-col">
         <div className="mt-7 text-14-medium text-black-100">현재 내 순서</div>
         <div className="mt-1 text-title-20-bold text-black-100">
