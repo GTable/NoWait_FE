@@ -221,7 +221,14 @@ pre {
   /* [MO] Text */
   .text-17-semibold {
     font-size: 17px;
-    line-height: auto;
+    line-height: 136%;
+    letter-spacing: 0;
+    font-weight: 600;
+  }
+
+  .text-16-semibold {
+    font-size: 16px;
+    line-height: 136%;
     letter-spacing: 0;
     font-weight: 600;
   }
@@ -231,6 +238,13 @@ pre {
     line-height: 144%;
     letter-spacing: -0.01em;
     font-weight: 400;
+  }
+
+  .text-16-medium {
+    font-size: 16px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 500;
   }
 
   .text-15-semibold {
@@ -259,6 +273,13 @@ pre {
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 500;
+  }
+
+  .text-14-semibold {
+    font-size: 14px;
+    line-height: 136%;
+    letter-spacing: -0.02em;
+    font-weight: 600;
   }
 
   .text-13-bold {
@@ -576,6 +597,18 @@ pre {
   }
   .bg-navy-5 {
     background-color: var(--navy-5);
+  }
+
+  .border-black-30 {
+    border-color: var(--black-30);
+  }
+
+  .border-black-25 {
+    border-color: var(--black-25);
+  }
+
+  .border-black-20 {
+    border-color: var(--black-20);
   }
 
   /* White 색상 유틸리티 */

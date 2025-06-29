@@ -11,15 +11,7 @@ const AdminLayout = () => {
   return (
     <div className="flex [@media(max-width:431px)]:flex-col">
       {width <= 431 ? <MobileMenuBar /> : <AdminSidebar />}
-      <main
-        className={`${
-          isCompact
-            ? isMobile
-              ? "w-full"
-              : "ml-[60px] w-[calc(100%-60px)]"
-            : "ml-[220px] w-[calc(100%-220px)]"
-        }  bg-[#F2F6F9] min-h-screen overflow-y-auto py-6`}
-      >
+      <main className="flex bg-[#F2F6F9] min-h-screen py-5 md:px-7.5 w-full">
         <Outlet />
       </main>
     </div>
