@@ -5,10 +5,12 @@ import refreshIcon from "../../assets/refresh.svg";
 import { WaitingCard } from "./components/WaitingCard";
 import { useGetReservationList } from "../../hooks/useGetReservationList";
 import on from "../../assets/on.svg";
+import off from "../../assets/off.svg";
 import onIcon from "../../assets/toggleOn.svg"; // 켜짐 상태 이미지
 import offIcon from "../../assets/toggleOFF.svg";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import { useUpdateReservationStatus } from "../../hooks/useUpdateReservationStatus";
+import ConfirmRemoveModal from "../../components/ConfirmRemoveModal";
 type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 
 interface Reservation {
@@ -27,10 +29,9 @@ const AdminHome = () => {
   const width = useWindowWidth();
   const [noShowIds, setNoShowIds] = useState<number[]>([]);
   const { mutate: updateStatus } = useUpdateReservationStatus();
+  const [showModal, setShowModal] = useState(false);
 
   console.log(width);
-
-  const isCompact = width < 1024;
 
   const [activeTab, setActiveTab] = useState("전체 보기");
   const storeId = 1; //현재는 임시로 mockdata씀
@@ -39,19 +40,30 @@ const AdminHome = () => {
   const { data, isLoading, isError } = useGetReservationList(storeId);
 
   const toggle = () => setIsOn((prev) => !prev);
-
+  //대기 중 카드 개수
   const waitingCount = reservations.filter(
     (res) => res.status === "WAITING"
   ).length;
+  //호출 중 카드 개수
   const callingCount = reservations.filter(
     (res) => res.status === "CALLING"
   ).length;
+  //완료 카드 개수
   const confirmedCount = reservations.filter(
     (res) => res.status === "CONFIRMED"
   ).length;
+  //최소된 카드 개수
   const cancelledCount = reservations.filter(
     (res) => res.status === "CANCELLED"
   ).length;
+
+  const tabLabels = [
+    { label: "전체 보기" },
+    { label: "대기 중", count: waitingCount },
+    { label: "호출 중", count: callingCount },
+    { label: "입장 완료", count: confirmedCount },
+    { label: "대기 취소", count: cancelledCount },
+  ];
 
   const statusMap = {
     WAITING: "대기 중",
@@ -130,24 +142,11 @@ const AdminHome = () => {
   };
 
   const handleNoShow = (id: number) => {
-    const target = reservations.find((res) => res.id === id);
-    if (!target || target.status === "CANCELLED") return;
-
-    updateStatus(
-      { reservationId: id, status: "CANCELLED" },
-      {
-        onSuccess: () => {
-          setReservations((prev) =>
-            prev.map((res) =>
-              res.id === id ? { ...res, status: "CANCELLED" } : res
-            )
-          );
-          setNoShowIds((prev) => [...prev, id]);
-        },
-      }
-    );
+    setNoShowIds((prev) => {
+      if (!prev.includes(id)) return [...prev, id];
+      return prev;
+    });
   };
-
   useEffect(() => {
     if (!data?.reservationList) return;
 
@@ -178,18 +177,18 @@ const AdminHome = () => {
 
   return (
     <div
-      className={`w-full max-w-[804px] flex flex-col items-center mx-auto space-y-6 min-[375px]:px-[20px] lg:px-[30px]`}
+      className={`w-full md:w-[752px] max-w-[804px] flex flex-col items-center mx-auto space-y-6`}
     >
       <section
         id="대기 현황"
-        className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center"
+        className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center m-0"
       >
         <div className="flex flex-col w-full">
-          <div className="flex justify-between mb-5">
+          <div className="flex justify-between mb-[40px]">
             <div className="flex items-center">
-              <h1 className="title-20-bold">대기 현황</h1>&nbsp;
+              <h1 className="text-title-20-bold">대기 접수</h1>&nbsp;
               <span>
-                <img src={on} />
+                <img src={isOn ? on : off} />
               </span>
             </div>
             <button onClick={toggle}>
@@ -200,35 +199,22 @@ const AdminHome = () => {
               />
             </button>
           </div>
-          <div className="flex [@media(min-width:375px)_and_(max-width:431px)]:justify-between">
-            <CardBox
-              title="대기 팀 수"
-              count={waitingCount}
-              bottomLabel={`호출 중 ${callingCount}팀`}
-            />
-            <CardBox
-              title="입장 완료"
-              count={confirmedCount}
-              bottomLabel={`대기 취소 ${cancelledCount}팀`}
-            />
-          </div>
         </div>
       </section>
 
       <section id="대기자 목록" className="flex flex-col w-full">
-        <h1 className="title-20-bold mb-5">대기자 목록</h1>
+        {/* <h1 className="title-20-bold mb-5">대기자 목록</h1> */}
         <div className="flex justify-between items-center">
           <div className="flex flex-wrap gap-2 overflow-x-auto scrollbar-hide [@media(max-width:431px)]:flex-nowrap">
-            {["전체 보기", "대기 중", "호출 중", "입장 완료", "대기 취소"].map(
-              (label) => (
-                <RoundTabButton
-                  key={label}
-                  label={label}
-                  active={activeTab === label}
-                  onClick={() => setActiveTab(label)}
-                />
-              )
-            )}
+            {tabLabels.map(({ label, count }) => (
+              <RoundTabButton
+                key={label}
+                label={label}
+                active={activeTab === label}
+                onClick={() => setActiveTab(label)}
+                count={label === "전체 보기" ? undefined : count}
+              />
+            ))}
           </div>
           <div className="hover:rotate-90 transition-transform duration-500 cursor-pointer">
             <img
@@ -239,7 +225,7 @@ const AdminHome = () => {
         </div>
       </section>
 
-      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 [@media(max-width:431px)]:place-items-center">
+      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 md:gap-[8px] [@media(max-width:431px)]:place-items-center">
         {filteredReservations.map((res) => {
           const requested = new Date(res.requestedAt);
 
@@ -264,11 +250,21 @@ const AdminHome = () => {
               onCall={() => handleCall(res.id)}
               onEnter={() => handleEnter(res.id)}
               onClose={() => handleClose(res.id)}
+              onDelete={() => setShowModal(true)}
               onNoShow={() => handleNoShow(res.id)}
             />
           );
         })}
       </div>
+      {showModal && (
+        <ConfirmRemoveModal
+          onCancel={() => setShowModal(false)}
+          onConfirm={() => {
+            // handleDelete(); // 삭제 처리 로직
+            setShowModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };

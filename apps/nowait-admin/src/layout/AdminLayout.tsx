@@ -9,20 +9,25 @@ const AdminLayout = () => {
   const isCompact = width < 1024;
   const isMobile = width <= 431;
 
-  // 사이드바 너비 계산
   const getSidebarWidth = () => {
     if (isMobile || width <= 768) return 0;
-    return isCompact ? 60 : 220;
+    return isCompact ? 60 : 210;
   };
 
   return (
-    <div className="flex [@media(max-width:431px)]:flex-col">
-      {width <= 431 ? <MobileMenuBar /> : <AdminSidebar />}
+    <div className="flex w-screen">
+      {isMobile ? <MobileMenuBar /> : <AdminSidebar />}
       <main
-        className={`flex bg-[#F2F6F9] min-h-screen py-5 w-full ${
-          width <= 431 ? "px-5" : "px-7.5"
-        }`}
-        style={{ marginLeft: `${getSidebarWidth()}px` }}
+        className={`
+          flex bg-[#F2F6F9] min-h-screen py-5
+          ${
+            isMobile || width <= 768
+              ? "w-full px-5"
+              : isCompact
+              ? "w-[calc(100vw-60px)] ml-[60px] px-7.5"
+              : "w-[calc(100vw-210px)] ml-[210px] px-7.5"
+          }
+        `}
       >
         <Outlet />
       </main>

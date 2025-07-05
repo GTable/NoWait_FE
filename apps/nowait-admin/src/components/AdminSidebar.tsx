@@ -20,7 +20,7 @@ const AdminSidebar = () => {
     <aside
       className={`
         h-screen flex flex-col justify-between bg-white px-4 py-6 fixed
-        ${isCompact ? "w-[60px] items-center" : "w-[220px]"}
+        ${isCompact ? "w-[60px] items-center" : "w-[210px]"}
       `}
     >
       {/* 상단: 로고 & 메뉴 */}

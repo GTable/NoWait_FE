@@ -19,6 +19,7 @@ interface WaitingCardProps {
   onEnter: () => void;
   onClose: () => void;
   onNoShow: () => void;
+  onDelete: () => void;
 }
 const truncateName = (name: string, maxLength: number = 3) => {
   return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
@@ -38,6 +39,7 @@ export function WaitingCard({
   onEnter,
   onClose,
   onNoShow,
+  onDelete,
 }: WaitingCardProps) {
   const [elapsed, setElapsed] = useState("10:00");
 
@@ -45,7 +47,7 @@ export function WaitingCard({
     if (status === "CALLING") {
       const timer = setTimeout(() => {
         onNoShow();
-      }, 10 * 1 * 1000);
+      }, 10 * 1 * 1000); // 테스트용 10초
 
       return () => clearTimeout(timer);
     }
@@ -80,7 +82,7 @@ export function WaitingCard({
         <div className="flex items-center gap-2 text-13-medium text-black-50">
           <span>{time}</span>
           <span>· {waitMinutes}분 대기 중</span>
-          {<CloseButton onClick={onClose} />}
+          {<CloseButton onClick={onDelete} />}
         </div>
       </div>
 
@@ -128,29 +130,33 @@ export function WaitingCard({
           </>
         )}
 
-        {status === "CALLING" && (
-          <>
-            <div className="w-[60%] bg-black-15 text-black-60 py-2 rounded-[8px] flex justify-center items-center gap-1">
-              ⏱ {elapsed}
-            </div>
-            <button
-              onClick={onEnter}
-              className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
-            >
-              입장
-            </button>
-          </>
-        )}
-        {status === "CANCELLED" &&
+        {status === "CALLING" &&
           (isNoShow === true ? (
-            <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
+            <div
+              className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2"
+              onClick={onClose}
+            >
               미입장
             </div>
           ) : (
-            <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
-              취소된 입장
-            </div>
+            <>
+              <div className="w-[60%] bg-black-15 text-black-60 py-2 rounded-[8px] flex justify-center items-center gap-1">
+                ⏱ {elapsed}
+              </div>
+              <button
+                onClick={onEnter}
+                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
+              >
+                입장
+              </button>
+            </>
           ))}
+
+        {status === "CANCELLED" && (
+          <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
+            취소된 입장
+          </div>
+        )}
 
         {status === "CONFIRMED" && (
           <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
