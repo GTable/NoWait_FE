@@ -1,14 +1,14 @@
 interface PaymentCardProps {
   tableNumber: number;
-  minutesAgo: number;
-  menuCount: number;
+  timeText: string;
+  depositorName: string;
   totalAmount: number;
 }
 
 const PaymentCard = ({
   tableNumber,
-  minutesAgo,
-  menuCount,
+  timeText,
+  depositorName,
   totalAmount,
 }: PaymentCardProps) => {
   return (
@@ -19,12 +19,10 @@ const PaymentCard = ({
         </div>
 
         <div className="flex flex-col ml-2.5">
-          <div className="flex text-14-medium text-black-60">
-            {minutesAgo}분 전
-          </div>
+          <div className="flex text-14-medium text-black-60">{timeText}</div>
           <div className="flex flex-row gap-2 items-center">
             <div className="flex text-16-semibold text-black-80">
-              메뉴 {menuCount}개
+              {depositorName}
             </div>
             <div className="flex w-[1.5px] bg-[#D5D5D5] h-3.5" />
             <div className="flex text-16-semibold text-black-80">
@@ -81,6 +79,7 @@ const CookCard = ({ tableNumber, menus }: CookCardProps) => {
 
 interface CookedCardProps {
   tableNumber: number;
+  depositorName: string;
   menus: Array<{ name: string; quantity: number }>;
   totalAmount: number;
   createdAt: string;
@@ -88,6 +87,7 @@ interface CookedCardProps {
 
 const CookedCard = ({
   tableNumber,
+  depositorName,
   menus,
   totalAmount,
   createdAt,
@@ -96,33 +96,29 @@ const CookedCard = ({
   const firstMenuName = menus[0]?.name || "";
   const remainingMenuCount = menus.length - 1;
   const menuDisplayText =
-    remainingMenuCount > 0
+    menus.length > 1
       ? `${firstMenuName} 외 ${remainingMenuCount}개`
       : firstMenuName;
 
-  // 총 메뉴 개수 계산
-  const totalMenuCount = menus.reduce(
-    (total, menu) => total + menu.quantity,
-    0
-  );
-
   return (
-    <div className="flex flex-row px-5 py-4 border-b border-black-20 items-center">
-      <div className="flex-1 text-16-semibold text-black-80">
+    <div className="flex flex-row gap-2.5 px-5 py-4 border-b border-black-20 items-center">
+      <div className="flex flex-[0.7] text-16-regular text-black-70">
         {tableNumber}번
       </div>
-      <div className="flex-[2] text-16-regular text-black-50">
+      <div className="flex flex-[1] text-16-regular text-black-70">
+        {depositorName}
+      </div>
+      <div className="flex flex-[2.5] text-16-regular text-black-70">
         {menuDisplayText}
       </div>
-      <div className="flex-1 text-16-regular text-black-50">
-        {totalMenuCount}개
-      </div>
-      <div className="flex-1 text-16-regular text-black-50">
+      <div className="flex flex-[1.5] text-16-regular text-black-70">
         {totalAmount.toLocaleString()}원
       </div>
-      <div className="flex-1 text-16-regular text-black-50">{createdAt}</div>
-      <div className="w-20 flex justify-end">
-        <div className="rounded-lg border border-black-30 px-2.5 py-1.25 text-14-semibold text-black-60">
+      <div className="flex flex-[1.5] text-16-regular text-black-70">
+        {createdAt}
+      </div>
+      <div className="flex-1 flex justify-end">
+        <div className="rounded-lg border border-black-30 px-2.5 py-1.25 text-14-semibold text-black-70 flex-shrink-0">
           주문 복구
         </div>
       </div>
