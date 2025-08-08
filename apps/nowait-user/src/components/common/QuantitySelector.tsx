@@ -46,7 +46,9 @@ const QuantitySelector = (props: PropsType) => {
       <button
         className={`${
           isQuantityMin ? "bg-black-10" : "bg-black-20"
-        } rounded-[7px] w-[28px] h-[28px] flex items-center justify-center`}
+        } rounded-[7px] ${
+          props.mode === "state" ? "w-[34px] h-[34px]" : "w-[30px] h-[30px]"
+        } flex items-center justify-center`}
         disabled={isQuantityMin}
         onClick={decreaseQuantityButton}
       >
@@ -59,12 +61,14 @@ const QuantitySelector = (props: PropsType) => {
             : "text-16-semibold"
         } text-balck-80`}
       >
-        <NumberFlow value={props.quantity}/>
+        <NumberFlow value={props.quantity} />
       </p>
       <button
         className={`${
           isQuantityMax ? "bg-black-10" : "bg-black-20"
-        } rounded-[7px] w-[28px] h-[28px] flex items-center justify-center`}
+        } rounded-[7px] ${
+          props.mode === "state" ? "w-[34px] h-[34px]" : "w-[30px] h-[30px]"
+        } flex items-center justify-center`}
         disabled={isQuantityMax}
         onClick={increaseQuantityButton}
       >

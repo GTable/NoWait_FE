@@ -10,12 +10,18 @@ const MenuList = ({
   storeId: string | undefined | null;
   mode: string;
 }) => {
-  const { data: menus } = useQuery({
+  const {
+    data: menus,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(storeId),
+    queryFn: () => getStoreMenus(Number(storeId!)),
     select: (data) => data.response.menuReadDto,
   });
 
+  if(isLoading) return <h1>로딩중...</h1>
+if(isError) return <h1>에러...</h1>
   return (
     <div className="py-[30px]">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>

@@ -36,7 +36,7 @@ const ConfirmModal = ({
             exit={{ opacity: 0 }}
             onClick={handleClose}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 bg-black/30"
+            className="fixed inset-0 z-50 bg-black/50"
           >
             <motion.div
               initial={{ opacity: 0, y: "100%" }}

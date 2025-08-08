@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { formatDate } from "../../../utils/formatDate";
 
 interface OrderDetailsType {
-  menuId: string;
+  menuId: number;
   menuName: string;
   price: number;
   quantity: number;

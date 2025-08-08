@@ -23,7 +23,7 @@ const RemittancePage = () => {
   const { cart } = useCartStore();
   const [payer, setPayer] = useState("");
   const [payerError, setPayerError] = useState(false);
-  const [remitValue, setRemitValue] = useState("kakao");
+  const [remitValue, setRemitValue] = useState("");
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null);
 
@@ -33,8 +33,17 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data.response,
   });
+  console.log(remittance, "레미텐스");
   const [height, setHeight] = useState(window.innerHeight);
 
+  useEffect(() => {
+    if (!remittance) return;
+
+    if (remittance.kakaoPayUrl) setRemitValue("kakao");
+    else if (remittance.tossUrl) setRemitValue("toss");
+    else if (remittance.naverPayUrl) setRemitValue("naver");
+    else if (remittance.accountNumber) setRemitValue("remit");
+  }, []);
   useEffect(() => {
     const onResize = () => {
       const isKeyboardOpen = window.innerHeight < screen.height * 0.6;
@@ -58,7 +67,7 @@ const RemittancePage = () => {
   };
 
   return (
-    <div className="flex flex-col flex-grow pb-[124px]" style={{ height }}>
+    <div className="flex flex-col flex-grow pb-[112px]" style={{ height }}>
       <BackHeader title="주문하기" />
       <section className="px-5">
         <OrderSummary cart={cart} />

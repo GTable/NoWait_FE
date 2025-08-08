@@ -20,11 +20,16 @@ interface MenuServerResponse {
 }
 
 //주점에 해당하는 모든 메뉴 조회
-export const getStoreMenus = async (storeId: string | undefined | null) => {
-  const res = await axios.get(
+export const getStoreMenus = async (storeId: number | undefined | null) => {
+  try {
+      const res = await axios.get(
     `${API_URI}/v1/menus/all-menus/stores/${storeId}`
   );
   return res.data;
+  } catch (error) {
+    console.log(error)
+  }
+
 };
 
 // 단일 메뉴 조회

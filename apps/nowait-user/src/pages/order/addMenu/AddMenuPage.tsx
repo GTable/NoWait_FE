@@ -26,7 +26,7 @@ const AddMenuPage = () => {
   const addToCartButton = () => {
     const item: CartType = {
       menuId: menu!.menuId,
-      image: menu!.images[0].imageUrl,
+      image: menu!.images[0]?.imageUrl,
       name: menu!.name,
       quantity,
       originPrice: menu!.price,
@@ -39,16 +39,22 @@ const AddMenuPage = () => {
       replace: false,
     });
   };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <img src={LoadingSpinner} alt="로딩 중" className="w-[100px] h-[100px]" />
+        <img
+          src={LoadingSpinner}
+          alt="로딩 중"
+          className="w-[100px] h-[100px]"
+        />
       </div>
     );
   }
+
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-1 overflow-y-auto px-5">
+    <div className="flex flex-col min-h-screen-dvh">
+      <div className="flex flex-col flex-grow px-5">
         <h1 className="-mx-5 h-[246px] object-cover">
           <img
             className="w-full h-full object-cover"
@@ -62,7 +68,7 @@ const AddMenuPage = () => {
         </div>
       </div>
       {/* 메뉴 가격 및 수량 컨트롤 */}
-      <div className="sticky left-0 bottom-[124px] bg-white">
+      <div className="fixed bottom-[112px] w-full max-w-[430px] min-w-[320px]  bg-white">
         <div className="w-full flex justify-between items-center px-5">
           <h1 className="text-[24px] font-semibold">
             <NumberFlow value={menu!.price * quantity} suffix="원" />

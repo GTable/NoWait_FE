@@ -77,41 +77,45 @@ const RemitOptions = ({
             </p>
           </SlideToggle>
         </div>
-        <div className="flex flex-col gap-3 rounded-2xl bg-[#F9F9F9] px-5 py-5">
-          <RadioGroup label="간편 송금">
-            {kakao && (
-              <Radio
-                logo={<KakaoPay />}
-                name="remit"
-                value="kakao"
-                defaultChecked
-                onChange={(e) => setRemitValue(e.target.value)}
-              >
-                카카오페이
-              </Radio>
-            )}
-            {toss && (
-              <Radio
-                logo={<TossPay />}
-                name="remit"
-                value="toss"
-                onChange={(e) => setRemitValue(e.target.value)}
-              >
-                토스
-              </Radio>
-            )}
-            {naver && (
-              <Radio
-                logo={<NaverPay />}
-                name="remit"
-                value="naver"
-                onChange={(e) => setRemitValue(e.target.value)}
-              >
-                네이버페이
-              </Radio>
-            )}
-          </RadioGroup>
-        </div>
+        {!kakao && !toss && !naver ? (
+          <></>
+        ) : (
+          <div className="flex flex-col gap-3 rounded-2xl bg-[#F9F9F9] px-5 py-5">
+            <RadioGroup label="간편 송금">
+              {kakao && (
+                <Radio
+                  logo={<KakaoPay />}
+                  name="remit"
+                  value="kakao"
+                  defaultChecked
+                  onChange={(e) => setRemitValue(e.target.value)}
+                >
+                  카카오페이
+                </Radio>
+              )}
+              {toss && (
+                <Radio
+                  logo={<TossPay />}
+                  name="remit"
+                  value="toss"
+                  onChange={(e) => setRemitValue(e.target.value)}
+                >
+                  토스
+                </Radio>
+              )}
+              {naver && (
+                <Radio
+                  logo={<NaverPay />}
+                  name="remit"
+                  value="naver"
+                  onChange={(e) => setRemitValue(e.target.value)}
+                >
+                  네이버페이
+                </Radio>
+              )}
+            </RadioGroup>
+          </div>
+        )}
         {account && (
           <div className="mt-4 rounded-2xl bg-[#F9F9F9] px-5 py-5">
             <Radio

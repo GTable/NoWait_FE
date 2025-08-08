@@ -16,6 +16,7 @@ import { getSoldOutMenusInCart } from "../../../utils/checkSoldOutMenus";
 import useModal from "../../../hooks/useModal";
 import Portal from "../../../components/common/modal/Portal";
 import type { CartType } from "../../../types/order/cart";
+import { motion } from "framer-motion";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
@@ -23,10 +24,20 @@ const OrderListPage = () => {
   const { cart, removeFromCart } = useCartStore();
   const modal = useModal();
   const [soldOutMenus, setSoldOutMenus] = useState<CartType[] | undefined>();
-  console.log(soldOutMenus);
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+
+  // 메뉴가 1개일 때에도 애니메이션 작동
+  useEffect(() => {
+    if (cart.length === 0 && !isAnimatingOut) {
+      setTimeout(() => {
+        setIsAnimatingOut(true);
+      }, 300);
+    }
+  }, [cart]);
+
   const { data: menus } = useQuery({
     queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(storeId),
+    queryFn: () => getStoreMenus(Number(storeId)),
     select: (data) => data.response.menuReadDto,
   });
 
@@ -42,16 +53,16 @@ const OrderListPage = () => {
     }
   }, [menus, cart]);
 
-  if (cart.length === 0) return <EmptyCart />;
+  if (cart.length === 0 && isAnimatingOut) return <EmptyCart />;
 
   return (
     <div>
       <BackHeader title="장바구니" />
-      <section className="flex flex-col flex-grow min-h-screen-dvh pt-7 px-5 pb-[124px]">
+      <section className="flex flex-col flex-grow min-h-screen-dvh pt-7 px-5 pb-[112px]">
         <h1 className="text-headline-24-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
         </h1>
-        <ul className="flex justify-center flex-col">
+        <motion.ul className="flex justify-center flex-col" layout>
           <AnimatePresence mode="sync">
             {cart.map((item) => {
               return (
@@ -65,18 +76,20 @@ const OrderListPage = () => {
                 />
               );
             })}
+            <motion.li className="flex justify-center" layout>
+              <SmallActionButton
+                mode="default"
+                type="button"
+                ariaLabel="메뉴 추가하기"
+                onClick={() => navigate(`/${storeId}`)}
+                className="py-5 border-none"
+              >
+                메뉴 추가하기
+                <Add className="w-4 h-4 mb-1" fill="currentColor" />
+              </SmallActionButton>
+            </motion.li>
           </AnimatePresence>
-          <SmallActionButton
-            mode="default"
-            type="button"
-            ariaLabel="메뉴 추가하기"
-            onClick={() => navigate(`/${storeId}`)}
-            className="py-5 border-none"
-          >
-            메뉴 추가하기
-            <Add className="w-4 h-4 mb-1" fill="currentColor" />
-          </SmallActionButton>
-        </ul>
+        </motion.ul>
       </section>
       <PageFooterButton>
         <Button
@@ -89,7 +102,7 @@ const OrderListPage = () => {
       {modal.isOpen && soldOutMenus!.length > 0 && (
         <Portal>
           <div
-            className="fixed inset-0 z-50 bg-black/30"
+            className="fixed inset-0 z-50 bg-black/50"
             onClick={() => {
               modal.close();
               soldOutMenus?.forEach((menu: CartType) =>
@@ -108,20 +121,19 @@ const OrderListPage = () => {
                 ))}
                 는(은) 품절 상태입니다.
               </h1>
-              <div className="flex gap-2.5">
-                <Button
-                  backgroundColor="#F4F4F4"
-                  textColor="#666666"
-                  onClick={() => {
-                    modal.close();
-                    soldOutMenus?.forEach((menu: CartType) =>
-                      removeFromCart(menu.menuId)
-                    );
-                  }}
-                >
-                  주문 계속하기
-                </Button>
-                <Button
+              <Button
+                backgroundColor="#F4F4F4"
+                textColor="#666666"
+                onClick={() => {
+                  modal.close();
+                  soldOutMenus?.forEach((menu: CartType) =>
+                    removeFromCart(menu.menuId)
+                  );
+                }}
+              >
+                주문 계속하기
+              </Button>
+              {/* <Button
                   onClick={() => {
                     navigate(-1);
                     soldOutMenus?.forEach((menu: CartType) =>
@@ -130,8 +142,7 @@ const OrderListPage = () => {
                   }}
                 >
                   더 추가하기
-                </Button>
-              </div>
+                </Button> */}
             </div>
           </div>
         </Portal>

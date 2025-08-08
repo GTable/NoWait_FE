@@ -3,7 +3,6 @@ import DepartmentImage from "../DepartmentImage";
 import defaultMenuImageLg from "../../assets/default-menu-image-lg.png";
 import { useState } from "react";
 import { useBookmarkMutation } from "../../hooks/mutate/useBookmark";
-import { useBookmarkState } from "../../hooks/useBookmarkState";
 
 interface PropsType {
   bookmarkId?: number;
@@ -12,7 +11,7 @@ interface PropsType {
   profileImage?: string;
   name: string;
   departmentName: string;
-  storeId: string;
+  storeId: number;
 }
 
 const StoreListItem = ({

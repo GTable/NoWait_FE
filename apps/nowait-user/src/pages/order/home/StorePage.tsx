@@ -27,7 +27,7 @@ const StorePage = () => {
 
   return (
     <div>
-      <div className="flex flex-col flex-grow pb-[124px] min-h-screen-dvh pt-7.5 px-5">
+      <div className="flex flex-col flex-grow pb-[112px] min-h-screen-dvh pt-7.5 px-5">
         <div className="flex-grow">
           <StoreHeader />
           <SectionDivider />

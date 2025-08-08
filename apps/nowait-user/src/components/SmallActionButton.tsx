@@ -18,7 +18,7 @@ export const SmallActionButton = ({
     <button
       type={type}
       aria-label={ariaLabel}
-      className={`${className} py-2 px-4 rounded-[12px] border-2 bg-white ${mode==="default" ? "border-[#ececec] text-black-70" : "border-[#dddddd] text-black-80"}`}
+      className={`${className} py-2 px-4 rounded-[12px] border-1 bg-white ${mode==="default" ? "border-[#ececec] text-black-70" : "border-[#dddddd] text-black-80"}`}
       onClick={onClick}
     >
       <p className="flex items-center justify-center gap-1 text-[14px] font-bold">

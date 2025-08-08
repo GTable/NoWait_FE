@@ -92,14 +92,6 @@ const Router = () => {
           element={withTransition(OrderDetailsPage)}
         />
       </Routes>
-      {/* {background && (
-        <Routes>
-          <Route
-            path="/:storeId/menu/:menuId"
-            element={withTransition(AddMenuPage)}
-          />
-        </Routes>
-      )} */}
     </>
   );
 };
