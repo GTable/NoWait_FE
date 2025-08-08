@@ -1,11 +1,10 @@
-import ArrowRight from "../../assets/arrow_back.svg?react";
 import { useState } from "react";
 import {
   PaymentCheckModal,
   CookedModal,
   CookCompleteModal,
 } from "./OrderPageModal";
-import type { MenuNamesAndQuantities } from "../../types/order";
+import type { MenuDetails } from "../../types/order";
 import { getTableBackgroundColor } from "../../utils/tableColors";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 
@@ -98,159 +97,23 @@ const PaymentCard = ({
   );
 };
 
-interface PaymentDetailProps {
-  orderId: number;
-  tableNumber: number;
-  timeText: string;
-  depositorName: string;
-  totalAmount: number;
-  menuNamesAndQuantities?: MenuNamesAndQuantities;
-  onClose: () => void;
-  onSuccess?: () => void;
-}
-
-const PaymentDetail = ({
-  orderId,
-  tableNumber,
-  timeText,
-  depositorName,
-  totalAmount,
-  menuNamesAndQuantities,
-  onClose,
-  onSuccess,
-}: PaymentDetailProps) => {
-  const [showPaymentCheckModal, setShowPaymentCheckModal] = useState(false);
-
-  const menuEntries = menuNamesAndQuantities
-    ? Object.entries(menuNamesAndQuantities)
-    : [];
-
-  const handlePaymentCheckClick = () => {
-    setShowPaymentCheckModal(true);
-  };
-
-  const handleClosePaymentCheckModal = () => {
-    setShowPaymentCheckModal(false);
-  };
-
-  return (
-    <>
-      <div className="absolute inset-0 bg-white z-50 flex flex-col px-5.5 py-4 justify-between">
-        <div className="flex flex-col">
-          {/* 헤더 */}
-          <div className="flex flex-row cursor-pointer" onClick={onClose}>
-            <ArrowRight className="flex icon-s" />
-            <div className="flex text-16-semibold text-black-50">이전으로</div>
-          </div>
-
-          <div className="flex flex-row mt-6 gap-2.5">
-            <div
-              className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
-              style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
-            >
-              {tableNumber}
-            </div>
-            <div className="flex text-title-18-semibold text-black-90 items-center">
-              {tableNumber}번 테이블
-            </div>
-          </div>
-
-          <div className="flex mt-6 text-title-18-semibold text-black-90">
-            입금 내역
-          </div>
-
-          <div className="flex flex-col mt-4 gap-2.5">
-            <div className="flex flex-row justify-between">
-              <div className="flex text-16-medium text-black-60">입금자</div>
-              <div className="flex text-16-semibold text-black-80">
-                {depositorName}
-              </div>
-            </div>
-
-            <div className="flex flex-row justify-between">
-              <div className="flex text-16-medium text-black-60">입금 금액</div>
-              <div className="flex text-16-semibold text-black-80">
-                {totalAmount.toLocaleString()}원
-              </div>
-            </div>
-
-            <div className="flex flex-row justify-between">
-              <div className="flex text-16-medium text-black-60">주문 시간</div>
-              <div className="flex text-16-semibold text-black-80">
-                {timeText}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex mt-6 mb-6 border-t border-black-25" />
-
-          <div className="flex text-title-18-semibold text-black-90">
-            주문 메뉴 {menuEntries.length}
-          </div>
-
-          <div className="flex flex-col mt-4 gap-2.5 text-16-semibold text-black-80">
-            {menuEntries.map(([menuName, quantity], index) => (
-              <div key={index} className="flex flex-row justify-between">
-                <div className="flex flex-[0.6]">{menuName}</div>
-                <div className="flex flex-[0.4] justify-between">
-                  <div className="flex">{quantity}</div>
-                  <div className="flex">
-                    {(12000 * quantity).toLocaleString()}원
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div
-          className="flex px-2.5 py-1.25 bg-black-20 items-center justify-center rounded-lg w-full h-10.5 text-14-semibold text-black-70 cursor-pointer"
-          onClick={handlePaymentCheckClick}
-        >
-          입금 확인
-        </div>
-      </div>
-
-      {/* PaymentCheckModal 오버레이 */}
-      {showPaymentCheckModal && (
-        <div
-          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
-          onClick={handleClosePaymentCheckModal}
-        >
-          <PaymentCheckModal
-            orderId={orderId}
-            tableNumber={tableNumber}
-            depositorName={depositorName}
-            totalAmount={totalAmount}
-            timeText={timeText}
-            onClose={handleClosePaymentCheckModal}
-            onSuccess={onSuccess}
-          />
-        </div>
-      )}
-    </>
-  );
-};
-
 interface CookCardProps {
   orderId: number;
   tableNumber: number;
-  menuNamesAndQuantities?: MenuNamesAndQuantities;
+  menuDetails?: MenuDetails;
   onSuccess?: () => void;
 }
 
 const CookCard = ({
   orderId,
   tableNumber,
-  menuNamesAndQuantities,
+  menuDetails,
   onSuccess,
 }: CookCardProps) => {
   const [showCookCompleteModal, setShowCookCompleteModal] = useState(false);
   const windowWidth = useWindowWidth();
 
-  const menuEntries = menuNamesAndQuantities
-    ? Object.entries(menuNamesAndQuantities)
-    : [];
+  const menuEntries = menuDetails ? Object.entries(menuDetails) : [];
   const isOneMenu = menuEntries.length === 1;
 
   // 화면 크기에 따른 글자 수 제한
@@ -287,7 +150,7 @@ const CookCard = ({
               isOneMenu ? "justify-center" : ""
             }`}
           >
-            {menuEntries.map(([menuName, quantity], index) => (
+            {menuEntries.map(([menuName, menuInfo], index) => (
               <div
                 key={index}
                 className="flex flex-row gap-2.5 justify-between"
@@ -297,7 +160,7 @@ const CookCard = ({
                     ? menuName.substring(0, getMaxLength()) + "..."
                     : menuName}
                 </div>
-                <div className="flex">{quantity}</div>
+                <div className="flex">{menuInfo.quantity}</div>
               </div>
             ))}
           </div>
@@ -463,7 +326,7 @@ interface CookedCardProps {
   orderId: number;
   tableNumber: number;
   depositorName: string;
-  menuNamesAndQuantities?: MenuNamesAndQuantities;
+  menuDetails?: MenuDetails;
   totalAmount: number;
   createdAt: string;
   onSuccess?: () => void;
@@ -474,7 +337,7 @@ const CookedCard = ({
   orderId,
   tableNumber,
   depositorName,
-  menuNamesAndQuantities,
+  menuDetails,
   totalAmount,
   createdAt,
   onSuccess,
@@ -485,9 +348,7 @@ const CookedCard = ({
   const isMobile = windowWidth <= 450;
 
   // 첫 번째 메뉴 이름과 나머지 메뉴 개수 계산
-  const menuEntries = menuNamesAndQuantities
-    ? Object.entries(menuNamesAndQuantities)
-    : [];
+  const menuEntries = menuDetails ? Object.entries(menuDetails) : [];
   const firstMenuName = menuEntries[0]?.[0] || "";
   const remainingMenuCount = menuEntries.length - 1;
   const menuDisplayText =
@@ -515,7 +376,7 @@ const CookedCard = ({
       {isMobile ? (
         <div
           className="flex flex-row gap-5 px-5.5 py-3.5 justify-between border-b border-black-25 items-center text-16-regular leading-[136%] tracking-[-0.02em] text-black-70 cursor-pointer"
-          onClick={handleCardClick}
+          onClick={onClick}
         >
           <div className="flex flex-row gap-2.5">
             <div className="flex w-8.5">{tableNumber}번</div>
@@ -538,7 +399,7 @@ const CookedCard = ({
         /* 데스크톱 버전 */
         <div
           className="flex flex-row gap-2.5 px-5 py-4 border-b border-black-20 items-center cursor-pointer"
-          onClick={handleCardClick}
+          onClick={onClick}
         >
           <div className="flex flex-[0.7] text-16-regular text-black-70">
             {tableNumber}번
@@ -586,4 +447,4 @@ const CookedCard = ({
   );
 };
 
-export { PaymentCard, PaymentDetail, CookCard, CookedCard, CookedDetail };
+export { PaymentCard, CookCard, CookedCard };

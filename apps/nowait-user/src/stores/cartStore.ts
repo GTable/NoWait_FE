@@ -4,10 +4,10 @@ import type { CartType } from "../types/order/cart";
 
 interface CartState {
   cart: CartType[];
-  increaseQuantity: (id: string, price: number) => void;
-  decreaseQuantity: (id: string, price: number) => void;
+  increaseQuantity: (id: number, price: number) => void;
+  decreaseQuantity: (id: number, price: number) => void;
   addToCart: (item: CartType) => void;
-  removeFromCart: (id: string) => void;
+  removeFromCart: (id: number) => void;
   clearCart: () => void;
 }
 

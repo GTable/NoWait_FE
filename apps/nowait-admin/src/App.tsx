@@ -30,8 +30,8 @@ function App() {
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="/adminAuth" element={<AdminAuth />} />
-      <Route path="/adminAuth/login" element={<LoginPage />} />
+      <Route path="/" element={<AdminAuth />} />
+      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 }

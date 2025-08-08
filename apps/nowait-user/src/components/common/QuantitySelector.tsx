@@ -11,11 +11,11 @@ interface stateProps {
 
 interface storeProps {
   mode: "store";
-  id: string;
+  id: number;
   quantity: number;
   price: number;
-  increaseQuantity: (id: string, price: number) => void;
-  decreaseQuantity: (id: string, price: number) => void;
+  increaseQuantity: (id: number, price: number) => void;
+  decreaseQuantity: (id: number, price: number) => void;
 }
 
 type PropsType = stateProps | storeProps;

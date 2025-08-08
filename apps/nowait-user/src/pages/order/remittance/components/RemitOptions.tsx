@@ -73,7 +73,7 @@ const RemitOptions = ({
             <p className="text-14-regular text-black-70 pt-4">
               축제 부스는 한정된 시간과 인력으로 운영 돼요.
               <br />
-              효율적인 운영과 정산을 위해 현재는 계좌 이체만 가능해요.
+              효율적 운영을 위해 결제는 간편 송금과 이체만 가능해요.
             </p>
           </SlideToggle>
         </div>

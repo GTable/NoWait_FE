@@ -1,15 +1,31 @@
 import { sumQuantity, sumTotalPrice } from "../../utils/sumUtils";
 import { useCartStore } from "../../stores/cartStore";
+import { useEffect, useState } from "react";
 import NumberFlow from "@number-flow/react";
 
 interface PropsType {
   variant?: "default" | "orderPage";
+  addedPrice?: number | undefined;
   actionText: string;
 }
 
-const TotalButton = ({ variant = "default", actionText }: PropsType) => {
+const TotalButton = ({
+  variant = "default",
+  addedPrice,
+  actionText,
+}: PropsType) => {
   const { cart } = useCartStore();
-  const totalPrice = sumTotalPrice(cart);
+  const baseTotal = sumTotalPrice(cart);
+  const [price, setPrice] = useState(baseTotal);
+  const [trend, setTrend] = useState(0);
+  console.log(trend);
+  console.log(addedPrice);
+  useEffect(() => {
+    if (addedPrice !== undefined) {
+      setTrend(1);
+    }
+    setPrice(baseTotal + (addedPrice || 0));
+  }, [baseTotal, addedPrice]);
 
   return (
     <div className="flex items-center gap-2 text-[17px] font-semibold ml-1">
@@ -18,7 +34,7 @@ const TotalButton = ({ variant = "default", actionText }: PropsType) => {
           {sumQuantity(cart, "quantity")}
         </span>
       )}
-      <NumberFlow value={totalPrice} suffix={`원 ${actionText}`}/>
+      <NumberFlow value={price} trend={trend} suffix={`원 ${actionText}`}/>
     </div>
   );
 };

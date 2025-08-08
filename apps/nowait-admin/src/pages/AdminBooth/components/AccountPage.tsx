@@ -8,11 +8,14 @@ import tossLogo from "../../../assets/booth/tossLogo.svg";
 import { useGetStorePayment } from "../../../hooks/booth/payment/useGetStorePayment";
 import { useCreateStorePayment } from "../../../hooks/booth/payment/useCreateStorePayment";
 import { useUpdateStorePayment } from "../../../hooks/booth/payment/useUpdateStorePayment";
+import { useNavigate } from "react-router";
 
 const AccountPage = () => {
   const [bank, setBank] = useState("IBK 기업");
   const [accountName, setAccountName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
+
+  const navigate = useNavigate();
 
   const { data: storePayment } = useGetStorePayment();
   const { mutate: createPayment } = useCreateStorePayment();
@@ -175,7 +178,7 @@ const AccountPage = () => {
         ? "text"
         : null,
     });
-  });
+  }, [urls]);
   console.log(storePayment, "결제정보");
 
   console.log(sources, "url type");
@@ -184,7 +187,7 @@ const AccountPage = () => {
     <div>
       {/* Guide Banner */}
       <div className="my-10">
-        <img src={banner} alt="배너" />
+        <img src={banner} alt="배너" onClick={() => navigate("guides")} />
       </div>
 
       {/* QR Code Section */}

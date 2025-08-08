@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TotalButton from "../../../components/order/TotalButton";
 import { useCartStore } from "../../../stores/cartStore";
 import SectionDivider from "../../../components/SectionDivider";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { sumTotalPrice } from "../../../utils/sumUtils";
 import PayerInput from "./components/PayerInput";
 import OrderSummary from "./components/OrderSummary";
@@ -26,7 +26,6 @@ const RemittancePage = () => {
   const [remitValue, setRemitValue] = useState("kakao");
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null);
-  console.log(remitValue);
 
   const { data: remittance } = useQuery({
     queryKey: ["remittance", storeId],
@@ -34,7 +33,18 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data.response,
   });
-  console.log(remittance);
+  const [height, setHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const onResize = () => {
+      const isKeyboardOpen = window.innerHeight < screen.height * 0.6;
+      alert(isKeyboardOpen && "열림");
+    };
+
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   const orderHandleButton = () => {
     //입금자명을 입력하지 않고 이체 버튼 클릭 시 입금자명 input으로 포커스
     if (payer.trim() === "") {
@@ -48,7 +58,7 @@ const RemittancePage = () => {
   };
 
   return (
-    <div className="flex flex-col flex-grow pb-[124px] min-h-screen-dvh">
+    <div className="flex flex-col flex-grow pb-[124px]" style={{ height }}>
       <BackHeader title="주문하기" />
       <section className="px-5">
         <OrderSummary cart={cart} />

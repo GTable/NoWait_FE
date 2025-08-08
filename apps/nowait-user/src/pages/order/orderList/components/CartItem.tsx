@@ -4,7 +4,7 @@ import { useCartStore } from "../../../../stores/cartStore";
 import { motion } from "framer-motion";
 
 interface PropsType {
-  id: string;
+  id: number;
   name: string;
   originPrice: number;
   price: number;

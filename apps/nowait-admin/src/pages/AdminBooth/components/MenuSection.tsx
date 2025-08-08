@@ -20,6 +20,7 @@ const formatNumber = (num: number) => {
 interface Menu {
   id: number;
   name: string;
+  adminDisplayName: string;
   description: string;
   price: number;
   soldOut: boolean;
@@ -50,6 +51,7 @@ const MenuSection = () => {
 
   const handleAddMenu = (newMenu: {
     name: string;
+    adminDisplayName: string;
     description: string;
     price: string;
     image?: File;
@@ -57,6 +59,7 @@ const MenuSection = () => {
     const payload = {
       storeId: 1,
       //   나중에 실제 storeId로 바꾸어야함
+      adminDisplayName: newMenu.adminDisplayName,
       name: newMenu.name,
       description: newMenu.description,
       price: parseInt(newMenu.price.replace(/[^0-9]/g, ""), 10),
@@ -70,6 +73,7 @@ const MenuSection = () => {
         // 상태에 넣을 새 객체
         const menuItem: Menu = {
           id: created.menuId,
+          adminDisplayName: created.adminDisplayName,
           name: created.name,
           description: created.description,
           price: created.price,
@@ -114,11 +118,13 @@ const MenuSection = () => {
   const handleEditMenu = (updated: {
     id: number;
     name: string;
+    adminDisplayName: string;
     description: string;
     price: string;
   }) => {
     const payload = {
       menuId: updated.id,
+      adminDisplayName: updated.adminDisplayName,
       name: updated.name,
       description: updated.description,
       price: parseInt(String(updated.price).replace(/[^0-9]/g, ""), 10),
@@ -173,6 +179,7 @@ const MenuSection = () => {
     const transformed = fetchedMenus.map((menu) => ({
       id: menu.menuId,
       name: menu.name,
+      adminDisplayName: menu.adminDisplayName,
       description: menu.description,
       price: menu.price,
       soldOut: menu.isSoldOut,
@@ -180,6 +187,8 @@ const MenuSection = () => {
     }));
     setMenus(transformed);
   }, [fetchedMenus]);
+
+  console.log(fetchedMenus);
 
   return (
     <div className="mt-[40px] mb-[20px] max-w-[614px]">

@@ -6,7 +6,7 @@ interface MenuModalProps {
   initialData?: {
     id?: number;
     name: string;
-    adminName?: string;
+    adminDisplayName?: string;
     price: string;
     description: string;
     isRepresentative?: boolean;
@@ -25,7 +25,7 @@ interface PriceInputProps {
 // 가격 표시 세자리 마다 , 붙여서 표시
 const formatNumber = (num: number) => {
   if (!num) return "";
-  return String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " 원";
 };
 
 const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
@@ -53,12 +53,6 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
           `}
           placeholder={isFocused ? "" : "가격을 입력해주세요"}
         />
-        {/* price 값이 있을 때만 "원" 표시 */}
-        {price !== "" && (
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-700">
-            원
-          </span>
-        )}
       </div>
     </div>
   );
@@ -72,7 +66,9 @@ const MenuModal = ({
   onDelete,
 }: MenuModalProps) => {
   const [name, setName] = useState(initialData?.name || "");
-  const [adminName, setAdminName] = useState(initialData?.adminName || "");
+  const [adminDisplayName, setAdminDisplayName] = useState(
+    initialData?.adminDisplayName || ""
+  );
 
   const [price, setPrice] = useState(initialData?.price || "");
   const [description, setDescription] = useState(
@@ -83,7 +79,7 @@ const MenuModal = ({
 
   const isFormValid =
     name.trim() !== "" &&
-    adminName.trim() !== "" &&
+    adminDisplayName.trim() !== "" &&
     String(price).trim() !== "" &&
     description.trim() !== "";
 
@@ -91,7 +87,7 @@ const MenuModal = ({
     onSubmit({
       id: initialData?.id,
       name,
-      adminName,
+      adminDisplayName,
       price,
       description,
       isRepresentative,
@@ -172,8 +168,8 @@ const MenuModal = ({
           <div className="relative">
             <input
               type="text"
-              value={adminName}
-              onChange={(e) => setAdminName(e.target.value)}
+              value={adminDisplayName}
+              onChange={(e) => setAdminDisplayName(e.target.value)}
               maxLength={10}
               className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
               placeholder="주문 확인에 용이한 메뉴명으로 설정해주세요."
@@ -181,10 +177,10 @@ const MenuModal = ({
             <p className="absolute top-1/2 -translate-y-1/2 right-4 text-13-regular text-gray-400">
               <span
                 className={` ${
-                  adminName.length > 0 ? "text-black" : "text-gray-400"
+                  adminDisplayName.length > 0 ? "text-black" : "text-gray-400"
                 }`}
               >
-                {adminName.length}
+                {adminDisplayName.length}
               </span>{" "}
               / 10
             </p>

@@ -10,18 +10,18 @@ const MenuList = ({
   storeId: string | undefined | null;
   mode: string;
 }) => {
-  const { data } = useQuery({
+  const { data: menus } = useQuery({
     queryKey: ["storeMenus", storeId],
     queryFn: () => getStoreMenus(storeId),
     select: (data) => data.response.menuReadDto,
   });
-  
+
   return (
     <div className="py-[30px]">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>
       <ul>
-        {data?.map((data: MenuType) => {
-          return <MenuItem key={data.menuId} data={data} mode={mode} />;
+        {menus?.map((menu: MenuType) => {
+          return <MenuItem key={menu.menuId} data={menu} mode={mode} />;
         })}
       </ul>
     </div>

@@ -109,7 +109,7 @@ export const useInfiniteStores = () => {
       if (!lastPage.hasNext) {
         return undefined;
       }
-      return allPages.length;
+      return allPages?.length;
     },
     retry: 3, // 실패 시 3번 재시도
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),

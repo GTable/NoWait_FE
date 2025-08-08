@@ -33,7 +33,6 @@ export const useGetStore = (storeId: number) => {
       const res = await AdminApi.get(`/admin/stores/${storeId}`);
       return res.data.response;
     },
-    enabled: !!storeId, // storeId 있을 때만 실행
-    staleTime: 1000 * 60, // 캐싱 1분
+    enabled: !!storeId,
   });
 };

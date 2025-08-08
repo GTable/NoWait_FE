@@ -10,6 +10,7 @@ interface RawMenuItem {
   menuId: number;
   storeId: number;
   name: string;
+  adminDisplayName: string;
   description: string;
   price: number;
   isSoldOut: boolean;

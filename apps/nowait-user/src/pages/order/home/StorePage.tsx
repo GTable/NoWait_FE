@@ -9,13 +9,13 @@ import StoreHeader from "./components/StoreHeader";
 import MenuList from "../../../components/common/MenuList";
 import SectionDivider from "../../../components/SectionDivider";
 
-
 const StorePage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   const location = useLocation();
   const added = (location.state as { added?: boolean } | null)?.added;
-
+  const addedPrice = (location.state as { addedPrice?: number } | null)
+    ?.addedPrice;
   const { cart } = useCartStore();
   const { showToast } = useToastStore();
 
@@ -40,7 +40,11 @@ const StorePage = () => {
             textColor="white"
             onClick={() => navigate(`/${storeId}/order`)}
           >
-            <TotalButton actionText="주문하기" />
+            <TotalButton
+              key={cart.length}
+              addedPrice={addedPrice}
+              actionText="주문하기"
+            />
           </Button>
         </PageFooterButton>
       )}

@@ -13,7 +13,7 @@ export interface CreateOrderServerResponse {
     storeName: string;
     sessionId: string;
     depositorName: string;
-    orderItems: { menuId: string; quantity: number }[];
+    orderItems: { menuId: number; quantity: number }[];
     status: string;
     totalPrice: number;
   };
@@ -21,7 +21,7 @@ export interface CreateOrderServerResponse {
 
 //주문 내역 타입
 export interface OrderDetailsType {
-  menuId: string;
+  menuId: number;
   menuName: string;
   price: number;
   quantity: number;

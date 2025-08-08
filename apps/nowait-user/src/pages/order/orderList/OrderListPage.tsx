@@ -98,15 +98,15 @@ const OrderListPage = () => {
             }}
           >
             <div className="absolute left-1/2 bottom-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-40px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]">
-              <h1 className="text-title-20-bold text-black-90 text-center mb-[20px]">
-                현재
+              <h1 className="text-title-20-bold text-black-90 text-center mb-[20px] break-keep">
+                현재{" "}
                 {soldOutMenus?.map((menu: CartType, idx: number) => (
                   <span key={menu.menuId}>
                     {menu.name}
                     {idx < soldOutMenus.length - 1 && ", "}
                   </span>
                 ))}
-                는<br /> 품절 상태입니다.
+                는(은) 품절 상태입니다.
               </h1>
               <div className="flex gap-2.5">
                 <Button

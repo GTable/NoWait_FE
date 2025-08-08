@@ -13,7 +13,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
 
   const handleMenuClick = () => {
     if (mode === "order") {
-      navigate(`/${storeId}/menu/${data.menuId}`, { state: data });
+      navigate(`/${storeId}/menu/${data.menuId}`);
     }
   };
 

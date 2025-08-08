@@ -17,7 +17,7 @@ export interface BookmarkResponse {
     noticeContent: string | null;
     openTime: string;
     profileImage: ProfileImage;
-    storeId: string;
+    storeId: number;
     waitingCount: number;
   }[];
 }

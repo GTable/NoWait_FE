@@ -1,55 +1,71 @@
 import { useState } from "react";
 import QuantitySelector from "../../../components/common/QuantitySelector";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import type { CartType } from "../../../types/order/cart";
 import { useCartStore } from "../../../stores/cartStore";
 import NumberFlow from "@number-flow/react";
 import defaultMenuImageLg from "../../../assets/default-menu-image-lg.png";
+import { useQuery } from "@tanstack/react-query";
+import { getStoreMenu } from "../../../api/menu";
+import LoadingSpinner from "../../../assets/loading2_black.gif";
 
 const AddMenuPage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { storeId } = useParams();
-  const { menuId, image, name, description, price } = location.state;
-  console.log(menuId, "메뉴아이디");
+  const { storeId, menuId } = useParams();
+
+  const { data: menu, isLoading } = useQuery({
+    queryKey: ["menu", menuId],
+    queryFn: () => getStoreMenu(Number(storeId!), Number(menuId!)),
+    select: (data) => data?.response,
+  });
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCartStore();
 
   const addToCartButton = () => {
     const item: CartType = {
-      menuId,
-      image,
-      name,
+      menuId: menu!.menuId,
+      image: menu!.images[0].imageUrl,
+      name: menu!.name,
       quantity,
-      originPrice: price,
-      price: price * quantity,
+      originPrice: menu!.price,
+      price: menu!.price * quantity,
     };
     addToCart(item);
 
-    navigate(`/${storeId}`, { state: { added: true }, replace: true });
+    navigate(`/${storeId}`, {
+      state: { added: true, addedPrice: menu!.price * quantity },
+      replace: false,
+    });
   };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <img src={LoadingSpinner} alt="로딩 중" className="w-[100px] h-[100px]" />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto px-5">
-        <h1 className="-mx-5">
+        <h1 className="-mx-5 h-[246px] object-cover">
           <img
-            className="w-full"
-            src={image || defaultMenuImageLg}
+            className="w-full h-full object-cover"
+            src={menu!.images[0]?.imageUrl || defaultMenuImageLg}
             alt="음식 메뉴 이미지"
           />
         </h1>
         <div className="py-8">
-          <h1 className="text-headline-22-bold mb-2">{name}</h1>
-          <h2 className="text-16-regular text-black-70">{description}</h2>
+          <h1 className="text-headline-22-bold mb-2">{menu!.name}</h1>
+          <h2 className="text-16-regular text-black-70">{menu!.description}</h2>
         </div>
       </div>
       {/* 메뉴 가격 및 수량 컨트롤 */}
       <div className="sticky left-0 bottom-[124px] bg-white">
         <div className="w-full flex justify-between items-center px-5">
           <h1 className="text-[24px] font-semibold">
-            <NumberFlow value={price * quantity} suffix="원" />
+            <NumberFlow value={menu!.price * quantity} suffix="원" />
           </h1>
           <QuantitySelector
             mode="state"

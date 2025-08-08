@@ -1,7 +1,7 @@
-import { useState, useRef } from "react";
-import type { RefObject, Dispatch, SetStateAction } from "react";
-import { CookedCard, CookedDetail } from "./OrderCard";
+import { CookedCard } from "./OrderCard";
+import { DetailCard } from "./DetailCard";
 import type { Order } from "../../types/order";
+import { useState, useRef } from "react";
 
 interface CookedPageProps {
   cookedOrders: Order[];
@@ -22,22 +22,9 @@ const CookedPage = ({
   savedScrollPosition: externalSavedScrollPosition,
   setSavedScrollPosition: externalSetSavedScrollPosition,
 }: CookedPageProps) => {
-  const [selectedCookedOrder, setSelectedCookedOrder] = useState<Order | null>(
-    null
-  );
-  const [internalSavedScrollPosition, setInternalSavedScrollPosition] =
-    useState<number>(0);
-  const internalScrollContainerRef = useRef<HTMLDivElement>(null);
-
-  // 외부에서 전달받은 ref와 상태를 사용하거나, 내부에서 관리
-  const scrollContainerRef =
-    externalScrollContainerRef || internalScrollContainerRef;
-  const savedScrollPosition =
-    externalSavedScrollPosition ?? internalSavedScrollPosition;
-  const setSavedScrollPosition = externalSetSavedScrollPosition
-    ? externalSetSavedScrollPosition
-    : setInternalSavedScrollPosition;
-
+  const [selectedCooked, setSelectedCooked] = useState<Order | null>(null);
+  const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   // 시간 포맷팅 함수 (17:30 형식)
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
@@ -47,19 +34,19 @@ const CookedPage = ({
   };
 
   // CookedCard 클릭 핸들러
-  const handleCookedCardClick = (cookedOrder: Order) => {
+  const handleCookedCardClick = (cooked: Order) => {
     if (scrollContainerRef.current) {
       // 현재 스크롤 위치 저장
       setSavedScrollPosition(scrollContainerRef.current.scrollTop);
       // 스크롤을 맨 위로 올리기
       scrollContainerRef.current.scrollTop = 0;
     }
-    setSelectedCookedOrder(cookedOrder);
+    setSelectedCooked(cooked);
   };
 
   // CookedDetail 닫기 핸들러
   const handleCloseCookedDetail = () => {
-    setSelectedCookedOrder(null);
+    setSelectedCooked(null);
     // 약간의 딜레이 후 스크롤 위치 복원
     setTimeout(() => {
       if (scrollContainerRef.current) {
@@ -69,7 +56,7 @@ const CookedPage = ({
   };
 
   return (
-    <div className="flex flex-row gap-2.5 flex-1 min-h-0 overflow-hidden w-full">
+    <div className="flex flex-row w-full gap-2.5 flex-1 min-h-0 overflow-hidden">
       {/* 조리 완료 블럭 */}
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
         <div className="flex flex-row ml-1.5 gap-1.5 flex-shrink-0 mb-3">
@@ -104,7 +91,7 @@ const CookedPage = ({
           <div
             ref={scrollContainerRef}
             className={`flex-1 min-h-0 relative ${
-              selectedCookedOrder ? "overflow-hidden" : "overflow-y-auto"
+              selectedCooked ? "overflow-hidden" : "overflow-y-auto"
             }`}
           >
             {isLoading ? (
@@ -118,7 +105,7 @@ const CookedPage = ({
                   orderId={order.id}
                   tableNumber={order.tableId}
                   depositorName={order.depositorName}
-                  menuNamesAndQuantities={order.menuNamesAndQuantities}
+                  menuDetails={order.menuDetails}
                   totalAmount={order.totalPrice || 0}
                   createdAt={getFormattedTime(order.createdAt)}
                   onSuccess={onRefresh}
@@ -135,17 +122,16 @@ const CookedPage = ({
               </div>
             )}
 
-            {/* CookedDetail 오버레이 */}
-            {selectedCookedOrder && (
-              <CookedDetail
-                orderId={selectedCookedOrder.id}
-                tableNumber={selectedCookedOrder.tableId}
-                timeText={getFormattedTime(selectedCookedOrder.createdAt)}
-                depositorName={selectedCookedOrder.depositorName}
-                totalAmount={selectedCookedOrder.totalPrice || 0}
-                menuNamesAndQuantities={
-                  selectedCookedOrder.menuNamesAndQuantities
-                }
+            {/* DetailCard 오버레이 */}
+            {selectedCooked && (
+              <DetailCard
+                type="cooked"
+                orderId={selectedCooked.id}
+                tableNumber={selectedCooked.tableId}
+                timeText={getFormattedTime(selectedCooked.createdAt)}
+                depositorName={selectedCooked.depositorName}
+                totalAmount={selectedCooked.totalPrice || 0}
+                menuDetails={selectedCooked.menuDetails}
                 onClose={handleCloseCookedDetail}
                 onSuccess={onRefresh}
               />

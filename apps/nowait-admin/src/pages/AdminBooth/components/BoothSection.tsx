@@ -7,6 +7,7 @@ import type { BannerImage } from "../types/booth";
 import type { ProfileImage } from "../types/booth";
 import deletBttn from "../../../assets/booth/del.svg";
 import PreviewModal from "./Modal/PreviewModal";
+import { useDeleteBannerImage } from "../../../hooks/booth/menu/useDeleteBannerImage";
 
 const BoothSection = ({
   departName,
@@ -62,6 +63,9 @@ const BoothSection = ({
   setEndMinute: (val: string) => void;
 }) => {
   const [showPreview, setShowPreview] = useState(false);
+  const { mutate: deleteBannerImage } = useDeleteBannerImage();
+  console.log(bannerImages, "배너이미지들");
+
   return (
     <>
       <div className="flex flex-col items-center pb-[50px] max-w-[614px]">
@@ -241,9 +245,17 @@ const BoothSection = ({
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              const newImages = [...bannerImages];
-                              newImages[i] = null as any;
-                              setBannerImages(newImages);
+                              deleteBannerImage(img.id, {
+                                onSuccess: () => {
+                                  // 성공 시에만 이미지 목록에서 해당 인덱스를 제거
+                                  const newImages = [...bannerImages];
+                                  newImages[i] = null as any; // 또는 undefined
+                                  setBannerImages(newImages);
+                                },
+                                onError: () => {
+                                  alert("이미지 삭제에 실패했습니다.");
+                                },
+                              });
                             }}
                           >
                             <img src={deletBttn} alt="삭제" />
