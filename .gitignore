@@ -1,3 +1,4 @@
+# --- 기존과 공통 ---
 .DS_Store
 node_modules
 .turbo
@@ -8,10 +9,29 @@ dist-ssr
 .cache
 server/dist
 public/dist
-.yarn/install-state.gz
-yarn.lock
 
-.pnp
-.pnp.js
-.pnp.cjs
+# --- Yarn Berry / PnP / Zero-Install ---
+# 꼭 커밋해야 하는 항목은 제외(.yarn/cache, .yarn/releases, .yarn/plugins, .yarn/patches, .pnp.cjs, .yarnrc.yml)
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/patches
+# (원하면 SDK 공유)
+#!.yarn/sdks
+
+# 설치/빌드 상태 파일은 무시
 .yarn/install-state.gz
+.yarn/build-state.yml
+.yarn/unplugged
+.yarn/unplugged/**
+
+# PnP: .pnp.cjs는 **커밋**, 예전 포맷은 무시
+.pnp.data.json
+.pnp.loader.mjs
+.pnp.js
+.pnp/
+
+# 다른 패키지 매니저 잔재 방지
+package-lock.json
+pnpm-lock.yaml

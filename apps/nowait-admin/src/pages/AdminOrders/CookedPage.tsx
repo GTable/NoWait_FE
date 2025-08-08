@@ -8,6 +8,9 @@ interface CookedPageProps {
   isLoading?: boolean;
   error?: unknown;
   onRefresh?: () => void;
+  scrollContainerRef?: RefObject<HTMLDivElement | null>;
+  savedScrollPosition?: number;
+  setSavedScrollPosition?: Dispatch<SetStateAction<number>>;
 }
 
 const CookedPage = ({
@@ -15,6 +18,9 @@ const CookedPage = ({
   isLoading,
   error,
   onRefresh,
+  scrollContainerRef: externalScrollContainerRef,
+  savedScrollPosition: externalSavedScrollPosition,
+  setSavedScrollPosition: externalSetSavedScrollPosition,
 }: CookedPageProps) => {
   const [selectedCooked, setSelectedCooked] = useState<Order | null>(null);
   const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);

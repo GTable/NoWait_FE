@@ -13,8 +13,19 @@ const AdminOrders = () => {
     "입금 대기" | "조리 중" | "조리 완료"
   >("입금 대기");
   const [selectedPayment, setSelectedPayment] = useState<Order | null>(null);
+  const [selectedCookedOrder, setSelectedCookedOrder] = useState<Order | null>(
+    null
+  );
   const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
+  const [savedCookedScrollPosition, setSavedCookedScrollPosition] =
+    useState<number>(0);
+  const [
+    savedDesktopCookedScrollPosition,
+    setSavedDesktopCookedScrollPosition,
+  ] = useState<number>(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const cookedScrollContainerRef = useRef<HTMLDivElement>(null);
+  const desktopCookedScrollContainerRef = useRef<HTMLDivElement>(null);
   const windowWidth = useWindowWidth();
   const isMobile = windowWidth <= 450;
 
@@ -289,6 +300,9 @@ const AdminOrders = () => {
               isLoading={isLoading}
               error={error}
               onRefresh={refetch}
+              scrollContainerRef={desktopCookedScrollContainerRef}
+              savedScrollPosition={savedDesktopCookedScrollPosition}
+              setSavedScrollPosition={setSavedDesktopCookedScrollPosition}
             />
           )}
         </>
