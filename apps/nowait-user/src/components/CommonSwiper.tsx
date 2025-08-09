@@ -7,7 +7,7 @@ import "./customSwiper.css";
 
 interface BannerImageType {
   id: number;
-  storeId: string;
+  storeId: number;
   imageUrl: string;
   imageType: string;
 }

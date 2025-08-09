@@ -37,7 +37,7 @@ body {
   display: flex;
   min-width: 100vw;
   min-height: 100dvh;
-  background-color: #222;
+  background-color: #fff;
 }
 
 #root {

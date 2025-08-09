@@ -73,8 +73,10 @@ const OrderListPage = () => {
             onClick={() => navigate(`/${storeId}`)}
             className="py-5 border-none"
           >
-            메뉴 추가하기
-            <Add className="w-4 h-4 mb-1" fill="currentColor" />
+            <h1>메뉴 추가하기</h1>
+            <span>
+              <Add className="w-4 h-4 mb-1" fill="currentColor" />
+            </span>
           </SmallActionButton>
         </ul>
       </section>

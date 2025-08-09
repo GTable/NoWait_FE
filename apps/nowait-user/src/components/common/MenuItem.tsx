@@ -22,7 +22,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
       <button
         disabled={data.isSoldOut}
         onClick={handleMenuClick}
-        className={`w-full flex justify-between ${
+        className={`w-full flex justify-between items-center ${
           mode === "order" && "cursor-pointer"
         } text-left`}
       >

@@ -18,8 +18,10 @@ const BookmarkEmptyPage = () => {
         ariaLabel="추가하기"
         onClick={() => navigate(`/`)}
       >
-        추가하기
-        <Add className="w-4 h-4" fill="currentColor" />
+        <h1>추가하기</h1>
+        <span>
+          <Add className="w-4 h-4" fill="currentColor" />
+        </span>
       </SmallActionButton>
     </div>
   );
