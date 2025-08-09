@@ -21,20 +21,20 @@ const StoreDetailPage = () => {
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
     withInvalidate: true,
   });
-  const { isBookmarked } = useBookmarkState(storeId);
+  const { isBookmarked } = useBookmarkState(Number(storeId));
 
   const { data: store } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(storeId!),
+    queryFn: () => getStore(Number(storeId!)),
     select: (data) => data.response,
   });
-  console.log(store,"주점ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ")
+  console.log(store, "주점ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
-        await createBookmarkMutate.mutate(storeId);
+        await createBookmarkMutate.mutate(Number(storeId));
       } else {
-        await deleteBookmarkMutate.mutate(storeId);
+        await deleteBookmarkMutate.mutate(Number(storeId));
       }
     } catch (error) {
       console.log(error);

@@ -23,7 +23,7 @@ const SuccessMessagePage = ({
   const { storeId } = useParams();
   return (
     <CenteredContentLayout onClick={onClick} buttonText={buttonText}>
-      <img src={imageSrc} alt={imageAlt} />
+      <img src={imageSrc} alt={imageAlt} width="150px" height="150px" />
       <h1 className="text-headline-24-bold mb-2">{title}</h1>
       <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-3.5">
         {message}
