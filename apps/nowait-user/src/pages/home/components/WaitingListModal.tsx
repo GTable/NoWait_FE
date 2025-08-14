@@ -58,7 +58,7 @@ const WaitingListModal = ({
                 key={option.id}
                 className="flex items-center justify-between cursor-pointer"
               >
-                <span className="text-16-semibold text-black-90">
+                <span className="text-title-18-semibold text-black-90">
                   {option.label}
                 </span>
 
@@ -93,7 +93,7 @@ const WaitingListModal = ({
             <Button
               buttonType="big"
               onClick={handleConfirm}
-              className="rounded-[14px]"
+              className="rounded-[14px] text-button-17-semibold"
             >
               확인
             </Button>

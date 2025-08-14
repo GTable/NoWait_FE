@@ -109,7 +109,7 @@ const MyWaitingDetail = ({
         {/* 상단 헤더 */}
         <div className="flex items-center justify-between px-5 py-4 bg-white">
           <button onClick={onClose} className="p-2">
-            <ArrowBack className="icon-m" />
+            <ArrowBack className="w-7 h-7" />
           </button>
         </div>
 
@@ -120,12 +120,12 @@ const MyWaitingDetail = ({
             <div className="text-16-medium text-black-100 mb-0.75">
               입장 대기 중
             </div>
-            <div className="text-22-bold text-black-90 flex items-baseline justify-center gap-1">
+            <div className="text-headline-22-bold text-black-90 flex items-baseline justify-center gap-1">
               <span>내 앞 대기</span>
               <span className="text-primary flex items-baseline">
                 <span
                   key={animationKey}
-                  className={`text-22-bold transform-style-preserve-3d ${
+                  className={`text-headline-22-bold transform-style-preserve-3d ${
                     animationDirection === "up"
                       ? "animate-number-slide-up"
                       : animationDirection === "down"
@@ -211,7 +211,7 @@ const MyWaitingDetail = ({
               className="flex w-full rounded-xl bg-white-100 border border-black-25 py-5 justify-center items-center"
               onClick={handleCancelWaitingClick}
             >
-              <div className="flex text-17-semibold text-black-60">
+              <div className="flex text-button-17-semibold text-black-60">
                 대기 취소
               </div>
             </button>

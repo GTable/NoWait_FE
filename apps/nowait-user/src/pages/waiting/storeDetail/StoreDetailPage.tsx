@@ -73,13 +73,13 @@ const StoreDetailPage = () => {
         {/* 주점 정보(위치,운영 시간, 공지사항) */}
         <section className="pt-5 pb-[28px]">
           <div className="mb-6">
-            <p className="flex items-center mb-1.5 text-16-regular text-black-80">
+            <p className="flex items-center mb-1.5 text-16-regular text-black-65">
               <span className="w-[18px] flex justify-center  mr-1.5">
                 <SubStract />
               </span>
               {store?.location}
             </p>
-            <p className="flex items-center text-16-regular text-black-80">
+            <p className="flex items-center text-16-regular text-black-65">
               <span className="w-[18px] flex justify-center mr-1.5">
                 <Clock />
               </span>
@@ -139,6 +139,7 @@ const StoreDetailPage = () => {
             onClick={() =>
               navigate(`/store/${storeId}/partysize`, { state: store?.name })
             }
+            className="text-button-17-semibold text-white-100"
           >
             {store?.isWaiting ? "대기 중이에요" : "대기하기"}
           </Button>

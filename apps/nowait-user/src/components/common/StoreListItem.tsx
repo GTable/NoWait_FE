@@ -60,7 +60,7 @@ const StoreListItem = ({
         <div className="flex items-center gap-2.5">
           <DepartmentImage width="40px" height="40px" src={profileImage} />
           <div className="flex flex-col justify-between">
-            <h1 className="text-title-16-bold text-black-90">{name}</h1>
+            <h1 className="text-title-16-semibold text-black-90">{name}</h1>
             <h2 className="text-14-regular text-black-70">{departmentName}</h2>
           </div>
         </div>

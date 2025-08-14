@@ -44,13 +44,13 @@ const WaitingSummaryPage = () => {
         </h1>
         <div className="p-5.5 rounded-[16px] bg-black-10">
           <div className="flex justify-between items-center mb-2.5">
-            <p className="text-16-semibold text-black-50">부스</p>
+            <p className="text-16-medium text-black-50">부스</p>
             <p className="text-16-medium text-black-90">
               {store?.name} / {store?.waitingCount}
             </p>
           </div>
           <div className="flex justify-between items-center">
-            <p className="text-16-semibold text-black-50">입장 인원</p>
+            <p className="text-16-medium text-black-50">입장 인원</p>
             <p className="text-16-medium text-black-90">{partySize}명</p>
           </div>
         </div>

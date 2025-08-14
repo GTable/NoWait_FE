@@ -56,7 +56,7 @@ const InfiniteStoreList = memo(() => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-0.25 text-start text-headline-22-bold text-black-90">
+      <div className="mb-0.25 text-start text-title-20-bold text-black-90">
         모든 주점
       </div>
 

@@ -25,7 +25,7 @@ const SortWaitingCard = memo(
     return (
       <div className="flex flex-col">
         <div className="flex flex-row gap-1.5 items-center mb-3.5">
-          <div className="flex text-start text-headline-22-bold text-black-90">
+          <div className="flex text-start text-title-20-bold text-black-90">
             {getSectionTitle()}
           </div>
           <div

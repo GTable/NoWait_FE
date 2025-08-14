@@ -70,7 +70,7 @@ const AddMenuPage = () => {
       {/* 메뉴 가격 및 수량 컨트롤 */}
       <div className="fixed bottom-[112px] w-full max-w-[430px] min-w-[320px]  bg-white">
         <div className="w-full flex justify-between items-center px-5">
-          <h1 className="text-[24px] font-semibold">
+          <h1 className="text-headline-24-bold">
             <NumberFlow value={menu!.price * quantity} suffix="원" />
           </h1>
           <QuantitySelector
@@ -81,7 +81,11 @@ const AddMenuPage = () => {
         </div>
       </div>
       <PageFooterButton>
-        <Button textColor="white" onClick={addToCartButton}>
+        <Button
+          textColor="white"
+          onClick={addToCartButton}
+          className="text-button-17-semibold"
+        >
           추가하기
         </Button>
       </PageFooterButton>

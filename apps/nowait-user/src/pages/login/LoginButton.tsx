@@ -16,7 +16,7 @@ const LoginButton = () => {
         backgroundColor="#FEE500"
         textColor="#262200"
         onClick={handleKaKaoLogin}
-        className="text-title-18-semibold"
+        className="text-button-17-semibold"
       >
         <img src={kakao} alt="kakao" className="w-4 h-4 mr-0.25" />
         카카오톡으로 시작하기

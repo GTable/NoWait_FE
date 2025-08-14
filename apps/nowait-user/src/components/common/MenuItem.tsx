@@ -37,7 +37,9 @@ const MenuItem = ({ data, mode }: PropsType) => {
               </span>
             )}
           </div>
-          <h2 className="text-title-18-medium text-black-70">{data.price.toLocaleString()}원</h2>
+          <h2 className="text-16-regular text-black-80">
+            {data.price.toLocaleString()}원
+          </h2>
         </div>
         <img
           className={`w-[80px] h-[80px] bg-black-25 rounded-[12px] object-cover ${

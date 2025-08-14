@@ -132,7 +132,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex flex-row gap-2 items-center min-w-0">
-          <div className="text-title-16-bold text-black-90 text-start truncate flex-shrink min-w-0">
+          <div className="text-title-16-semibold text-black-90 text-start truncate flex-shrink min-w-0">
             {store.name}
           </div>
           <div className="flex-shrink-0">
@@ -190,7 +190,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-16-medium text-black-70"
+                  className="text-16-semibold text-black-60"
                 >
                   닫기
                 </button>
@@ -256,7 +256,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                         </div>
                       ))
                     ) : (
-                      <div className="flex justify-center text-16-regular text-black-60 mt-6">
+                      <div className="flex justify-center text-16-regular text-black-50 mt-6">
                         최근 검색어가 없습니다
                       </div>
                     )}

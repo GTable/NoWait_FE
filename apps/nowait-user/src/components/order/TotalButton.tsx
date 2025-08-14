@@ -28,7 +28,7 @@ const TotalButton = ({
   }, [baseTotal, addedPrice]);
 
   return (
-    <div className="flex items-center gap-2 text-[17px] font-semibold ml-1">
+    <div className="flex items-center gap-2 text-button-17-semibold text-white-100 ml-1">
       {variant !== "orderPage" && (
         <p className="w-[22px] rounded-[5px] bg-white">
           <span className="text-[14px] font-extrabold text-cool-black">

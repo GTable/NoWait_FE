@@ -84,14 +84,14 @@ const HomeHeader = () => {
                 >
                   {/* 메뉴 항목들 */}
                   <div className="flex w-full">
-                    <nav className="flex flex-col gap-5.5 w-full">
+                    <nav className="flex flex-col gap-5.5 w-full text-title-20-semibold text-black-100">
                       <motion.button
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -20, opacity: 0 }}
                         transition={{ duration: 0.4, delay: 0.15 }}
                         onClick={handleHomeClick}
-                        className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-black-100"
+                        className="block w-full text-left"
                       >
                         홈
                       </motion.button>
@@ -101,7 +101,7 @@ const HomeHeader = () => {
                         exit={{ y: -20, opacity: 0 }}
                         transition={{ duration: 0.4, delay: 0.3 }}
                         onClick={closeMenu}
-                        className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-black-100"
+                        className="block w-full text-left"
                       >
                         축제 맵
                       </motion.button>
@@ -111,7 +111,7 @@ const HomeHeader = () => {
                         exit={{ y: -20, opacity: 0 }}
                         transition={{ duration: 0.4, delay: 0.45 }}
                         onClick={handleBookmarkClick}
-                        className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-black-100"
+                        className="block w-full text-left"
                       >
                         북마크
                       </motion.button>

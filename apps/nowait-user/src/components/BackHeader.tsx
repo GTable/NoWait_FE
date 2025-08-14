@@ -6,14 +6,14 @@ interface PropsType {
 }
 
 const BackHeader = ({ title }: PropsType) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <header className="sticky left-0 top-0 bg-white">
       <div className="flex justify-between items-center px-5 py-2.5">
-        <button onClick={()=>navigate(-1)}>
+        <button onClick={() => navigate(-1)}>
           <Back />
         </button>
-        <h1 className="text-title-16-bold">{title}</h1>
+        <h1 className="text-title-16-semibold text-black-90">{title}</h1>
         <div className="w-2.5"></div>
       </div>
     </header>
