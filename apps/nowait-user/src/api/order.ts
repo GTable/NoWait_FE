@@ -13,8 +13,8 @@ export const api = axios.create({
 
 //주문 생성
 export const createOrder = async (
-  storeId: string,
-  tableId: string,
+  storeId: number,
+  tableId: number,
   payload: OrderType
 ): Promise<CreateOrderServerResponse> => {
   const res = await api.post(`/orders/create/${storeId}/${tableId}`, payload);
@@ -27,7 +27,6 @@ export const getOrderDetails = async (
   tableId: string
 ): Promise<OrderDetailsServerResponse> => {
   const res = await api.get(`/orders/items/${storeId}/${tableId}`);
-  console.log(res, "주문내역");
   return res.data;
 };
 

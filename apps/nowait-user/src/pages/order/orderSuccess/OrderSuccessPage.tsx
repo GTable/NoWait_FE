@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import SuccessMessagePage from "../../../components/common/SuccessMessagePage";
-import orderSuccess from "../../../assets/orderSuccess.png"
+import orderSuccess from "../../../assets/orederSuccess.webp"
 
 const OrderSuccessPage = () => {
   const navigate = useNavigate();

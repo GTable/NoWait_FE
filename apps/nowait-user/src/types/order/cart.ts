@@ -2,7 +2,7 @@
 export interface CartType {
   menuId: number;
   name: string;
-  image: string;
+  image: string
   originPrice: number;
   price: number;
   quantity: number;

@@ -6,7 +6,6 @@ const RedirectToStorePage = () => {
   const { storeId, tableId } = useParams();
   const navigate = useNavigate();
   const { cart, clearCart } = useCartStore();
-
   useEffect(() => {
     if (storeId && tableId) {
       //장바구니에 메뉴를 담고 다른 주점이나 테이블로 이동했을 때 장바구니 초기화

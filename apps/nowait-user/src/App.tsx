@@ -21,7 +21,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Suspense fallback={<div>로당중</div>}>
+        <Suspense fallback={<div>로딩중..................</div>}>
           <Router />
         </Suspense>
         <Toast />

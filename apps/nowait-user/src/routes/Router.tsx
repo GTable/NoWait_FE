@@ -20,6 +20,7 @@ import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
 import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
 import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
 import MapManagePage from "../pages/waiting/boothMap/MapManagePage";
+import NotFound from "../pages/NotFound/NotFound";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -91,6 +92,7 @@ const Router = () => {
           path="/:storeId/orderDetails"
           element={withTransition(OrderDetailsPage)}
         />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </>
   );

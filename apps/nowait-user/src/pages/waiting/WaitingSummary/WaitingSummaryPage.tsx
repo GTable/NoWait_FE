@@ -36,7 +36,7 @@ const WaitingSummaryPage = () => {
   return (
     <div>
       <BackOnlyHeader />
-      <div className="px-5 mt-[30px]">
+      <div className="px-5 mt-[38px]">
         <h1 className="text-headline-24-bold mb-[40px]">
           현재 <span className="text-primary">{store?.waitingCount}</span>팀이
           <br />

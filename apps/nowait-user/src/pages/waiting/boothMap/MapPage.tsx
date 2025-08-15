@@ -56,7 +56,7 @@ const MapPage = () => {
       {/* 헤더 */}
       <MapHeader />
       {/* 축제 맵 */}
-      <div className="relative top-0 left-0 h-screen-dvh w-full">
+      <div className="relative top-0 left-0 min-h-dvh w-full">
         <div
           style={{
             width: "430px",

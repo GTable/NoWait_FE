@@ -37,10 +37,9 @@ const OrderListPage = () => {
 
   const { data: menus } = useQuery({
     queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(Number(storeId)),
-    select: (data) => data.response.menuReadDto,
+    queryFn: () => getStoreMenus(Number(storeId!)),
+    select: (data) => data?.response?.menuReadDto,
   });
-
   // 장바구니와 최신 메뉴 데이터 동기화
   useEffect(() => {
     if (!menus) return;
@@ -58,8 +57,8 @@ const OrderListPage = () => {
   return (
     <div>
       <BackHeader title="장바구니" />
-      <section className="flex flex-col flex-grow min-h-screen-dvh pt-7 px-5 pb-[112px]">
-        <h1 className="text-headline-24-bold mb-5">
+      <section className="flex flex-col flex-grow min-h-dvh mt-[38px] pt-7 px-5 pb-[112px]">
+        <h1 className="text-headline-22-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
         </h1>
         <motion.ul className="flex justify-center flex-col" layout>
@@ -85,7 +84,7 @@ const OrderListPage = () => {
                 className="py-5 border-none"
               >
                 메뉴 추가하기
-                <Add className="w-4 h-4 mb-1" fill="currentColor" />
+                <Add className="w-4 h-4" fill="currentColor" />
               </SmallActionButton>
             </motion.li>
           </AnimatePresence>

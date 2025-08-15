@@ -13,7 +13,7 @@ const WaitingPartySizeForm = () => {
   return (
     <div>
       <BackOnlyHeader />
-      <div className="px-5 mt-[30px]">
+      <div className="px-5 mt-[38px]">
         <h1 className="text-headline-24-bold mb-[50px]">
           대기 등록을 위해
           <br />

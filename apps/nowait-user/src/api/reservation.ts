@@ -37,11 +37,13 @@ export const getInfiniteAllStores = async (
 };
 
 // 주점 상세 정보 가져오기
-export const getStore = async (
-  storeId: number | undefined
-): Promise<StoreResponse> => {
-  const res = await UserApi.get(`/v1/stores/${storeId}`);
-  return res.data;
+export const getStore = async (storeId: number | undefined) => {
+  try {
+    const res = await UserApi.get<StoreResponse>(`/v1/stores/${storeId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // 주점 예약하기

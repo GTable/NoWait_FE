@@ -20,6 +20,7 @@ const AddMenuPage = () => {
     queryFn: () => getStoreMenu(Number(storeId!), Number(menuId!)),
     select: (data) => data?.response,
   });
+  
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCartStore();
 
@@ -53,7 +54,7 @@ const AddMenuPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen-dvh">
+    <div className="flex flex-col min-h-dvh">
       <div className="flex flex-col flex-grow px-5">
         <h1 className="-mx-5 h-[246px] object-cover">
           <img

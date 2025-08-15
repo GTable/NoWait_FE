@@ -12,11 +12,7 @@ const EmptyPage = ({ mode, title, buttonText }: PropsType) => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   return (
-    <div
-      className={`min-h-screen flex flex-col justify-center items-center ${
-        mode === "default" ? "bg-white" : "bg-black-15"
-      }`}
-    >
+    <div className={`min-h-dvh flex flex-col justify-center items-center ${mode=== "default"? "bg-white":"bg-black-15"}`}>
       <h1 className="whitespace-pre-line text-16-regular text-black-80 mb-5 text-center">
         {title}
       </h1>

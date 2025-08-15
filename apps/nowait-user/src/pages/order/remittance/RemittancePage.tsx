@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { sumTotalPrice } from "../../../utils/sumUtils";
 import PayerInput from "./components/PayerInput";
 import OrderSummary from "./components/OrderSummary";
-import RemitOptions from "./components/RemitOptions";
+import RemitOptions from "./components/remitOptions/RemitOptions";
 import ConfirmModal from "../../../components/order/ConfirmModal";
 import useModal from "../../../hooks/useModal";
 import BackHeader from "../../../components/BackHeader";
@@ -27,14 +27,18 @@ const RemittancePage = () => {
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null);
 
-  const { data: remittance } = useQuery({
+  const { data: remittance, isLoading } = useQuery({
     queryKey: ["remittance", storeId],
     queryFn: () => getStorePayments(storeId),
     enabled: !!storeId,
     select: (data) => data.response,
   });
   console.log(remittance, "레미텐스");
+<<<<<<< HEAD
+  // const [height, setHeight] = useState(window.innerHeight);
+=======
   const [height] = useState(window.innerHeight);
+>>>>>>> develop
 
   useEffect(() => {
     if (!remittance) return;
@@ -43,15 +47,6 @@ const RemittancePage = () => {
     else if (remittance.tossUrl) setRemitValue("toss");
     else if (remittance.naverPayUrl) setRemitValue("naver");
     else if (remittance.accountNumber) setRemitValue("remit");
-  }, []);
-  useEffect(() => {
-    const onResize = () => {
-      const isKeyboardOpen = window.innerHeight < screen.height * 0.6;
-      alert(isKeyboardOpen && "열림");
-    };
-
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const orderHandleButton = () => {
@@ -67,9 +62,9 @@ const RemittancePage = () => {
   };
 
   return (
-    <div className="flex flex-col flex-grow pb-[112px]" style={{ height }}>
+    <div className="flex flex-col flex-grow pb-[112px]">
       <BackHeader title="주문하기" />
-      <section className="px-5">
+      <section className="px-5 mt-[38px]">
         <OrderSummary cart={cart} />
         <SectionDivider />
         <PayerInput
@@ -87,6 +82,7 @@ const RemittancePage = () => {
           toss={remittance?.tossUrl}
           naver={remittance?.naverPayUrl}
           account={remittance?.accountNumber}
+          isLoading={isLoading}
         />
         <SectionDivider />
         <section>
