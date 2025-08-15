@@ -4,7 +4,7 @@ import Back from "../assets/icon/back.svg?react";
 const BackOnlyHeader = () => {
   const navigate = useNavigate();
   return (
-    <header className="sticky left-0 top-0 bg-white">
+    <header className="w-full fixed left-0 top-0 bg-transparent">
       <div className="flex justify-between items-center px-5 py-2.5">
         <button onClick={() => navigate(-1)}>
           <Back />
