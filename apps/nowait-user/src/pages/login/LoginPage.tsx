@@ -55,7 +55,7 @@ const LoginPage = () => {
         <div className="mt-3 text-end text-16-regular text-black-70">
           QR코드로 메뉴를 확인하고, 주문을 완료하면
           <br />
-          계좌번호가 안내되어 손쉽게 결제할 수 있아요.
+          계좌번호가 안내되어 손쉽게 결제할 수 있어요.
         </div>
         <div className="mt-9.5 w-full h-52.5 bg-gray-200 justify-center items-center">
           <span className="text-gray-500"></span>
