@@ -23,13 +23,15 @@ const MapManagePage = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    // = offsetWidth, offsetHeight
-    const width = rect.width;
-    const height = rect.height;
+    // 실제 지도 크기
+    const MAP_WIDTH = 1100;
+    const MAP_HEIGHT = 1100;
 
     // 비율로 변환
-    const left = ((x / width) * 100).toFixed(1);
-    const top = ((y / height) * 100).toFixed(1);
+    const left = ((x / rect.width) * 100 * (rect.width / MAP_WIDTH)).toFixed(3);
+    const top = ((y / rect.height) * 100 * (rect.height / MAP_HEIGHT)).toFixed(
+      3
+    );
 
     const newMarker = {
       storeId: Number(inputId),
@@ -41,14 +43,12 @@ const MapManagePage = () => {
   };
 
   return (
-    <div className="relative left-0 top-0">
+    <div className="relative top-0 left-0 min-h-dvh w-full">
       <div
-        className="mx-auto border border-gray-300"
         style={{
           width: "430px",
-          height: "100dvh",
+          height: "100%",
           overflow: "hidden",
-          WebkitOverflowScrolling: "touch",
         }}
       >
         <motion.div
@@ -83,25 +83,33 @@ const MapManagePage = () => {
             }}
             alt="맵 생성"
           />
-
-          {markers.map((marker) => (
-            <div
-              key={marker.storeId}
-              className="absolute"
-              style={{
-                top: marker.top,
-                left: marker.left,
-                transform: "translate(-50%, -100%)",
-              }}
-            >
-              <BoothMarker />
-            </div>
-          ))}
+          <ul className="absolute top-0 left-0 w-full h-full">
+            {markers.map((marker) => (
+              <li
+                key={marker.storeId}
+                className="absolute"
+                style={{
+                  top: marker.top,
+                  left: marker.left,
+                  transform: "translate(-50%, -100%)",
+                }}
+              >
+                <BoothMarker />
+              </li>
+            ))}
+          </ul>
         </motion.div>
       </div>
       <div className="flex gap-1 fixed left-1/2 bottom-0 -translate-x-1/2 w-full">
         <Button onClick={() => setStatus(true)}>시작</Button>
         <Button onClick={() => setStatus(false)}>중지</Button>
+        <Button
+          onClick={() => {
+            setMarkers((prev) => prev.slice(0, -1));
+          }}
+        >
+          뒤로가기
+        </Button>
         <Button
           onClick={() => {
             setMarkers([]);
@@ -118,6 +126,7 @@ const MapManagePage = () => {
               })
               .join(",\n");
             navigator.clipboard.writeText(`${formattedMarkers}\n`);
+            alert("복사 완료");
           }}
         >
           복사

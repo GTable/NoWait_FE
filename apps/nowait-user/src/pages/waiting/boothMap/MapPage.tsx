@@ -1,46 +1,29 @@
 import BoothMarker from "../../../assets/icon/BoothMarker.svg?react";
 import BoothList from "./components/BoothList";
-import useWindowHeight from "../../../hooks/useWindowHeight";
 import { useState } from "react";
 import BoothDetail from "./components/BoothDetail";
 import { useQuery } from "@tanstack/react-query";
 import { getAllStores } from "../../../api/reservation";
 import { motion } from "framer-motion";
 import MapHeader from "./components/MapHeader";
-
-const boothPosition: Record<number, { top: string; left: string }> = {
-  1: { top: "45%", left: "60%" },
-  2: { top: "45%", left: "70%" },
-  3: { top: "45%", left: "80%" },
-  4: { top: "45%", left: "90%" },
-  5: { top: "50%", left: "60%" },
-  6: { top: "65%", left: "70%" },
-  7: { top: "70%", left: "80%" },
-  8: { top: "72%", left: "90%" },
-  9: { top: "75%", left: "60%" },
-  10: { top: "80%", left: "70%" },
-  11: { top: "90%", left: "80%" },
-  12: { top: "92%", left: "90%" },
-  13: { top: "12%", left: "60%" },
-  14: { top: "15%", left: "70%" },
-  15: { top: "20%", left: "80%" },
-  16: { top: "45%", left: "90%" },
-};
+import { boothPosition } from "./constants/boothPosition";
 
 const MapPage = () => {
-  const height = useWindowHeight();
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const { data: storeMarkers } = useQuery({
     queryKey: ["storesMarkers"],
     queryFn: getAllStores,
     select: (data) => data?.response?.storePageReadResponses,
   });
 
+  // 부스 + 마커 좌표
   const booths = storeMarkers?.map((booth) => ({
     ...booth,
     ...boothPosition[booth.storeId],
   }));
 
+  // 마커 클릭시 나오는 부스 정보
   const detailBooth = booths?.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
@@ -52,7 +35,7 @@ const MapPage = () => {
     }
   };
   return (
-    <div className="relative overflow-hidden" style={{ height }}>
+    <div className="relative overflow-hidden">
       {/* 헤더 */}
       <MapHeader />
       {/* 축제 맵 */}
@@ -76,6 +59,14 @@ const MapPage = () => {
               right: 0,
               top: -(1100 - 812),
               bottom: 0,
+            }}
+            // 클릭, 드래그 구분
+            onPointerDown={() => setIsDragging(false)}
+            onDragStart={() => setIsDragging(true)}
+            onPointerUp={() => {
+              if (!isDragging) {
+                setSelectedBooth(null);
+              }
             }}
             style={{
               width: "1100px",
@@ -102,7 +93,11 @@ const MapPage = () => {
                 <li
                   key={booth.storeId}
                   className="absolute"
-                  style={{ top: booth.top, left: booth.left }}
+                  style={{
+                    top: booth.top,
+                    left: booth.left,
+                    transform: "translate(-50%, -100%)",
+                  }}
                 >
                   <button
                     className={`transition-transform origin-bottom duration-200 ${
@@ -110,7 +105,10 @@ const MapPage = () => {
                         ? "scale-120"
                         : "scale-100"
                     }`}
-                    onClick={() => openBoothButton(booth.storeId)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openBoothButton(booth.storeId);
+                    }}
                   >
                     <BoothMarker />
                   </button>
@@ -124,7 +122,7 @@ const MapPage = () => {
       {selectedBooth !== null ? (
         <BoothDetail booth={detailBooth} />
       ) : (
-        <BoothList />
+        <BoothList totalBooth={storeMarkers?.length} />
       )}
     </div>
   );

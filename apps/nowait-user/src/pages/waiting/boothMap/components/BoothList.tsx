@@ -7,7 +7,7 @@ import { getInfiniteAllStores } from "../../../../api/reservation";
 
 const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
 
-const BoothList = () => {
+const BoothList = ({ totalBooth }: { totalBooth: number | undefined }) => {
   const y = useMotionValue(0);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
@@ -79,7 +79,7 @@ const BoothList = () => {
           <div className="mb-[30px]">
             <h1 className="text-title-20-semibold mb-1">부스 리스트</h1>
             <h2 className="text-14-regular text-[#8F8F8F]">
-              {stores.length}개의 부스
+              {totalBooth}개의 부스
             </h2>
           </div>
           {!isLoading && stores.length > 0 && (
