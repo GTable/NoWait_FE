@@ -3,6 +3,7 @@ import React from "react";
 interface PropsType {
   children: React.ReactNode;
   logo?: React.ReactNode;
+  remitValue: string;
   value: string;
   name: string;
   defaultChecked?: boolean | undefined;
@@ -12,6 +13,7 @@ interface PropsType {
 const Radio = ({
   children,
   logo,
+  remitValue,
   value,
   name,
   defaultChecked,
@@ -33,6 +35,7 @@ const Radio = ({
           type="radio"
           name={name}
           value={value}
+          checked={remitValue === value}
           defaultChecked={defaultChecked}
           onChange={onChange}
           className="peer sr-only"

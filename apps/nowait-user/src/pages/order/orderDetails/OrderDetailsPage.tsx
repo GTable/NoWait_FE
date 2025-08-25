@@ -25,25 +25,25 @@ const OrderDetailsPage = () => {
   const { storeId } = useParams();
   const tableId = localStorage.getItem("tableId");
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["orderDetails", storeId, tableId],
-    queryFn: () => getOrderDetails(Number(storeId), Number(tableId!)),
-    select: (data) => data.response,
+  const { data: orderDetails, isLoading } = useQuery({
+    queryKey: ["orderDetails", storeId],
+    queryFn: () => getOrderDetails(Number(storeId!), Number(tableId!)),
+    select: (data) => data?.response,
   });
-
+  console.log(orderDetails);
   if (isLoading) return <FullPageLoader />;
   //주문내역 없을 시
-  if (!data || data?.length < 1) return <EmptyOrderDetails />;
+  if (!orderDetails || orderDetails?.length < 1) return <EmptyOrderDetails />;
 
   return (
     <div>
       <BackOnlyHeader />
       <div className="bg-black-15 min-h-screen py-[64px] px-5">
         <h1 className="text-headline-22-bold mb-[23px] text-black-90">
-          주문내역 <span className="text-primary">{data.length}건</span>
+          주문내역 <span className="text-primary">{orderDetails.length}건</span>
         </h1>
         <ul>
-          {data.map((order) => {
+          {orderDetails?.map((order) => {
             // 주문 상태에 따른 값 보여주기
             const statusData = statusMap[order?.status as OrderStatus];
             return (

@@ -23,7 +23,7 @@ const RemittancePage = () => {
   const { cart } = useCartStore();
   const [payer, setPayer] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>("");
-  const [remitValue, setRemitValue] = useState("");
+  const [remitValue, setRemitValue] = useState<string>("");
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null);
 
@@ -33,7 +33,12 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data?.response,
   });
-  console.log(remittance);
+  // 정보 없으면 홈으로 이동
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate(`/${storeId}`, { replace: true });
+    }
+  }, []);
   // 기본 선택 값 지정하기
   useEffect(() => {
     if (!remittance) return;
@@ -41,8 +46,8 @@ const RemittancePage = () => {
     if (!(remittance.kakaoPayUrl === "")) setRemitValue("kakao");
     else if (!(remittance.tossUrl === "")) setRemitValue("toss");
     else if (!(remittance.naverPayUrl === "")) setRemitValue("naver");
-    else if (!(remittance.accountNumber === "")) setRemitValue("remit");
-  }, []);
+    else if (!(remittance.accountNumber === "")) setRemitValue("direct");
+  }, [remittance]);
 
   const orderHandleButton = () => {
     //입금자명을 입력하지 않고 이체 버튼 클릭 시 입금자명 input으로 포커스

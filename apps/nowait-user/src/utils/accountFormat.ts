@@ -3,7 +3,7 @@
 // 3. 짝대기 추가
 
 const format: Record<string, number[]> = {
-  "IBK 기업": [3, 6, 2],
+  IBK기업: [3, 6, 2],
   국민은행: [6, 2],
   신한은행: [3, 3],
   하나은행: [3, 6],
@@ -18,6 +18,7 @@ export const accountFormat = (bank: string, accountNumber: string) => {
   if (!rule) return accountNumber;
   let result = [];
   let start = 0;
+  //은행 포맷에 맞게 - 추가
   for (let i = 0; i < rule.length; i++) {
     const end = start + rule[i];
     const number = accountNumber.slice(start, end);

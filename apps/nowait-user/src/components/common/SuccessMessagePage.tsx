@@ -36,7 +36,9 @@ const SuccessMessagePage = ({
         <SmallActionButton
           type="button"
           ariaLabel="주문내역 확인"
-          onClick={() => navigate(`/${storeId}/orderDetails`)}
+          onClick={() =>
+            navigate(`/${storeId}/orderDetails`, { replace: true })
+          }
         >
           주문내역 확인
         </SmallActionButton>

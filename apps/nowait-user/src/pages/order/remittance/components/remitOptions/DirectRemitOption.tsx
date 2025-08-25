@@ -45,6 +45,7 @@ const DirectRemitOption = ({
       <Radio
         name="remit"
         value="direct"
+        remitValue={remitValue}
         onChange={(e) => setRemitValue(e.target.value)}
       >
         계좌로 직접 이체하기

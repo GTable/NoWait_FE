@@ -7,6 +7,7 @@ import remittanceWait from "../../../assets/remittanceWait.webp";
 import CenteredContentLayout from "../../../components/layout/CenteredContentLayout";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import { useToastStore } from "../../../stores/toastStore";
 
 const RemittanceWaitPage = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const RemittanceWaitPage = () => {
   const { storeId } = useParams();
   const tableId = localStorage.getItem("tableId");
   const { cart, clearCart } = useCartStore();
+  const { showToast } = useToastStore();
   const totalPrice = sumTotalPrice(cart);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,11 +42,12 @@ const RemittanceWaitPage = () => {
         localStorage.setItem("depositorName", res.response.depositorName);
         //장바구니 비우기
         clearCart();
-        navigate(`/${storeId}/order/success`);
+        navigate(`/${storeId}/order/success`, { replace: true });
       } else {
         // 서버가 success:false 반환한 경우
         console.error("주문 실패:", res);
-        alert("주문 처리에 실패했습니다. 다시 시도해주세요.");
+        showToast("주문에 실패했습니다. 다시 시도해 주세요");
+        return;
       }
     } catch (error) {
       console.log(error);

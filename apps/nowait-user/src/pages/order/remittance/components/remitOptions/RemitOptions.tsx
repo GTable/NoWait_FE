@@ -24,7 +24,6 @@ const RemitOptions = ({
   account,
   isLoading,
 }: PropsType) => {
-
   if (isLoading) return <RemitOptionsSkeleton />;
 
   return (
@@ -38,6 +37,7 @@ const RemitOptions = ({
             kakao={kakao}
             toss={toss}
             naver={naver}
+            remitValue={remitValue}
             setRemitValue={setRemitValue}
           />
         ) : null}

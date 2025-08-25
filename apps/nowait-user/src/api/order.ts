@@ -13,7 +13,6 @@ export const api = axios.create({
 
 const API_URI = import.meta.env.VITE_SERVER_URI;
 
-
 //주문 생성
 export const createOrder = async (
   storeId: number,
@@ -29,14 +28,14 @@ export const getOrderDetails = async (
   storeId: number | undefined,
   tableId: number
 ): Promise<OrderDetailsServerResponse> => {
-  const res = await api.get(`${API_URI}/orders/items/${storeId}/${tableId}`);
+  const res = await api.get(`/orders/items/${storeId}/${tableId}`);
   return res.data;
 };
 
 //주점 QR, 계좌번호 조회
 export const getStorePayments = async (storeId: number) => {
   try {
-    const res = await api.get<StorePaymentsResponse>(
+    const res = await axios.get<StorePaymentsResponse>(
       `${API_URI}/v1/store-payments/${storeId}`
     );
     return res.data;
