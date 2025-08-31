@@ -37,6 +37,7 @@ const AccountPage = () => {
 
   const width = useWindowWidth();
   const isMobile = width < 768;
+  const isSmall = width < 415;
 
   // 각 결제수단별 입력값 관리
   const [urls, setUrls] = useState<Record<PaymentId, string>>({
@@ -294,15 +295,15 @@ const AccountPage = () => {
   return (
     <div>
       {/* Guide Banner */}
-      <div className="my-10">
-        <img
-          src={banner}
-          alt="배너"
-          className="block w-full h-auto"
-          loading="lazy"
-          decoding="async"
-          onClick={() => navigate("guides")}
-        />
+      <div className={`h-full ${isSmall ? "my-4" : "my-10"}`}>
+        <div className="h-full min-h-[60px]">
+          <img
+            src={banner}
+            alt="배너"
+            className={`object-fill min-h-[60px]`}
+            onClick={() => navigate("guides")}
+          />
+        </div>
       </div>
 
       {/* QR Code Section */}
