@@ -310,7 +310,7 @@ const BoothForm = () => {
         isTablet ? "px-[100px] py-[20px]" : "px-[20px] py-[20px]"
       }`}
     >
-      <div className="w-full mx-auto">
+      <div className="max-w-[614px] w-full mx-auto">
         {/* 탭 */}
         <div className="flex w-full gap-2">
           <button
