@@ -235,7 +235,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   }, [fetchedMenus]);
 
   return (
-    <div className="mt-[40px] mb-[20px] w-full">
+    <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
         <h2 className="text-headline-22-bold">메뉴</h2>
         <div className="flex gap-[10px]">
