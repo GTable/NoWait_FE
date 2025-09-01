@@ -1,6 +1,6 @@
 import BoothMarker from "../../../assets/icon/BoothMarker.svg?react";
 import BoothList from "./components/BoothList";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BoothDetail from "./components/BoothDetail";
 import { useQuery } from "@tanstack/react-query";
 import { getAllStores } from "../../../api/reservation";
@@ -12,20 +12,42 @@ import BoothMap from "../../../assets/boothMap.png";
 const MapPage = () => {
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [positionX, setPositionX] = useState(0);
+  const [positionY, setPositionY] = useState(0);
+
   const { data: storeMarkers } = useQuery({
     queryKey: ["storesMarkers"],
     queryFn: getAllStores,
     select: (data) => data?.response?.storePageReadResponses,
   });
 
+  // 뷰포트 크기 계산
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const viewportWidth = viewportRef.current?.clientWidth ?? 430;
+  const viewportHeight = viewportRef.current?.clientHeight ?? 812;
+
   // 부스 + 마커 좌표
   const booths = storeMarkers?.map((booth) => ({
     ...booth,
     ...boothPosition[booth.storeId],
   }));
-
-  // 마커 클릭시 나오는 부스 정보
-  const detailBooth = booths?.find((booth) => booth.storeId === selectedBooth);
+  console.log(booths, "부스");
+  useEffect(() => {
+    if (!booths || booths.length === 0) return;
+    console.log("실행");
+    const positions = Object.values(boothPosition).map((booth) => ({
+      top: parseFloat(booth.top),
+      left: parseFloat(booth.left),
+    }));
+    const avgTop =
+      positions.reduce((sum, booth) => sum + booth.top, 0) / positions.length;
+    const avgLeft =
+      positions.reduce((sum, booth) => sum + booth.left, 0) / positions.length;
+    const initialX = -((avgLeft / 100) * 1100 - viewportWidth / 2);
+    const initialY = -((avgTop / 100) * 1100 - viewportHeight / 2);
+    setPositionX(initialX);
+    setPositionY(initialY);
+  }, [booths]);
 
   const openBoothButton = (id: number) => {
     if (selectedBooth === id) {
@@ -55,9 +77,9 @@ const MapPage = () => {
               timeConstant: 0,
             }}
             dragConstraints={{
-              left: -(1100 - 430),
+              left: -(1100 - viewportWidth),
               right: 0,
-              top: -(1100 - 812),
+              top: -(1100 - viewportHeight),
               bottom: 0,
             }}
             // 클릭, 드래그 구분
@@ -74,6 +96,8 @@ const MapPage = () => {
               height: "1100px",
               position: "relative",
               cursor: "grab",
+              x: positionX,
+              y: positionY,
             }}
           >
             <img
@@ -120,7 +144,9 @@ const MapPage = () => {
       </div>
       {/* 부스 리스트 */}
       {selectedBooth !== null ? (
-        <BoothDetail booth={detailBooth} />
+        <BoothDetail
+          booth={booths?.find((booth) => booth.storeId === selectedBooth)}
+        />
       ) : (
         <BoothList totalBooth={storeMarkers?.length} />
       )}
