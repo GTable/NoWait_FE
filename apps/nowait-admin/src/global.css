@@ -71,6 +71,46 @@ body,
   box-shadow: none !important;
 }
 
+.toast-card {
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(200px);
+  -webkit-backdrop-filter: blur(200px);
+  border-radius: 10px;
+}
+
+/* toast 폰트 */
+
+.text-13-semibold {
+  font-size: 13px;
+  line-height: 144%;
+  letter-spacing: 0%;
+  font-weight: 600;
+}
+
+.text-18-semibold {
+  color: white;
+  font-size: 18px;
+  line-height: 136%;
+  letter-spacing: 0%;
+  font-weight: 600;
+}
+
+.text-13-medium {
+  color: #666666;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  font-weight: 500;
+}
+
+.text-15-semibold {
+  color: #222222;
+  font-size: 15px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  font-weight: 600;
+}
+
 /* toggle버튼 */
 .toggle-btn .switch {
   position: relative;
@@ -199,6 +239,7 @@ textarea {
   mask-composite: subtract;
   animation: l3 1s infinite linear;
 }
+
 @keyframes l3 {
   to {
     transform: rotate(1turn);
