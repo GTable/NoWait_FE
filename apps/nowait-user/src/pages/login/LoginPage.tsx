@@ -3,6 +3,7 @@ import LoginButton from "./LoginButton";
 import LoginImage_1 from "../../assets/login/login_img_1.png";
 import LoginImage_2 from "../../assets/login/login_img_2.svg?react";
 import LoginImage_3 from "../../assets/login/login_img_3.svg?react";
+import LoginImage_4 from "../../assets/login/login_img_4.svg?react";
 
 const LoginPage = () => {
   return (
@@ -83,8 +84,8 @@ const LoginPage = () => {
           <br />
           혼잡한 동선 없이 원하는 부스를 바로 찾아가요.
         </div>
-        <div className="mt-9.5 w-full h-52.5 bg-gray-200 justify-center items-center mb-10">
-          <span className="text-gray-500"></span>
+        <div className="mt-9.5 w-[325px] h-[210px] flex justify-end items-center">
+          <LoginImage_4 />
         </div>
       </div>
       <LoginButton />
