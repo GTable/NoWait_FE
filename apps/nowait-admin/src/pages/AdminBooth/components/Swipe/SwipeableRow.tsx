@@ -38,14 +38,14 @@ export const SwipeableRow = React.forwardRef<HTMLDivElement, SwipeableRowProps>(
       if (Math.abs(dy) > Math.abs(dx)) return;
       if (dx < 0) {
         e.preventDefault();
-        setTx(Math.max(MAX_LEFT, dx)); // ← -84px까지 허용(70+14)
+        setTx(Math.max(MAX_LEFT, dx)); //-84px까지 허용(70+14)
       }
       if (Math.abs(dx) > 10) movedRef.current = true;
     };
     const onTouchEnd = () => {
       if (disabled) return;
       if (movedRef.current) suppressClickRef.current = true;
-      if (tx <= MAX_LEFT) onDelete(); // ← 임계값을 -84px로
+      if (tx <= MAX_LEFT) onDelete(); //임계값을 -84px로
       setTx(0);
       setDragging(false);
     };
@@ -63,12 +63,12 @@ export const SwipeableRow = React.forwardRef<HTMLDivElement, SwipeableRowProps>(
       const dy = e.clientY - START_Y.current;
       if (Math.abs(dx) > 10) movedRef.current = true;
       if (Math.abs(dy) > Math.abs(dx)) return;
-      if (dx < 0) setTx(Math.max(MAX_LEFT, dx)); // ← -84px까지
+      if (dx < 0) setTx(Math.max(MAX_LEFT, dx)); //-84px까지
     };
     const onMouseUp = () => {
       if (disabled) return;
       if (movedRef.current) suppressClickRef.current = true;
-      if (tx <= MAX_LEFT) onDelete(); // ← -84px에서 삭제
+      if (tx <= MAX_LEFT) onDelete(); // -84px에서 삭제
       setTx(0);
       setMouseDragging(false);
     };
