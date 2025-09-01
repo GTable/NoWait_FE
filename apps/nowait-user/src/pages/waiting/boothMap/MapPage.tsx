@@ -7,6 +7,7 @@ import { getAllStores } from "../../../api/reservation";
 import { motion } from "framer-motion";
 import MapHeader from "./components/MapHeader";
 import { boothPosition } from "./constants/boothPosition";
+import BoothMap from "../../../assets/boothMap.png";
 
 const MapPage = () => {
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
@@ -27,7 +28,6 @@ const MapPage = () => {
   const detailBooth = booths?.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
-    console.log(id);
     if (selectedBooth === id) {
       setSelectedBooth(null);
     } else {
@@ -63,8 +63,9 @@ const MapPage = () => {
             // 클릭, 드래그 구분
             onPointerDown={() => setIsDragging(false)}
             onDragStart={() => setIsDragging(true)}
-            onPointerUp={() => {
+            onPointerUp={(e) => {
               if (!isDragging) {
+                if ((e.target as HTMLElement).closest("button")) return;
                 setSelectedBooth(null);
               }
             }}
@@ -83,8 +84,7 @@ const MapPage = () => {
                 pointerEvents: "none",
                 userSelect: "none",
               }}
-              // src={boothMap}
-              src="/test-map.png"
+              src={BoothMap}
               alt="축제 맵 이미지"
             />
             {/* 마커 */}
