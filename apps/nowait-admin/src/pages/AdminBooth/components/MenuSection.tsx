@@ -13,6 +13,7 @@ import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
 import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort";
 import { useVerticalLockStyle } from "../../../utils/useVerticalLockStyle";
+import { SwipeableRow } from "./Swipe/SwipeableRow";
 
 // 세 자리마다 , 붙여서 가격표시
 const formatNumber = (num: number) => {
@@ -290,7 +291,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                         provided.draggableProps.style
                       );
 
-                      return (
+                      const rowContent = (
                         <div
                           className="flex justify-between items-center py-4"
                           ref={provided.innerRef}
@@ -334,6 +335,29 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             )}
                           </div>
                         </div>
+                      );
+                      return (
+                        <SwipeableRow
+                          ref={provided.innerRef}
+                          disabled={editMode}
+                          onDelete={() => {
+                            // 즉시 삭제
+                            setSelectedMenu(menu);
+                            deleteMenu(menu.id, {
+                              onSuccess: () => {
+                                setMenus((prev) =>
+                                  prev.filter((m) => m.id !== menu.id)
+                                );
+                              },
+                            });
+                          }}
+                          contentProps={{
+                            ...provided.draggableProps,
+                            style: lockedStyle,
+                          }}
+                        >
+                          {rowContent}
+                        </SwipeableRow>
                       );
                     }}
                   </Draggable>
