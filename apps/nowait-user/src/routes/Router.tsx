@@ -21,6 +21,8 @@ import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
 import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
 import MapManagePage from "../pages/waiting/boothMap/MapManagePage";
 import NotFound from "../pages/NotFound/NotFound";
+import OnboardingPage from "../pages/login/onboarding/OnboardingPage";
+import OnboardingSuccessPage from "../pages/login/onboarding/OnboardingSuccessPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -41,6 +43,10 @@ const Router = () => {
         {/* 공개 라우트 - 인증 불필요 */}
         <Route path="/login/success" element={<KakaoRedirectHandler />} />
         <Route path="/login" element={<LoginPage />} />
+
+        <Route path="/onboarding" element={<OnboardingPage />} />
+
+        <Route path="/onboarding/success" element={<OnboardingSuccessPage />} />
 
         {/* 보호된 라우트 - 인증 필요 (구체적인 경로 먼저) */}
         <Route
@@ -92,7 +98,7 @@ const Router = () => {
           path="/:storeId/orderDetails"
           element={withTransition(OrderDetailsPage)}
         />
-        <Route path='*' element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
