@@ -12,7 +12,6 @@ import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
 import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort";
-import { useVerticalLockStyle } from "../../../utils/useVerticalLockStyle";
 import { SwipeableRow } from "./Swipe/SwipeableRow";
 
 function lockVertical(
