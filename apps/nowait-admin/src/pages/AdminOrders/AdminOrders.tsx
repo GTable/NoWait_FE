@@ -17,6 +17,7 @@ const AdminOrders = () => {
     "입금 대기" | "조리 중" | "조리 완료"
   >("입금 대기");
   const [selectedPayment, setSelectedPayment] = useState<Order | null>(null);
+  const [selectedCooking, setSelectedCooking] = useState<Order | null>(null);
   const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
   const [
     savedDesktopCookedScrollPosition,
@@ -109,6 +110,16 @@ const AdminOrders = () => {
     // p.delete("status");
     navigate({ search: p.toString() }, { replace: true });
   };
+
+  // CookingDetail 닫기 핸들러
+  const handleCloseCookingDetail = () => {
+    setSelectedCooking(null);
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = savedScrollPosition;
+      }
+    }, 0);
+  };
   // CookedCard 클릭 핸들러
   const handleCookedCardClick = (cooked: Order) => {
     if (scrollContainerRef.current) {
@@ -118,6 +129,17 @@ const AdminOrders = () => {
       scrollContainerRef.current.scrollTop = 0;
     }
     setSelectedPayment(cooked);
+  };
+
+  // CookingCard 클릭 핸들러
+  const handleCookingCardClick = (cooking: Order) => {
+    if (scrollContainerRef.current) {
+      // 현재 스크롤 위치 저장
+      setSavedScrollPosition(scrollContainerRef.current.scrollTop);
+      // 스크롤을 맨 위로 올리기
+      scrollContainerRef.current.scrollTop = 0;
+    }
+    setSelectedCooking(cooking);
   };
 
   const openDetail = (order: Order) => {
@@ -162,6 +184,7 @@ const AdminOrders = () => {
   useEffect(() => {
     if (queryOrderId) return;
     setSelectedPayment(null);
+    setSelectedCooking(null);
   }, [activeTab, mobileActiveTab, queryOrderId]);
   useEffect(() => {
     if (orders?.length) purgeNonWaiting(orders);
@@ -349,7 +372,11 @@ const AdminOrders = () => {
                   </div>
                   <div className="flex">수량</div>
                 </div>
-                <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 flex-1 bg-white px-5.5 py-4 overflow-y-auto min-h-0">
+                <div
+                  className={`flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 flex-1 bg-white px-5.5 py-4 min-h-0 relative ${
+                    selectedCooking ? "overflow-hidden" : "overflow-y-auto"
+                  }`}
+                >
                   {isLoading ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
                       <DropdownLoader />
@@ -362,6 +389,7 @@ const AdminOrders = () => {
                         tableNumber={cooking.tableId}
                         menuDetails={cooking.menuDetails}
                         onSuccess={refetch}
+                        onClick={() => handleCookingCardClick(cooking)}
                       />
                     ))
                   ) : (
@@ -372,6 +400,21 @@ const AdminOrders = () => {
                           : "조리 중인 주문이 없어요!"}
                       </div>
                     </div>
+                  )}
+
+                  {/* DetailCard 오버레이 */}
+                  {selectedCooking && (
+                    <DetailCard
+                      type="cooking"
+                      orderId={selectedCooking.id}
+                      tableNumber={selectedCooking.tableId}
+                      timeText={getFormattedDateTime(selectedCooking.createdAt)}
+                      depositorName={selectedCooking.depositorName}
+                      totalAmount={selectedCooking.totalPrice || 0}
+                      menuDetails={selectedCooking.menuDetails}
+                      onClose={handleCloseCookingDetail}
+                      onSuccess={refetch}
+                    />
                   )}
                 </div>
               </div>
@@ -465,7 +508,11 @@ const AdminOrders = () => {
                 </div>
                 <div className="flex">수량</div>
               </div>
-              <div className="flex flex-col px-5.5 py-4 gap-7.5 bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 overflow-y-auto">
+              <div
+                className={`flex flex-col px-5.5 py-4 gap-7.5 bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 relative ${
+                  selectedCooking ? "overflow-hidden" : "overflow-y-auto"
+                }`}
+              >
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <DropdownLoader />
@@ -478,6 +525,7 @@ const AdminOrders = () => {
                       tableNumber={cooking.tableId}
                       menuDetails={cooking.menuDetails}
                       onSuccess={refetch}
+                      onClick={() => handleCookingCardClick(cooking)}
                     />
                   ))
                 ) : (
@@ -488,6 +536,21 @@ const AdminOrders = () => {
                         : "아직 조리 중인 주문이 없어요!"}
                     </div>
                   </div>
+                )}
+
+                {/* DetailCard 오버레이 */}
+                {selectedCooking && (
+                  <DetailCard
+                    type="cooking"
+                    orderId={selectedCooking.id}
+                    tableNumber={selectedCooking.tableId}
+                    timeText={getFormattedDateTime(selectedCooking.createdAt)}
+                    depositorName={selectedCooking.depositorName}
+                    totalAmount={selectedCooking.totalPrice || 0}
+                    menuDetails={selectedCooking.menuDetails}
+                    onClose={handleCloseCookingDetail}
+                    onSuccess={refetch}
+                  />
                 )}
               </div>
             </div>
