@@ -14,10 +14,7 @@ export const initSentry = () => {
     enableLogs: true,
 
     tracesSampleRate: 0.6,
-    tracePropagationTargets: [
-      "https://nowait-user.vercel.app/",
-      "http://localhost:5173",
-    ],
+    tracePropagationTargets: ["https://nowait-user.vercel.app/"],
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
   });
