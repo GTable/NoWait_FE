@@ -24,7 +24,6 @@ type S = {
 };
 
 const DISMISSED_KEY = "toasts:dismissed";
-const MAX_STORE = 50;
 
 const loadDismissed = (): Set<string> => {
   try {
