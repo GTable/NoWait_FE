@@ -40,13 +40,19 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
     setPrice(rawValue);
   };
 
+  const displayValue = isFocused
+    ? price
+    : price
+    ? formatNumber(parseInt(price))
+    : "";
+
   return (
     <div className="mb-[30px]">
       <label className="block text-title-16-bold mb-3">가격</label>
       <div className="relative w-full">
         <input
           type="text"
-          value={price ? formatNumber(parseInt(price)) : ""}
+          value={displayValue}
           onChange={handleChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
