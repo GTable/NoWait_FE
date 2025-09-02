@@ -20,7 +20,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
   return (
     <li className="mb-5 last:mb-0">
       <button
-        disabled={data.isSoldOut}
+        disabled={!data.isSoldOut}
         onClick={handleMenuClick}
         className={`w-full flex justify-between items-center ${
           mode === "order" && "cursor-pointer"
