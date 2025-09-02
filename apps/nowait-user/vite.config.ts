@@ -18,6 +18,8 @@ export default defineConfig(({ mode }) => {
       sentryVitePlugin({
         org: "nowait",
         project: "nowait-user-fe",
+
+        authToken: process.env.SENTRY_AUTH_TOKEN,
       }),
     ],
     build: {
