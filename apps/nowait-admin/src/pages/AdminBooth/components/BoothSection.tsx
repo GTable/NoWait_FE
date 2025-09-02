@@ -73,7 +73,7 @@ const BoothSection = ({
 
   return (
     <>
-      <div className="flex flex-col items-center pb-[50px] w-full ">
+      <div className="flex flex-col items-center pb-[50px] max-w-[614px]">
         <div className="flex justify-between items-center w-full my-[40px]">
           {/* 좌측 타이틀 */}
           <h2 className="text-headline-22-bold text-black-80">부스 프로필</h2>
@@ -171,7 +171,7 @@ const BoothSection = ({
       </div>
 
       {/* 부스 소개 */}
-      <div className="flex flex-col mb-[50px] relative w-full">
+      <div className="flex flex-col mb-[50px] relative max-w-[614px]">
         <label
           className={`block text-title-18-bold text-black-80 ${
             isMobile ? "mb-[14px]" : ""
@@ -201,7 +201,7 @@ const BoothSection = ({
       </div>
 
       {/* 배너 이미지 */}
-      <div className="flex flex-col mb-[50px] w-full">
+      <div className="flex flex-col mb-[50px] max-w-[614px]">
         <label
           className={`block text-title-18-bold text-black-80 ${
             isMobile ? "mb-[6px]" : ""

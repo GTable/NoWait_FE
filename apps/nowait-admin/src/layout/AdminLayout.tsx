@@ -17,7 +17,6 @@ const AdminLayout = () => {
   const isMobile = width <= 767;
 
   const storeId = Number(localStorage.getItem("storeId"));
-  // API에서 주문 데이터 가져오기
   const { data: orders = [] } = useGetOrderList(storeId);
   useDetectNewOrders(orders);
 

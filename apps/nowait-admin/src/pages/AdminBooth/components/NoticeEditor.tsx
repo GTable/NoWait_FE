@@ -128,7 +128,7 @@ const NoticeEditor = ({
   }, [notice, editor]);
 
   return (
-    <div className="w-full bg-white border border-[#DDDDDD] rounded-xl w-full">
+    <div className="w-full bg-white border border-[#DDDDDD] rounded-xl max-w-[614px]">
       <input
         type="text"
         value={noticeTitle}

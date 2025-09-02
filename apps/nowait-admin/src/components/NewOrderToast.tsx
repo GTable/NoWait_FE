@@ -1,164 +1,186 @@
 // src/components/NewOrderToast.tsx
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { useNewOrderToastStore } from "../hooks/useNewOrderToastStore";
+import CloseButton from "./closeButton";
 
-function formatTime(s?: string) {
-  if (!s) return "";
-  const d = new Date(s);
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(
-    d.getHours()
-  )}:${p(d.getMinutes())}`;
-}
 function formatCurrency(n: number) {
   return n.toLocaleString("ko-KR") + "원";
 }
 
+/** 오른쪽 스와이프 dismiss + 탭 탐지 */
+function SwipeToDismiss({
+  onDismiss,
+  onTap,
+  children,
+}: {
+  onDismiss: () => void;
+  onTap?: () => void;
+  children: React.ReactNode;
+}) {
+  const THRESHOLD = 60;
+  const MAX_X = 140;
+  const TAP_TOL = 6;
+
+  const startX = React.useRef(0);
+  const startY = React.useRef(0);
+  const moved = React.useRef(false);
+
+  const [tx, setTx] = React.useState(0);
+  const [dragging, setDragging] = React.useState(false);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    startX.current = e.clientX;
+    startY.current = e.clientY;
+    moved.current = false;
+    setDragging(true);
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX.current;
+    const dy = e.clientY - startY.current;
+
+    if (Math.abs(dx) > TAP_TOL || Math.abs(dy) > TAP_TOL) moved.current = true;
+
+    // 수직 우선이면 무시
+    if (Math.abs(dy) > Math.abs(dx)) return;
+
+    // 오른쪽 이동만 반영
+    if (dx > 0) setTx(Math.min(MAX_X, dx));
+  };
+
+  const endDrag = () => {
+    if (!dragging) return;
+
+    const didSwipe = tx >= THRESHOLD;
+    if (didSwipe) {
+      onDismiss(); // 스와이프 → 제거
+    } else if (!moved.current) {
+      onTap?.(); // 거의 안 움직였으면 → 탭으로 처리
+    }
+    setTx(0);
+    setDragging(false);
+  };
+
+  // 스와이프 후 발생하는 "유령 클릭" 1회 차단(탭은 통과)
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (tx >= THRESHOLD) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  };
+
+  return (
+    <div className="pointer-events-auto" onClickCapture={onClickCapture}>
+      <div
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        style={{
+          transform: `translateX(${tx}px)`,
+          transition: dragging ? "none" : "transform 200ms ease",
+          touchAction: "pan-y",
+          willChange: "transform",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function NewOrderToast() {
   const { toasts, removeToast } = useNewOrderToastStore();
-  const nav = useNavigate();
-  const storeId = localStorage.getItem("storeId");
-
-  // 토스트별 펼침 상태(요약↔상세)
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const navigate = useNavigate();
+  const storeId = localStorage.getItem("storeId") ?? "";
 
   return (
     <>
+      {/* 전역 오디오: map 내부 중복 id 제거하세요 */}
       <audio
         id="new-order-audio"
         src="/assets/sound/newOrder.mp3"
         preload="auto"
       />
-      <div className="fixed top-4 right-4 z-[1000] flex flex-col gap-2">
+      <div className="fixed top-4 right-4 z-[1000] flex flex-col gap-2 pointer-events-none">
         {toasts.map((t) => {
-          const isOpen = !!expanded[t.id];
-          const tableId = t.meta?.tableId;
-          const createdAt = t.meta?.createdAt;
+          const tableId = t.meta?.tableId as number | undefined;
+          const orderName = t.meta?.orderName ?? "신규 주문";
+          const menuDetails = (t.meta?.menuDetails ?? {}) as Record<
+            string,
+            { quantity?: number; price?: number }
+          >;
 
-          // ✅ 훅 없이 계산만
-          const menuDetails = t.meta?.menuDetails ?? {};
-          const menuNames = Object.keys(menuDetails);
-          const firstMenu = menuNames[0];
-
+          const names = Object.keys(menuDetails);
           const computedTotal =
-            (typeof t.meta?.totalPrice === "number"
+            typeof t.meta?.totalPrice === "number"
               ? t.meta.totalPrice
-              : undefined) ??
-            menuNames.reduce((sum, name) => {
-              const q = menuDetails[name]?.quantity ?? 0;
-              const p = menuDetails[name]?.price ?? 0;
-              return sum + q * p;
-            }, 0);
+              : names.reduce((sum, name) => {
+                  const { quantity = 0, price = 0 } = menuDetails[name] ?? {};
+                  return sum + quantity * price;
+                }, 0);
+
+          const firstMenu = names[0];
+          const othersCount = Math.max(0, names.length - 1);
+          const summary =
+            firstMenu && othersCount > 0
+              ? `${firstMenu} 외 ${othersCount}개`
+              : firstMenu || "메뉴 없음";
 
           return (
-            <div
+            <SwipeToDismiss
               key={t.id}
-              className="w-[320px] rounded-xl bg-white border border-black-10 shadow-lg p-3"
+              onDismiss={() => removeToast(t.id)}
+              onTap={() => navigate(`/admin/orders/${storeId}`)} // ← 클릭 이동은 여기서!
             >
-              {/* 타이틀 */}
-              <div className="text-14-semibold text-black-90">{t.title}</div>
-
-              {/* 요약 뷰 */}
-              {!isOpen && (
-                <div className="mt-2">
-                  <div className="text-13-semibold text-black-90">
-                    테이블 {tableId ?? ""}/{t.meta?.orderName}
-                  </div>
-                  <div className="text-13-regular text-black-60 mt-1">
-                    {firstMenu ?? "메뉴 없음"} / {formatTime(createdAt)}
-                  </div>
-                  <div className="flex gap-2 mt-3">
-                    <button
-                      className="px-3 py-2 rounded-lg bg-black text-white text-13-semibold"
-                      onClick={() =>
-                        setExpanded((s) => ({ ...s, [t.id]: true }))
-                      }
-                    >
-                      상세보기
-                    </button>
-                    <button
-                      className="px-3 py-2 rounded-lg bg-black-5 text-black-70 text-13-semibold"
-                      onClick={() => {
-                        if (storeId) nav(`/admin/orders/${storeId}`);
-                        removeToast(t.id);
-                      }}
-                    >
-                      확인
-                    </button>
-                  </div>
+              <div
+                role="alert"
+                className={[
+                  "relative w-[262px] h-[95px] px-[13px] pt-[13px] pb-[16px]",
+                  "rounded-[14px] bg-[#FBFBFB]/50 border border-[#E9E9E9]",
+                  "backdrop-blur-[200px] shadow-[0_8px_25px_rgba(0,0,0,0.10)]",
+                  "translate-y-2 opacity-0 animate-[toastIn_200ms_ease_forwards]",
+                ].join(" ")}
+              >
+                {/* 상단: 라벨 & 닫기 */}
+                <div className="flex items-center justify-between">
+                  <span className="text-13-semibold text-[#222222]/60">
+                    신규 주문
+                  </span>
+                  <CloseButton
+                    width={9.41}
+                    height={9.41}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeToast(t.id);
+                    }}
+                  />
                 </div>
-              )}
 
-              {/* 상세 뷰 */}
-              {isOpen && (
-                <div className="mt-2">
-                  <div className="text-13-semibold text-black-90">
-                    테이블 {tableId ?? ""}/{t.meta?.orderName}
-                  </div>
-                  <div className="text-13-regular text-black-60 mt-1">
-                    {firstMenu ?? "메뉴 없음"} / {formatTime(createdAt)}
+                {/* 본문 */}
+                <div className="mt-[6px] flex items-center gap-[8px]">
+                  <div className="w-9 h-9 rounded-full bg-[#6C7B94] flex items-center justify-center">
+                    <span className="text-18-semibold">{tableId ?? "-"}</span>
                   </div>
 
-                  {/* 메뉴 목록 */}
-                  <div className="mt-3 rounded-lg bg-black-5 p-2 max-h-[180px] overflow-auto">
-                    {menuNames.length === 0 ? (
-                      <div className="text-13-regular text-black-50">
-                        메뉴 없음
-                      </div>
-                    ) : (
-                      <ul className="space-y-1">
-                        {menuNames.map((name) => {
-                          const { quantity = 0, price = 0 } =
-                            menuDetails[name] ?? {};
-                          return (
-                            <li
-                              key={name}
-                              className="flex justify-between text-13-regular text-black-80"
-                            >
-                              <span className="truncate mr-2">
-                                {name} × {quantity}
-                              </span>
-                              <span>{formatCurrency(price * quantity)}</span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </div>
-
-                  {/* 총 가격 */}
-                  <div className="mt-2 flex justify-between items-center">
-                    <span className="text-13-semibold text-black-70">
-                      총 가격
-                    </span>
-                    <span className="text-13-semibold text-black-90">
+                  <div className="min-w-0 flex-1">
+                    <div className="text-15-semibold">
+                      {orderName}
+                      <span className="mx-[6px] text-[#D5D5D5]">|</span>
                       {formatCurrency(computedTotal)}
-                    </span>
-                  </div>
-
-                  <div className="flex gap-2 mt-3">
-                    <button
-                      className="px-3 py-2 rounded-lg bg-black-5 text-black-70 text-13-semibold"
-                      onClick={() =>
-                        setExpanded((s) => ({ ...s, [t.id]: false }))
-                      }
-                    >
-                      상세보기 닫기
-                    </button>
-                    <button
-                      className="px-3 py-2 rounded-lg bg-black-5 text-black-70 text-13-semibold"
-                      onClick={() => {
-                        if (storeId) nav(`/admin/orders/${storeId}`);
-                        removeToast(t.id);
-                      }}
-                    >
-                      확인
-                    </button>
+                    </div>
+                    <div className="mt-[2px] text-13-medium whitespace-nowrap">
+                      {summary}
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
+
+                <style>{`@keyframes toastIn{to{transform:translateY(0);opacity:1}}`}</style>
+              </div>
+            </SwipeToDismiss>
           );
         })}
       </div>

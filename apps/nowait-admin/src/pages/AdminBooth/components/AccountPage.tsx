@@ -37,6 +37,7 @@ const AccountPage = () => {
 
   const width = useWindowWidth();
   const isMobile = width < 768;
+  const isSmall = width < 415;
 
   // 각 결제수단별 입력값 관리
   const [urls, setUrls] = useState<Record<PaymentId, string>>({
@@ -294,17 +295,21 @@ const AccountPage = () => {
   return (
     <div>
       {/* Guide Banner */}
-      <div className="my-10">
-        <img
-          src={banner}
-          alt="배너"
-          className="w-full"
-          onClick={() => navigate("guides")}
-        />
+      <div
+        className={`h-full ${isSmall ? "my-4" : "my-10"} flex justify-center`}
+      >
+        <div className={`h-full min-h-[60px] ${isMobile ? "w-[305px]" : ""}`}>
+          <img
+            src={banner}
+            alt="배너"
+            className={`object-fill min-h-[60px]`}
+            onClick={() => navigate("guides")}
+          />
+        </div>
       </div>
 
       {/* QR Code Section */}
-      <section className="w-full">
+      <section>
         <h2 className="flex items-center text-navy-80 text-18-bold gap-[6px]">
           간편 송금 QR코드 <RedBadge label="필수" small={true} />
         </h2>
@@ -335,7 +340,7 @@ const AccountPage = () => {
                   <span className="text-14-semibold">{option.name}</span>
                 )}
               </div>
-              <div className="flex justify-between h-[52px] w-full min-w-[236px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
+              <div className="flex justify-between h-[52px] w-[474px] min-w-[236px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
                 <div className={`flex flex-col w-[79%] w-overflow-scroll`}>
                   <div className="relative w-full">
                     <input

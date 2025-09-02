@@ -13,6 +13,7 @@ import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
 import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort";
 import { useVerticalLockStyle } from "../../../utils/useVerticalLockStyle";
+import { SwipeableRow } from "./Swipe/SwipeableRow";
 
 // 세 자리마다 , 붙여서 가격표시
 const formatNumber = (num: number) => {
@@ -235,7 +236,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   }, [fetchedMenus]);
 
   return (
-    <div className="mt-[40px] mb-[20px] w-full">
+    <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
         <h2 className="text-headline-22-bold">메뉴</h2>
         <div className="flex gap-[10px]">
@@ -290,11 +291,9 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                         provided.draggableProps.style
                       );
 
-                      return (
+                      const rowContent = (
                         <div
                           className="flex justify-between items-center py-4"
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
                           style={lockedStyle}
                         >
                           <div
@@ -334,6 +333,22 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             )}
                           </div>
                         </div>
+                      );
+                      return (
+                        <SwipeableRow
+                          ref={provided.innerRef}
+                          disabled={editMode}
+                          onDeleteClick={() => {
+                            setSelectedMenu(menu);
+                            setIsRemoveModalOpen(true);
+                          }}
+                          contentProps={{
+                            ...provided.draggableProps,
+                            style: lockedStyle,
+                          }}
+                        >
+                          {rowContent}
+                        </SwipeableRow>
                       );
                     }}
                   </Draggable>

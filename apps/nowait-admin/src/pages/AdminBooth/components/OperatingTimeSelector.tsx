@@ -61,7 +61,7 @@ const OperatingTimeSelector = ({
   isMobile: boolean;
 }) => {
   return (
-    <div className="mb-[50px] w-full">
+    <div className="mb-[50px] max-w-[614px]">
       <label className="block text-title-18-bold text-black-80 mb-1">
         운영 시간
       </label>
