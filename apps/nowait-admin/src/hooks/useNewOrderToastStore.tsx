@@ -1,8 +1,11 @@
 import { create } from "zustand";
 
+type OrderStatus = "WAITING_FOR_PAYMENT" | "COOKING" | "COOKED";
+
 type Toast = {
   id: string;
   orderId: number;
+  status: OrderStatus;
   title: string;
   body: string;
   meta?: {
@@ -45,8 +48,9 @@ export const useNewOrderToastStore = create<S>((set, get) => ({
     if (dismissed.has(t.id)) return;
     // 중복 방지
     if (get().toasts.some((x) => x.id === t.id)) return;
-    set((s) => ({ toasts: [t, ...s.toasts].slice(0, 3) }));
-
+    set((s) => ({
+      toasts: [...s.toasts, t],
+    }));
     // 사운드 (선택)
     try {
       const audio =

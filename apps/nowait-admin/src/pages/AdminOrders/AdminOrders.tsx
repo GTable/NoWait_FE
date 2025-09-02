@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { PaymentCard, CookCard, CookedCard } from "./OrderCard";
 import { DetailCard } from "./DetailCard";
 import refreshIcon from "../../assets/refresh.svg";
@@ -27,6 +27,15 @@ const AdminOrders = () => {
   const windowWidth = useWindowWidth();
   const isMobile = windowWidth <= 450;
   const storeId = Number(storeIdParam);
+  const { search } = useLocation();
+  const qs = new URLSearchParams(search); // ← 추가\
+  const navigate = useNavigate();
+  const queryOrderId = qs.get("order"); // ← 추가
+  const queryStatus = qs.get("status") as
+    | "WAITING_FOR_PAYMENT"
+    | "COOKING"
+    | "COOKED"
+    | null;
 
   // API에서 주문 데이터 가져오기
   const {
@@ -87,14 +96,17 @@ const AdminOrders = () => {
   // PaymentDetail 닫기 핸들러
   const handleClosePaymentDetail = () => {
     setSelectedPayment(null);
-    // 약간의 딜레이 후 스크롤 위치 복원
     setTimeout(() => {
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = savedScrollPosition;
       }
     }, 0);
+    const p = new URLSearchParams(location.search);
+    p.delete("order");
+    // status는 유지하고 싶으면 남겨도 됨. 지우고 싶다면 다음 줄도 활성화:
+    // p.delete("status");
+    navigate({ search: p.toString() }, { replace: true });
   };
-
   // CookedCard 클릭 핸들러
   const handleCookedCardClick = (cooked: Order) => {
     if (scrollContainerRef.current) {
@@ -106,10 +118,49 @@ const AdminOrders = () => {
     setSelectedPayment(cooked);
   };
 
+  const openDetail = (order: Order) => {
+    if (scrollContainerRef.current) {
+      setSavedScrollPosition(scrollContainerRef.current.scrollTop);
+      scrollContainerRef.current.scrollTop = 0;
+    }
+    setSelectedPayment(order);
+
+    const p = new URLSearchParams(location.search);
+    p.set("order", String(order.id));
+    p.set("status", order.status); // 상태 동기화
+    navigate({ search: p.toString() }, { replace: true });
+  };
+
+  useEffect(() => {
+    if (!queryStatus) return;
+
+    // 데스크톱 탭
+    if (queryStatus === "COOKED") {
+      setActiveTab("조리 완료");
+    } else {
+      setActiveTab("전체");
+    }
+
+    // 모바일 탭
+    if (queryStatus === "WAITING_FOR_PAYMENT") setMobileActiveTab("입금 대기");
+    else if (queryStatus === "COOKING") setMobileActiveTab("조리 중");
+    else if (queryStatus === "COOKED") setMobileActiveTab("조리 완료");
+  }, [queryStatus]);
+
+  useEffect(() => {
+    if (!orders?.length || !queryOrderId) return;
+
+    const found = orders.find((o) => String(o.id) === queryOrderId);
+    if (!found) return;
+
+    openDetail(found);
+  }, [orders, queryOrderId]);
+
   // 탭 변경 시 Detail 닫기
   useEffect(() => {
+    if (queryOrderId) return;
     setSelectedPayment(null);
-  }, [activeTab, mobileActiveTab]);
+  }, [activeTab, mobileActiveTab, queryOrderId]);
 
   return (
     <div
@@ -184,10 +235,6 @@ const AdminOrders = () => {
           </div>
         )}
 
-        {/* <div
-          className="flex icon-m items-center justify-center cursor-pointer"
-          onClick={handleRefresh}
-        > */}
         <button
           type="button"
           aria-label="새로고침"
@@ -203,7 +250,6 @@ const AdminOrders = () => {
             className={`${isRefreshing ? "animate-[spin_0.6s_linear_1]" : ""}`}
           />
         </button>
-        {/* </div> */}
       </div>
 
       {/* 데스크톱 버전 */}
