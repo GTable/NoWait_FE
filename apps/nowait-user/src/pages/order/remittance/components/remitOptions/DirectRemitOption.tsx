@@ -3,12 +3,13 @@ import SlideToggle from "../SlideToggle";
 import useThrottle from "../../../../../hooks/useThrottle";
 import { useToastStore } from "../../../../../stores/toastStore";
 import { accountFormat } from "../../../../../utils/accountFormat";
+import BankImage from "../../../../../assets/bankImage.png";
 
 interface PropsType {
   remitValue: string;
   setRemitValue: React.Dispatch<React.SetStateAction<string>>;
   totalPrice: number;
-  account: string;
+  account?: string;
 }
 const DirectRemitOption = ({
   remitValue,
@@ -59,7 +60,8 @@ const DirectRemitOption = ({
           <div className="flex items-center gap-2">
             <img
               className="w-[38px] h-[38px] rounded-full"
-              src="/beef.png"
+              src={BankImage}
+              alt="계좌이체 은행 이미지"
             ></img>
             <div>
               <h1 className="text-14-semibold text-black-80">

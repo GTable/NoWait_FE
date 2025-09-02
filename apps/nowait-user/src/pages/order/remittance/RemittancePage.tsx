@@ -33,6 +33,7 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data?.response,
   });
+  
   // 정보 없으면 홈으로 이동
   useEffect(() => {
     if (cart.length === 0) {
