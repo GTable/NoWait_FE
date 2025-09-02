@@ -9,7 +9,7 @@ export const initSentry = () => {
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),
     ],
-    tracesSampleRate: 1.0,
+    tracesSampleRate: 0.6,
     tracePropagationTargets: [
       "https://nowait-user.vercel.app/",
       "http://localhost:5173",
