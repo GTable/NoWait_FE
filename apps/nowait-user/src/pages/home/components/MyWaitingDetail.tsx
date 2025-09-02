@@ -4,6 +4,7 @@ import type { WaitingItem } from "../../../types/WaitingItem";
 import MainCard from "./MainCard";
 import CancelWaitingModal from "./CancelWaitingModal";
 import { useCancelWaiting } from "../../../hooks/useCancelWaiting";
+import Close from "../../../assets/icon/close.svg?react";
 
 interface MyWaitingDetailProps {
   onClose?: () => void;
@@ -274,12 +275,15 @@ const MyWaitingDetail = ({
             </div>
           </div>
 
-          <div className="flex w-full px-5 py-8">
+          <div className="flex w-full px-5 py-8 items-center justify-center">
             <button
-              className="flex w-full rounded-xl bg-white-100 border border-black-25 py-5 justify-center items-center"
+              className="flex justify-center items-center gap-1"
               onClick={handleCancelWaitingClick}
             >
-              <div className="flex text-[17px] font-semibold tracking-normal text-black-60">
+              <div className="flex items-center justify-center w-6 h-6">
+                <Close className="text-black-70" />
+              </div>
+              <div className="flex text-[16px] font-semibold tracking-normal text-black-70">
                 대기 취소
               </div>
             </button>
