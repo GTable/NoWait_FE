@@ -4,7 +4,7 @@ import type { Order } from "../types/order";
 import { useNewOrderToastStore } from "./useNewOrderToastStore";
 
 // “신규” 기준: 먼저 본 적 없는 주문 ID && (선택) 초기 상태
-const isInitialStatus = (o: Order) => o.status === "WAITING_FOR_PAYMENT"; // 필요 시 조건 조절
+const isInitialStatus = (o: Order) => o.status === "WAITING_FOR_PAYMENT";
 
 export function useDetectNewOrders(orders: Order[] | undefined) {
   const seenIdsRef = useRef<Set<number>>(new Set());
@@ -18,7 +18,6 @@ export function useDetectNewOrders(orders: Order[] | undefined) {
   useEffect(() => {
     if (!orders) return;
 
-    // 첫 로딩은 베이스라인만 세팅(알림 X)
     if (!initializedRef.current) {
       seenIdsRef.current = new Set(orders.map((o) => o.id));
       const maxCreated = Math.max(
@@ -44,6 +43,7 @@ export function useDetectNewOrders(orders: Order[] | undefined) {
         pushToast({
           id: String(o.id),
           orderId: o.id,
+          status: o.status,
           title: "신규 주문 도착",
           body: `테이블 ${o.tableId} / ${o.depositorName ?? "고객"}`,
           meta: {
