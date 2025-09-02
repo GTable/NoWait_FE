@@ -171,6 +171,10 @@ const DetailCard = ({
           {type === "cooking" ? (
             <ModalComponent
               orderId={orderId}
+              tableNumber={tableNumber}
+              depositorName={depositorName}
+              totalAmount={totalAmount}
+              timeText={timeText}
               onClose={handleCloseModal}
               onSuccess={onSuccess}
             />
