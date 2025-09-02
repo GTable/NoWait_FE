@@ -1,10 +1,14 @@
 import ArrowRight from "../../assets/arrow_back.svg?react";
 import { useState } from "react";
-import { PaymentCheckModal, CookedModal } from "./OrderPageModal";
+import {
+  PaymentCheckModal,
+  CookedModal,
+  CookCompleteModal,
+} from "./OrderPageModal";
 import type { MenuDetails } from "../../types/order";
 import { getTableBackgroundColor } from "../../utils/tableColors";
 
-type DetailType = "payment" | "cooked";
+type DetailType = "payment" | "cooking" | "cooked";
 
 interface DetailCardProps {
   type: DetailType;
@@ -50,6 +54,16 @@ const DetailCard = ({
         amountLabel: "입금 금액",
         actionText: "입금 확인",
         modalComponent: PaymentCheckModal,
+        buttonStyle:
+          "flex px-2.5 py-1.25 bg-black-20 items-center justify-center rounded-lg w-full h-12 text-14-semibold text-black-70 cursor-pointer",
+      };
+    } else if (type === "cooking") {
+      return {
+        title: "조리 중 주문",
+        depositorLabel: "주문자",
+        amountLabel: "주문 금액",
+        actionText: "조리 완료",
+        modalComponent: CookCompleteModal,
         buttonStyle:
           "flex px-2.5 py-1.25 bg-black-20 items-center justify-center rounded-lg w-full h-12 text-14-semibold text-black-70 cursor-pointer",
       };
@@ -154,15 +168,23 @@ const DetailCard = ({
           className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
           onClick={handleCloseModal}
         >
-          <ModalComponent
-            orderId={orderId}
-            tableNumber={tableNumber}
-            depositorName={depositorName}
-            totalAmount={totalAmount}
-            timeText={timeText}
-            onClose={handleCloseModal}
-            onSuccess={onSuccess}
-          />
+          {type === "cooking" ? (
+            <ModalComponent
+              orderId={orderId}
+              onClose={handleCloseModal}
+              onSuccess={onSuccess}
+            />
+          ) : (
+            <ModalComponent
+              orderId={orderId}
+              tableNumber={tableNumber}
+              depositorName={depositorName}
+              totalAmount={totalAmount}
+              timeText={timeText}
+              onClose={handleCloseModal}
+              onSuccess={onSuccess}
+            />
+          )}
         </div>
       )}
     </>
