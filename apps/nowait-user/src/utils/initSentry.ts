@@ -10,6 +10,9 @@ export const initSentry = () => {
       Sentry.replayIntegration(),
       Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] }),
     ],
+
+    enableLogs: true,
+
     tracesSampleRate: 0.6,
     tracePropagationTargets: [
       "https://nowait-user.vercel.app/",
