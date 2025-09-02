@@ -151,6 +151,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     adminDisplayName: string;
     description: string;
     price: string;
+    image?: File | string;
   }) => {
     const payload = {
       menuId: updated.id,
@@ -172,6 +173,25 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
         console.log("메뉴 수정에 실패했습니다.");
       },
     });
+
+    if (updated.image && updated.image instanceof File) {
+      uploadMenuImage(
+        { menuId: updated.id, image: updated.image },
+        {
+          onSuccess: (imgData) => {
+            const url = imgData.url;
+            setMenus((prev) =>
+              prev.map((m) =>
+                m.id === updated.id ? { ...m, imageUrl: url } : m
+              )
+            );
+          },
+          onError: () => {
+            console.log("이미지 업로드 실패");
+          },
+        }
+      );
+    }
   };
 
   const handleDeleteMenu = () => {
