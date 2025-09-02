@@ -9,7 +9,7 @@ interface PropsType {
   remitValue: string;
   setRemitValue: React.Dispatch<React.SetStateAction<string>>;
   totalPrice: number;
-  account: string;
+  account?: string;
 }
 const DirectRemitOption = ({
   remitValue,
