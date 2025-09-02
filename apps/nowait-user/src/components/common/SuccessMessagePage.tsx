@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CenteredContentLayout from "../layout/CenteredContentLayout";
 
 interface PropsType {
-  imageSrc: string;
+  ImageSrc: React.ComponentType<React.SVGProps<SVGSVGElement>> | string;
   imageAlt: string;
   width?: string;
   height?: string;
@@ -14,7 +14,7 @@ interface PropsType {
 }
 
 const SuccessMessagePage = ({
-  imageSrc,
+  ImageSrc,
   imageAlt,
   width = "150px",
   height = "150px",
@@ -25,9 +25,14 @@ const SuccessMessagePage = ({
 }: PropsType) => {
   const navigate = useNavigate();
   const { storeId } = useParams();
+
   return (
     <CenteredContentLayout onClick={onClick} buttonText={buttonText}>
-      <img src={imageSrc} alt={imageAlt} width={width} height={height} />
+      {typeof ImageSrc === "string" ? (
+        <img src={ImageSrc} alt={imageAlt} width={width} height={height} />
+      ) : (
+        <ImageSrc width={width} height={height} aria-label={imageAlt} />
+      )}
       <h1 className="text-headline-24-bold mb-2">{title}</h1>
       <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-3.5">
         {message}
