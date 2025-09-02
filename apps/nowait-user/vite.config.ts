@@ -16,10 +16,14 @@ export default defineConfig(({ mode }) => {
       react(),
       svgr(),
       sentryVitePlugin({
-        org: "nowait",
-        project: "nowait-user-fe",
+        authToken: env.SENTRY_AUTH_TOKEN,
+        org: "stayready",
+        project: "nowait-user",
 
-        authToken: process.env.SENTRY_AUTH_TOKEN,
+        sourcemaps: {
+          assets: "./dist/**",
+          filesToDeleteAfterUpload: "./dist/**/*.map",
+        },
       }),
     ],
     build: {
