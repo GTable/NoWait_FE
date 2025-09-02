@@ -8,6 +8,7 @@ import { useGetOrderList } from "../../hooks/useGetOrderList";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import type { Order } from "../../types/order";
 import { DropdownLoader } from "@repo/ui";
+import { useNewOrderToastStore } from "../../hooks/useNewOrderToastStore";
 
 const AdminOrders = () => {
   const { storeId: storeIdParam } = useParams<{ storeId: string }>();
@@ -44,6 +45,7 @@ const AdminOrders = () => {
     error,
     refetch,
   } = useGetOrderList(storeId);
+  const purgeNonWaiting = useNewOrderToastStore((s) => s.purgeNonWaiting);
 
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
@@ -165,6 +167,9 @@ const AdminOrders = () => {
     if (queryOrderId) return;
     setSelectedPayment(null);
   }, [activeTab, mobileActiveTab, queryOrderId]);
+  useEffect(() => {
+    if (orders?.length) purgeNonWaiting(orders);
+  }, [orders, purgeNonWaiting]);
 
   return (
     <div

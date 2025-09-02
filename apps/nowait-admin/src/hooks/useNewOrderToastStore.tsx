@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { Order } from "../types/order";
 
 type OrderStatus = "WAITING_FOR_PAYMENT" | "COOKING" | "COOKED";
 
@@ -21,6 +22,7 @@ type S = {
   toasts: Toast[];
   pushToast: (t: Toast) => void;
   removeToast: (id: string) => void;
+  purgeNonWaiting: (orders: Order[]) => void;
 };
 
 const DISMISSED_KEY = "toasts:dismissed";
@@ -71,5 +73,16 @@ export const useNewOrderToastStore = create<S>((set, get) => ({
       dismissed.add(id);
       saveDismissed(dismissed);
     }
+  },
+  purgeNonWaiting: (orders) => {
+    const waitingIds = new Set(
+      orders.filter((o) => o.status === "WAITING_FOR_PAYMENT").map((o) => o.id)
+    );
+    const { toasts, removeToast } = get();
+    toasts.forEach((t) => {
+      if (!waitingIds.has(t.orderId)) {
+        removeToast(t.id);
+      }
+    });
   },
 }));
