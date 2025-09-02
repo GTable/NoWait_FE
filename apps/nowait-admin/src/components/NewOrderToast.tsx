@@ -1,5 +1,5 @@
 // src/components/NewOrderToast.tsx
-import React from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNewOrderToastStore } from "../hooks/useNewOrderToastStore";
 import CloseButton from "./closeButton";
@@ -97,16 +97,33 @@ export default function NewOrderToast() {
   const navigate = useNavigate();
   const storeId = localStorage.getItem("storeId") ?? "";
 
+  const dismissedSet = useMemo(() => {
+    try {
+      const raw = localStorage.getItem("toasts:dismissed");
+      return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+    } catch {
+      return new Set<string>();
+    }
+  }, [toasts]);
+
+  const visibles = useMemo(() => {
+    const res: typeof toasts = [];
+    for (const t of toasts) {
+      if (!dismissedSet.has(t.id)) res.push(t);
+      if (res.length === 3) break;
+    }
+    return res; // [1,2,3] → 3 삭제 시 [1,2,4] → 다음 [1,2,4], 4 삭제 시 [1,2,5] ...
+  }, [toasts, dismissedSet]);
+
   return (
     <>
-      {/* 전역 오디오: map 내부 중복 id 제거하세요 */}
       <audio
         id="new-order-audio"
         src="/assets/sound/newOrder.mp3"
         preload="auto"
       />
       <div className="fixed top-4 right-4 z-[1000] flex flex-col gap-2 pointer-events-none">
-        {toasts.map((t) => {
+        {visibles.map((t) => {
           const tableId = t.meta?.tableId as number | undefined;
           const orderName = t.meta?.orderName ?? "신규 주문";
           const menuDetails = (t.meta?.menuDetails ?? {}) as Record<
@@ -134,7 +151,14 @@ export default function NewOrderToast() {
             <SwipeToDismiss
               key={t.id}
               onDismiss={() => removeToast(t.id)}
-              onTap={() => navigate(`/admin/orders/${storeId}`)} // ← 클릭 이동은 여기서!
+              onTap={() => {
+                const params = new URLSearchParams();
+                params.set("order", String(t.orderId));
+                navigate({
+                  pathname: `/admin/orders/${storeId}`,
+                  search: params.toString(),
+                });
+              }}
             >
               <div
                 role="alert"
