@@ -19,7 +19,7 @@ export const createOrder = async (
   tableId: number,
   payload: OrderType
 ): Promise<CreateOrderServerResponse> => {
-  const res = await api.post(`/orders/create/${publicCode}/${tableId}`, payload);
+  const res = await api.post(`${API_URI}/orders/create/${publicCode}/${tableId}`, payload);
   return res.data;
 };
 
@@ -28,7 +28,7 @@ export const getOrderDetails = async (
   publicCode: string,
   tableId: number
 ): Promise<OrderDetailsServerResponse> => {
-  const res = await api.get(`/orders/items/${publicCode}/${tableId}`);
+  const res = await api.get(`${API_URI}/orders/items/${publicCode}/${tableId}`);
   return res.data;
 };
 
