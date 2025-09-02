@@ -8,6 +8,7 @@ export const initSentry = () => {
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),
+      Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] }),
     ],
     tracesSampleRate: 0.6,
     tracePropagationTargets: [
