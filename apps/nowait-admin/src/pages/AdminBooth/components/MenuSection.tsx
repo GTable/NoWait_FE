@@ -294,8 +294,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                       const rowContent = (
                         <div
                           className="flex justify-between items-center py-4"
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
                           style={lockedStyle}
                         >
                           <div
@@ -340,16 +338,9 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                         <SwipeableRow
                           ref={provided.innerRef}
                           disabled={editMode}
-                          onDelete={() => {
-                            // 즉시 삭제
+                          onDeleteClick={() => {
                             setSelectedMenu(menu);
-                            deleteMenu(menu.id, {
-                              onSuccess: () => {
-                                setMenus((prev) =>
-                                  prev.filter((m) => m.id !== menu.id)
-                                );
-                              },
-                            });
+                            setIsRemoveModalOpen(true);
                           }}
                           contentProps={{
                             ...provided.draggableProps,

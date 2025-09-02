@@ -151,8 +151,8 @@ export default function NewOrderToast() {
                     신규 주문
                   </span>
                   <CloseButton
-                    width={10}
-                    height={10}
+                    width={9.41}
+                    height={9.41}
                     onClick={(e) => {
                       e.stopPropagation();
                       removeToast(t.id);

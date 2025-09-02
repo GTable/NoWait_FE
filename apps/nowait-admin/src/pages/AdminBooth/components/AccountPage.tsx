@@ -295,8 +295,10 @@ const AccountPage = () => {
   return (
     <div>
       {/* Guide Banner */}
-      <div className={`h-full ${isSmall ? "my-4" : "my-10"}`}>
-        <div className="h-full min-h-[60px]">
+      <div
+        className={`h-full ${isSmall ? "my-4" : "my-10"} flex justify-center`}
+      >
+        <div className={`h-full min-h-[60px] ${isMobile ? "w-[305px]" : ""}`}>
           <img
             src={banner}
             alt="배너"
