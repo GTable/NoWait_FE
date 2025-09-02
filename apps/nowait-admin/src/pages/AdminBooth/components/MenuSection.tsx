@@ -15,6 +15,26 @@ import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort"
 import { useVerticalLockStyle } from "../../../utils/useVerticalLockStyle";
 import { SwipeableRow } from "./Swipe/SwipeableRow";
 
+function lockVertical(
+  style?: React.CSSProperties
+): React.CSSProperties | undefined {
+  if (!style || !style.transform) return style;
+  const t = String(style.transform);
+  const m2d = t.match(/translate\((-?\d+\.?\d*)px,\s*(-?\d+\.?\d*)px\)/);
+  if (m2d) {
+    const [, , y] = m2d;
+    return { ...style, transform: `translate(0px, ${y}px)` };
+  }
+  const m3d = t.match(
+    /translate3d\((-?\d+\.?\d*)px,\s*(-?\d+\.?\d*)px,\s*(-?\d+\.?\d*)px\)/
+  );
+  if (m3d) {
+    const [, , y, z] = m3d;
+    return { ...style, transform: `translate3d(0px, ${y}px, ${z}px)` };
+  }
+  return style;
+}
+
 // 세 자리마다 , 붙여서 가격표시
 const formatNumber = (num: number) => {
   if (!num) return "";
@@ -201,12 +221,12 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     const reordered = Array.from(menus);
     const [removed] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, removed);
-    const next = reordered.map((m, i) => ({ ...m, sortOrder: i })); // 서버가 1-base면 i+1
+    const next = reordered.map((m, i) => ({ ...m, sortOrder: i }));
     setMenus(next);
 
     const body = next.map(({ id, sortOrder }) => ({
       menuId: id,
-      sortOrder, // 1-base면 sortOrder: sortOrder + 1
+      sortOrder,
     }));
     updateMenuSort(body, {
       onSuccess: (res) => {
@@ -287,17 +307,22 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                     isDragDisabled={!editMode}
                   >
                     {(provided) => {
-                      const lockedStyle = useVerticalLockStyle(
+                      const lockedStyle = lockVertical(
                         provided.draggableProps.style
                       );
 
-                      const rowContent = (
+                      return editMode ? (
+                        // ✅ 편집 모드: SwipeableRow 사용 안 함 (충돌 차단)
                         <div
-                          className="flex justify-between items-center py-4"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
                           style={lockedStyle}
+                          className="flex justify-between items-center py-4 w-full touch-pan-y select-none"
                         >
+                          {/* rowContent 대신, 핸들 아이콘에만 dragHandleProps를 붙여줘야 해 */}
                           <div
                             className="flex items-center w-full gap-4"
+                            // 편집 모드에선 클릭으로 모달 열리지 않게 막고 싶다면 아래 조건 유지
                             onClick={() => !editMode && openEditModal(menu)}
                           >
                             <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
@@ -317,37 +342,55 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             </div>
                           </div>
 
-                          <div className="text-black-60">
-                            {editMode ? (
-                              <img
-                                src={editOrderIcon}
-                                alt="순서 변경"
-                                className="w-5 h-5 cursor-grab"
-                                {...provided.dragHandleProps}
-                              />
-                            ) : (
-                              <ToggleSwitch
-                                isOn={menu.soldOut}
-                                toggle={() => toggleSoldOut(idx)}
-                              />
-                            )}
-                          </div>
+                          {/* ✨ 여기만 드래그 핸들! */}
+                          <img
+                            src={editOrderIcon}
+                            alt="순서 변경"
+                            className="w-5 h-5 cursor-grab select-none"
+                            {...provided.dragHandleProps}
+                          />
                         </div>
-                      );
-                      return (
+                      ) : (
+                        // ✅ 보기 모드: SwipeableRow로 스와이프 삭제
                         <SwipeableRow
                           ref={provided.innerRef}
-                          disabled={editMode}
+                          disabled={false}
                           onDeleteClick={() => {
                             setSelectedMenu(menu);
                             setIsRemoveModalOpen(true);
                           }}
                           contentProps={{
-                            ...provided.draggableProps,
+                            ...provided.draggableProps, // isDragDisabled=true라 드래그는 안됨
                             style: lockedStyle,
+                            className:
+                              "flex justify-between items-center py-4 w-full",
                           }}
                         >
-                          {rowContent}
+                          <div
+                            className="flex items-center w-full gap-4"
+                            onClick={() => openEditModal(menu)}
+                          >
+                            <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
+                              <img
+                                src={menu.imageUrl}
+                                className="w-full h-full object-cover"
+                                alt="placeholder"
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-16-semibold">
+                                {menu.name}
+                              </span>
+                              <span className="text-16-regular text-black-60">
+                                {formatNumber(menu.price)}원
+                              </span>
+                            </div>
+                          </div>
+
+                          <ToggleSwitch
+                            isOn={menu.soldOut}
+                            toggle={() => toggleSoldOut(idx)}
+                          />
                         </SwipeableRow>
                       );
                     }}
