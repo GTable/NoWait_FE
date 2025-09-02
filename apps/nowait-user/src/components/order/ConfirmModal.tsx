@@ -61,10 +61,10 @@ const ConfirmModal = ({
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="absolute left-1/2 bottom-8 -translate-x-1/2 w-[clamp(328px,calc(100%-32px),398px)] bg-white rounded-[20px] px-4 pt-9"
             >
-              <h1 className="whitespace-pre-line text-headline-22-bold mb-2">
+              <h1 className="whitespace-pre-line text-headline-22-bold mb-2 px-1">
                 {title}
               </h1>
-              <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-12">
+              <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-12 px-1">
                 {description}
               </h2>
               <Button fullWidth={true} textColor="#ffffff" onClick={open}>

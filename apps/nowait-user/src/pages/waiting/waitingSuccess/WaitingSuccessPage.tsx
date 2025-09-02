@@ -1,13 +1,13 @@
 import SuccessMessagePage from "../../../components/common/SuccessMessagePage";
 import { useNavigate } from "react-router-dom";
-import waitingSuccess from "../../../assets/waitingSuccess.png";
+import WaitingSuccess from "../../../assets/waitingSuccess.svg?react";
 
 const WaitingSuccessPage = () => {
   const navigate = useNavigate();
 
   return (
     <SuccessMessagePage
-      imageSrc={waitingSuccess}
+      ImageSrc={WaitingSuccess}
       imageAlt="대기 등록 완료 이미지"
       width="227px"
       height="150px"
