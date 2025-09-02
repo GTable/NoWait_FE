@@ -26,12 +26,12 @@ const EmptyPage = ({ mode, title, buttonText }: PropsType) => {
         <SmallActionButton
           mode={mode}
           type="button"
-          ariaLabel="메뉴 추가"
+          ariaLabel="주문하기"
           onClick={() => navigate(`/${storeId}`)}
         >
           <h1>{buttonText}</h1>
-          <span>
-            <Add className="w-4 h-4" fill="currentColor" />
+          <span className="block w-4 h-4 mb-0.5">
+            <Add className="w-full h-full" fill="currentColor" />
           </span>
         </SmallActionButton>
       </div>

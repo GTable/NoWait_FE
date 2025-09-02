@@ -1,6 +1,6 @@
 import { sumQuantity, sumTotalPrice } from "../../utils/sumUtils";
 import { useCartStore } from "../../stores/cartStore";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NumberFlow from "@number-flow/react";
 
 interface PropsType {
@@ -18,8 +18,7 @@ const TotalButton = ({
   const baseTotal = sumTotalPrice(cart);
   const [price, setPrice] = useState(baseTotal);
   const [trend, setTrend] = useState(0);
-  console.log(trend);
-  console.log(addedPrice);
+
   useEffect(() => {
     if (addedPrice !== undefined) {
       setTrend(1);
@@ -49,4 +48,4 @@ const TotalButton = ({
   );
 };
 
-export default TotalButton;
+export default React.memo(TotalButton)

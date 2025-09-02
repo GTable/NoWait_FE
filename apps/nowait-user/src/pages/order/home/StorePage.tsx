@@ -23,24 +23,30 @@ const StorePage = () => {
 
   //메뉴 추가 시 toast 띄우기
   useEffect(() => {
-    if (added) showToast("메뉴를 담았습니다");
-    navigate(location.pathname, { replace: true });
+    if (added) {
+      showToast("메뉴를 담았습니다");
+      navigate(location.pathname, { replace: true });
+    }
   }, [added]);
 
-    const { data: menus, isLoading } = useQuery({
+  const { data: menus, isLoading } = useQuery({
     queryKey: ["storeMenus", storeId],
     queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response,
   });
 
-  console.log(menus,"asd")
+  console.log(menus, "asd");
   return (
     <div>
       <div className="flex flex-col flex-grow pb-[112px] min-h-dvh pt-7.5 px-5">
         <div className="flex-grow">
-          <StoreHeader storeName={menus?.storeName} isLoading={isLoading}/>
+          <StoreHeader storeName={menus?.storeName} isLoading={isLoading} />
           <SectionDivider />
-          <MenuList mode="order" menus={menus?.menuReadDto} isLoading={isLoading}/>
+          <MenuList
+            mode="order"
+            menus={menus?.menuReadDto}
+            isLoading={isLoading}
+          />
         </div>
       </div>
       {cart && cart.length > 0 && (
