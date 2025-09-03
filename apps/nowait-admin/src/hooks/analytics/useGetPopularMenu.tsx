@@ -7,6 +7,7 @@ interface PopularMenuItem {
   totalSalesCount: number;
   boothName: string;
   soldCount: number;
+  imageUrl: string;
 }
 
 interface PopularMenuResponse {
@@ -25,6 +26,6 @@ export const useGetPopularMenu = () => {
   return useQuery({
     queryKey: ["popular-menu"],
     queryFn: fetchPopularMenu,
-    staleTime: 1000 * 60 * 5, // 5분 캐싱
+    staleTime: 1000 * 60 * 5,
   });
 };
