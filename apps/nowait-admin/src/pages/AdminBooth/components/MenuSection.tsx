@@ -331,7 +331,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                       );
 
                       return editMode ? (
-                        // ✅ 편집 모드: SwipeableRow 사용 안 함 (충돌 차단)
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
