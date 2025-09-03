@@ -13,7 +13,7 @@ interface PropsType {
   name: string;
   departmentName: string;
   storeId: number;
-  publicCode:string;
+  publicCode: string;
 }
 
 const BoothListItem = ({
@@ -23,7 +23,7 @@ const BoothListItem = ({
   name,
   departmentName,
   storeId,
-  publicCode
+  publicCode,
 }: PropsType) => {
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
     {
@@ -62,7 +62,10 @@ const BoothListItem = ({
       </Link>
       <div className="flex items-start justify-between py-3">
         <div>
-          <Link to={`/store/${publicCode}`} className="flex items-center gap-2.5">
+          <Link
+            to={`/store/${publicCode}`}
+            className="flex items-center gap-2.5"
+          >
             <DepartmentImage width="40px" height="40px" src={profileImage} />
             <div className="flex flex-col justify-between">
               <h1 className="text-title-16-bold text-black-90">{name}</h1>
@@ -75,9 +78,6 @@ const BoothListItem = ({
         <button
           className="!opacity-100 !cursor-pointer mr-[5px]"
           onClick={handleBookmarkButton}
-          disabled={
-            createBookmarkMutate.isPending || deleteBookmarkMutate.isPending
-          }
         >
           <BookmarkIcon isBookmarked={isBookmarked} />
         </button>

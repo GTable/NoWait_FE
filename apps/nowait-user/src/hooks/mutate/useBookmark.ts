@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBookmark, deleteBookmark } from "../../api/reservation";
 
+
 export const useBookmarkMutation = (
   { withInvalidate = true } = {},
   storeId?: number
@@ -11,7 +12,6 @@ export const useBookmarkMutation = (
   const createBookmarkMutate = useMutation({
     mutationFn: async () => {
       const controller = new AbortController();
-      console.log(controller);
       return createBookmark(storeId!, controller.signal);
     },
     // mutation 전에 작업 실행(UI 먼저 업데이트하기)

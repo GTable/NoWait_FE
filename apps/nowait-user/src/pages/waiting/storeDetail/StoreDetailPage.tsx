@@ -149,9 +149,6 @@ const StoreDetailPage = () => {
           borderColor="#ececec"
           buttonType="icon"
           onClick={handleBookmarkButton}
-          disabled={
-            createBookmarkMutate.isPending || deleteBookmarkMutate.isPending
-          }
         >
           <BookmarkIcon isBookmarked={isBookmarked} />
         </Button>
