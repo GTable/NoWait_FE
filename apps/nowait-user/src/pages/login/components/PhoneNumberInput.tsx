@@ -58,7 +58,7 @@ const PhoneNumberInput = ({
   };
 
   return (
-    <div className="flex w-full items-center justify-between px-3.5 py-5 rounded-[12px] border-black-25 bg-black-15">
+    <div className="relative flex w-full items-center px-3.5 py-5 rounded-[12px] border-black-25 bg-black-15">
       <input
         type="tel"
         inputMode="numeric"
@@ -66,10 +66,14 @@ const PhoneNumberInput = ({
         value={currentValue}
         onChange={handlePhoneNumberChange}
         placeholder={placeholder}
-        className={className}
+        className={`w-full pr-8 ${className}`}
+        style={{
+          WebkitAppearance: "none",
+          MozAppearance: "textfield",
+        }}
       />
       <div
-        className="flex items-center justify-center w-6 h-6 cursor-pointer"
+        className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6 cursor-pointer"
         onClick={handleClearPhoneNumber}
       >
         <XCircle className="icons-m" />
