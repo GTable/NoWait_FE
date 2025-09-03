@@ -16,7 +16,7 @@ interface WaitingCardProps {
 interface StoreCardProps {
   type: "store";
   storeId: number;
-  publicCode : string;
+  publicCode: string;
   name: string;
   departmentName: string;
   profileImageUrl: string;
@@ -319,7 +319,7 @@ const StoreCardComponent = ({
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex flex-row gap-2 items-center min-w-0">
-          <div className="text-title-16-semibold text-black-90 text-start truncate flex-shrink min-w-0">
+          <div className="text-title-16-semibold text-black-90 text-start truncate flex-shrink max-sm:max-w-[200px]">
             {name}
           </div>
           {status === "open" && (waitingCount || 0) > 0 ? (
