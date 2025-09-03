@@ -58,6 +58,11 @@ export const createReservation = async (
   return res.data;
 };
 
+export const getMyReservations = async () => {
+  const res = await UserApi.get("/reservations/my/waitings");
+  return res.data;
+};
+
 // 북마크 조회
 export const getBookmark = async (): Promise<BookmarkResponse> => {
   const res = await UserApi.get("/bookmarks");

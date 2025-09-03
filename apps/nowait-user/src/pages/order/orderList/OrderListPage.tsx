@@ -132,16 +132,6 @@ const OrderListPage = () => {
               >
                 주문 계속하기
               </Button>
-              {/* <Button
-                  onClick={() => {
-                    navigate(-1);
-                    soldOutMenus?.forEach((menu: CartType) =>
-                      removeFromCart(menu.menuId)
-                    );
-                  }}
-                >
-                  더 추가하기
-                </Button> */}
             </div>
           </div>
         </Portal>
