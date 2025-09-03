@@ -1,9 +1,5 @@
 // 주문 상태 타입
-export type OrderStatus =
-  | "WAITING_FOR_PAYMENT"
-  | "COOKING"
-  | "COOKED"
-  | "CANCELLED";
+export type OrderStatus = "WAITING_FOR_PAYMENT" | "COOKING" | "COOKED";
 
 // 메뉴 상세 정보 타입
 export interface MenuDetail {
