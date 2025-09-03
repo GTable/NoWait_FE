@@ -20,6 +20,7 @@ const AdminAnalytics = () => {
   const formatted = today.toISOString().slice(0, 10);
   const width = useWindowWidth();
   const isTablet = width >= 768;
+  const isMobile = width < 432;
   const { data: boothRank } = useGetTopSales();
   const { data: sales } = useGetSalesByDate(formatted);
   const { data: popularMenu } = useGetPopularMenu();
@@ -48,9 +49,14 @@ const AdminAnalytics = () => {
   console.log(popularMenu, "인기메뉴 원래데이터");
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div
+      className={`w-full flex flex-col items-center ${
+        isMobile ? "min-h-[1020px] " : ""
+      }`}
+    >
       <HeaderStatus
         isTablet={isTablet}
+        isMobile={isMobile}
         sales={sales}
         popularMenu={popularMenu}
         saleDisabled={saleDisabled}
