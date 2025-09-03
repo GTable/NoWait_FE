@@ -140,21 +140,19 @@ export function WaitingCard({
         {/* 입장인원 */}
         <div className="flex flex-col py-2 w-[15%]">
           <div className="text-14-medium text-black-60 mb-1">인원</div>
-          <div className="text-17-bold text-black-80">{peopleCount}명</div>
+          <div className="text-17-bold text-black-85">{peopleCount}명</div>
         </div>
         <div className="w-px bg-black-10 mr-[5%]" />
         {/* 이름 */}
         <div className="flex flex-col py-2 w-[25%]">
           <div className="text-14-medium text-black-60 mb-1">이름</div>
-          <div className="text-17-semibold text-black-80">
-            {truncateName(name)}
-          </div>
+          <div className="text-17-bold text-black-85">{truncateName(name)}</div>
         </div>
         <div className="w-px bg-black-10 mr-[5%]" />
         {/* 전화번호 */}
         <div className="flex flex-col py-2 w-[50%]">
           <div className="text-14-medium text-black-60 mb-1">전화번호</div>
-          <div className="text-17-semibold text-black-80">{phone}</div>
+          <div className="text-17-bold text-black-85">{phone}</div>
         </div>
       </div>
 
@@ -164,9 +162,10 @@ export function WaitingCard({
           <>
             <button
               onClick={onCall}
-              className="w-[60%] bg-[#FFF0EB] text-15-semibold text-[#FF6736] py-2 rounded-[8px] flex justify-center items-center gap-1"
+              className="w-[60%] bg-[#FFF0EB] py-2 rounded-[8px] flex justify-center items-center gap-1"
             >
-              <img src={callIcon} /> 호출
+              <img src={callIcon} />{" "}
+              <span className="text-[#FF6736] text-15-semibold">호출</span>
             </button>
             <button
               onClick={onEnter}

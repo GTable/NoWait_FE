@@ -80,14 +80,14 @@ body,
 
 /* toast 폰트 */
 
-.text-13-semibold {
+.toast-13-semibold {
   font-size: 13px;
   line-height: 144%;
   letter-spacing: 0%;
   font-weight: 600;
 }
 
-.text-18-semibold {
+.toast-18-semibold {
   color: white;
   font-size: 18px;
   line-height: 136%;
@@ -95,7 +95,7 @@ body,
   font-weight: 600;
 }
 
-.text-13-medium {
+.toast-13-medium {
   color: #666666;
   font-size: 13px;
   line-height: 100%;
@@ -103,7 +103,7 @@ body,
   font-weight: 500;
 }
 
-.text-15-semibold {
+.toast-15-semibold {
   color: #222222;
   font-size: 15px;
   line-height: 100%;
