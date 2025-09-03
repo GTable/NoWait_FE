@@ -11,8 +11,6 @@ interface PhoneNumberInputProps {
 const PhoneNumberInput = ({
   value: controlledValue,
   onChange,
-  placeholder = "전화번호 입력",
-  className = "text-title-20-semibold text-black-90 leading-[144%] tracking-[-0.01em] placeholder:text-black-50 outline-none focus:outline-none",
 }: PhoneNumberInputProps) => {
   const [internalValue, setInternalValue] = useState("");
 
@@ -65,12 +63,8 @@ const PhoneNumberInput = ({
         pattern="[0-9]*"
         value={currentValue}
         onChange={handlePhoneNumberChange}
-        placeholder={placeholder}
-        className={`w-full pr-8 ${className}`}
-        style={{
-          WebkitAppearance: "none",
-          MozAppearance: "textfield",
-        }}
+        placeholder="전화번호 입력"
+        className="w-full text-title-20-semibold text-black-90 leading-[144%] tracking-[-0.01em] placeholder:text-black-50 outline-none focus:outline-none"
       />
       <div
         className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6 cursor-pointer"
