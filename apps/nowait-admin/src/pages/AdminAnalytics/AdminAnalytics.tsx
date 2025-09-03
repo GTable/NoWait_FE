@@ -45,8 +45,10 @@ const AdminAnalytics = () => {
         }))
       : [];
 
+  console.log(popularMenu, "인기메뉴 원래데이터");
+
   return (
-    <div className="w-full flex flex-col items-center justify-center ">
+    <div className="w-full flex flex-col items-center justify-center">
       <HeaderStatus
         isTablet={isTablet}
         sales={sales}

@@ -14,6 +14,7 @@ interface HeaderStatusProps {
     menuId: number;
     menuName: string;
     soldCount: number;
+    imageUrl?: string;
   }[];
   saleDisabled: boolean;
   poupularMenuDisabled: boolean;
@@ -116,12 +117,20 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
           )}
         </div>
 
-        <ul>
+        <ul className="mt-[25px]">
           {!poupularMenuDisabled &&
             (popularMenu ?? []).slice(0, 5).map((menu, i) => (
-              <li key={menu.menuId} className="flex justify-between h-[52px]">
-                <span className="flex text-16-bold gap-[10px]">
-                  {i + 1} <p className="text-16-semibold">{menu.menuName}</p>
+              <li key={menu.menuId} className="flex  justify-between h-[52px]">
+                <span className="flex text-16-bold items-center gap-[10px]">
+                  {i + 1}{" "}
+                  <div
+                    className={`h-9 w-9 rounded-[8px] overflow-hidden ${
+                      menu.imageUrl ?? "bg-[#788FB6]"
+                    }`}
+                  >
+                    <img src={menu.imageUrl} className="object-cover" />
+                  </div>
+                  <p className="text-16-semibold">{menu.menuName}</p>
                 </span>
                 <span className="text-16-medium">{menu.soldCount}개</span>
               </li>
