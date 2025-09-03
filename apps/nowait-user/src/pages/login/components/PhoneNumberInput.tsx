@@ -58,7 +58,7 @@ const PhoneNumberInput = ({
   };
 
   return (
-    <div className="flex items-center justify-between px-3.5 py-5 rounded-[12px] border-black-25 bg-black-15">
+    <div className="flex w-full items-center justify-between px-3.5 py-5 rounded-[12px] border-black-25 bg-black-15">
       <input
         type="tel"
         inputMode="numeric"
