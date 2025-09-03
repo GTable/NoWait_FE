@@ -45,6 +45,12 @@ const DetailCard = ({
     setShowModal(false);
   };
 
+  const handleModalSuccess = () => {
+    setShowModal(false);
+    onSuccess?.();
+    onClose(); // 디테일 화면도 닫기
+  };
+
   // 타입에 따른 설정
   const getConfig = () => {
     if (type === "payment") {
@@ -168,27 +174,15 @@ const DetailCard = ({
           className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
           onClick={handleCloseModal}
         >
-          {type === "cooking" ? (
-            <ModalComponent
-              orderId={orderId}
-              tableNumber={tableNumber}
-              depositorName={depositorName}
-              totalAmount={totalAmount}
-              timeText={timeText}
-              onClose={handleCloseModal}
-              onSuccess={onSuccess}
-            />
-          ) : (
-            <ModalComponent
-              orderId={orderId}
-              tableNumber={tableNumber}
-              depositorName={depositorName}
-              totalAmount={totalAmount}
-              timeText={timeText}
-              onClose={handleCloseModal}
-              onSuccess={onSuccess}
-            />
-          )}
+          <ModalComponent
+            orderId={orderId}
+            tableNumber={tableNumber}
+            depositorName={depositorName}
+            totalAmount={totalAmount}
+            timeText={timeText}
+            onClose={handleCloseModal}
+            onSuccess={handleModalSuccess}
+          />
         </div>
       )}
     </>

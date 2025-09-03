@@ -1,13 +1,18 @@
+export interface ProfileImage {
+  id: number;
+  storeId: number;
+  imageUrl: string;
+  imageType: string;
+}
+
 export interface SearchStore {
   storeId: number;
-  publicCode : string;
+  publicCode: string;
   departmentId: number;
   departmentName: string;
   name: string;
-  location: string;
-  description: string;
-  profileImage: string | null;
-  bannerImages: any[];
+  openTime: string;
+  profileImage: ProfileImage | null;
   isActive: boolean;
   deleted: boolean;
   createdAt: string;
