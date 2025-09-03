@@ -1,62 +1,44 @@
 import { motion, useMotionValue, animate } from "framer-motion";
 import BoothListItem from "./BoothListItem";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getInfiniteAllStores } from "../../../../api/reservation";
+import type { StoreType } from "../../../../types/wait/store";
 
-const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
+interface PanInfo {
+  offset: { x: number; y: number };
+}
 
-const BoothList = ({ totalBooth }: { totalBooth: number | undefined }) => {
+const BoothList = ({
+  booths,
+  totalBooth,
+}: {
+  booths: StoreType[];
+  totalBooth: number | undefined;
+}) => {
   const y = useMotionValue(0);
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery({
-      queryKey: ["boothList"],
-      queryFn: ({ pageParam = 1 }) => getInfiniteAllStores(pageParam),
-      initialPageParam: 1,
-      getNextPageParam: (lastPage, allPages) => {
-        // 서버에서 받은 hasNext를 기준으로 다음 페이지 여부 결정
-        if (!lastPage.hasNext) {
-          return undefined;
-        }
-        return allPages?.length;
-      },
-    });
-
-  const stores =
-    data?.pages.flatMap((page) => page.storePageReadResponses) ?? [];
+  console.log(y);
 
   // 가상 스크롤을 위한 ref
   const parentRef = useRef<HTMLDivElement>(null);
 
   // 가상 스크롤 설정
   const rowVirtualizer = useVirtualizer({
-    count: stores.length,
+    count: booths?.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 285,
   });
 
-  const virtualItems = rowVirtualizer.getVirtualItems();
-
-  useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return;
-
-    if (virtualItems.length === 0) return;
-
-    const lastVirtualItem = virtualItems[virtualItems.length - 1];
-
-    // 마지막으로 보이는 index가 현재 데이터의 마지막 index 이상이면 fetch
-    if (lastVirtualItem.index >= stores.length - 1) {
-      fetchNextPage();
-    }
-  }, [virtualItems, hasNextPage, isFetchingNextPage, stores.length]);
-
-  const handleDragEnd = () => {
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    const offset = info.offset.y; // 드래그 이동 거리
     const currentY = y.get();
-    // 가장 가까운 스냅 지점으로 스냅
-    const closest = snapPoints.reduce((prev, curr) =>
-      Math.abs(curr - currentY) < Math.abs(prev - currentY) ? curr : prev
-    );
+    let closest = 0;
+    if (offset < -30) {
+      closest = -400;
+    } else if (offset > 30) {
+      closest = 0;
+    } else {
+      closest = Math.abs(currentY - 0) < Math.abs(currentY - -400) ? 0 : -400;
+    }
     animate(y, closest);
   };
 
@@ -82,7 +64,7 @@ const BoothList = ({ totalBooth }: { totalBooth: number | undefined }) => {
               {totalBooth}개의 부스
             </h2>
           </div>
-          {!isLoading && stores.length > 0 && (
+          {booths?.length > 0 && (
             <div
               ref={parentRef}
               style={{
@@ -100,7 +82,7 @@ const BoothList = ({ totalBooth }: { totalBooth: number | undefined }) => {
                 className="overflow-y-scroll"
               >
                 {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                  const store = stores[virtualRow.index];
+                  const store = booths[virtualRow.index];
                   if (!store) return null;
 
                   return (
