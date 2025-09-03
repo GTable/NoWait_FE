@@ -154,10 +154,16 @@ export default function NewOrderToast() {
               onTap={() => {
                 const params = new URLSearchParams();
                 params.set("order", String(t.orderId));
-                navigate({
-                  pathname: `/admin/orders/${storeId}`,
-                  search: params.toString(),
-                });
+                params.set("status", t.status);
+                navigate(
+                  {
+                    pathname: `/admin/orders/${storeId}`,
+                    search: params.toString(),
+                  },
+                  { replace: true }
+                );
+
+                removeToast(t.id);
               }}
             >
               <div
