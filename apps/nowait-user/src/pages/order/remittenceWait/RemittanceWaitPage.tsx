@@ -37,6 +37,7 @@ const RemittanceWaitPage = () => {
         payload
       );
       console.log(res, "주문 생성");
+      alert(JSON.stringify(res.response))
       if (res?.success) {
         //입금자명 로컬스토리지 저장
         localStorage.setItem("depositorName", res.response.depositorName);
