@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { formatDate } from "../../../utils/formatDate";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import FullPageLoader from "../../../components/FullPageLoader";
-import { useEffect } from "react";
 
 interface OrderDetailsType {
   menuId: number;
@@ -26,11 +25,7 @@ const OrderDetailsPage = () => {
   const { storeId } = useParams();
   const tableId = localStorage.getItem("tableId");
 
-  const {
-    data: orderDetails,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: orderDetails, isLoading } = useQuery({
     queryKey: ["orderDetails", storeId],
     queryFn: async () => {
       try {
@@ -46,14 +41,8 @@ const OrderDetailsPage = () => {
     select: (data) => data?.response,
   });
 
-  useEffect(() => {
-    alert(JSON.stringify(tableId));
-
-    alert(JSON.stringify(orderDetails));
-    alert(JSON.stringify(error));
-  }, [orderDetails]);
-  console.log(orderDetails);
   if (isLoading) return <FullPageLoader />;
+  if (!tableId) return alert("테이블 아이디 없음");
   //주문내역 없을 시
   if (!orderDetails || orderDetails?.length < 1) return <EmptyOrderDetails />;
 
