@@ -21,7 +21,7 @@ const RedirectToStorePage = () => {
       //테이블 아이디 로컬스토리지 저장
       localStorage.setItem("storeId", storeId);
       localStorage.setItem("tableId", tableId);
-      navigate(`/order/${storeId}/${tableId}`, { replace: true });
+      navigate(`/${storeId}`, { replace: true });
     }
   }, [storeId, tableId, navigate]);
 
