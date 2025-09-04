@@ -40,6 +40,12 @@ const OrderListPage = () => {
     queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response?.menuReadDto,
   });
+
+  //맨위로 위치 초기화
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // 장바구니와 최신 메뉴 데이터 동기화
   useEffect(() => {
     if (!menus) return;
@@ -132,16 +138,6 @@ const OrderListPage = () => {
               >
                 주문 계속하기
               </Button>
-              {/* <Button
-                  onClick={() => {
-                    navigate(-1);
-                    soldOutMenus?.forEach((menu: CartType) =>
-                      removeFromCart(menu.menuId)
-                    );
-                  }}
-                >
-                  더 추가하기
-                </Button> */}
             </div>
           </div>
         </Portal>
