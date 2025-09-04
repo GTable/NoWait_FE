@@ -63,9 +63,9 @@ const BoothForm = () => {
     description: string;
     noticeTitle: string;
     noticeContent: string;
-    openTime: string; // "HHmmHHmm"
+    openTime: string;
     profileId: number | null;
-    bannerIds: Array<number | null>; // 첫 3개 슬롯 기준
+    bannerIds: Array<number | null>;
   } | null>(null);
 
   const currentProfileSig = useMemo(() => {
@@ -84,7 +84,7 @@ const BoothForm = () => {
     });
   }, [bannerImages]);
   const hasChanges = useMemo(() => {
-    if (!baseline) return false; // 아직 로딩 중이면 비활성화
+    if (!baseline) return false;
 
     const textChanged =
       norm(boothName) !== norm(baseline.name) ||

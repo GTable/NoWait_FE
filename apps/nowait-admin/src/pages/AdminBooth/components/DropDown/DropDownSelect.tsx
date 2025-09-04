@@ -100,6 +100,7 @@ export const DropdownSelect = ({
           {options.map((opt, idx) => {
             const selected = opt === value;
             const active = idx === highlight;
+
             return (
               <button
                 key={opt}
