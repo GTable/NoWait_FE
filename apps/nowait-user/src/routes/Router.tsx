@@ -75,7 +75,7 @@ const Router = () => {
 
         {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
         <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
-        <Route path="/:storeId" element={withTransition(StorePage)} />
+        <Route path="order/:storeId/:tableId" element={withTransition(StorePage)} />
         <Route
           path="/:storeId/menu/:menuId"
           element={withTransition(AddMenuPage)}

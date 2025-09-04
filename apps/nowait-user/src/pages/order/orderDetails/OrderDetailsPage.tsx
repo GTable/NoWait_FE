@@ -26,15 +26,32 @@ const OrderDetailsPage = () => {
   const { storeId } = useParams();
   const tableId = localStorage.getItem("tableId");
 
-  const { data: orderDetails, isLoading } = useQuery({
+  const {
+    data: orderDetails,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["orderDetails", storeId],
-    queryFn: () => getOrderDetails(storeId!, Number(tableId!)),
+    queryFn: async () => {
+      try {
+        const res = await getOrderDetails(storeId!, Number(tableId!));
+        console.log("API Response:", res);
+        return res;
+      } catch (err) {
+        console.error("API Error:", err);
+        alert("API Error: " + JSON.stringify(err));
+        throw err;
+      }
+    },
     select: (data) => data?.response,
   });
 
-  useEffect(()=>{
-    alert(JSON.stringify(orderDetails))
-  },[orderDetails])
+  useEffect(() => {
+    alert(JSON.stringify(tableId));
+
+    alert(JSON.stringify(orderDetails));
+    alert(JSON.stringify(error));
+  }, [orderDetails]);
   console.log(orderDetails);
   if (isLoading) return <FullPageLoader />;
   //주문내역 없을 시
