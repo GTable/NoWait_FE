@@ -91,6 +91,15 @@ const MenuModal = ({
   const [image, setImage] = useState<string | File | null>(
     initialData?.imageUrl || null
   );
+
+  const [focus, setFocus] = useState({
+    name: false,
+    admin: false,
+    desc: false,
+  });
+
+  const counterClass = (focused: boolean, hasValue: boolean) =>
+    focused && hasValue ? "text-black" : "text-gray-400";
   const { removeEmojiAll, removeEmojiSome } = useRemoveEmoji();
 
   const isFormValid =
@@ -174,6 +183,8 @@ const MenuModal = ({
                   type="text"
                   value={name}
                   onChange={(e) => setName(removeEmojiSome(e.target.value))}
+                  onFocus={() => setFocus((f) => ({ ...f, name: true }))}
+                  onBlur={() => setFocus((f) => ({ ...f, name: false }))}
                   maxLength={25}
                   className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-14-regular"
                   placeholder="메뉴명을 입력해주세요"
@@ -184,9 +195,7 @@ const MenuModal = ({
                   }`}
                 >
                   <span
-                    className={`${
-                      name.length > 0 ? "text-black" : "text-gray-400"
-                    }`}
+                    className={`${counterClass(focus.name, name.length > 0)}`}
                   >
                     {name.length}
                   </span>{" "}
@@ -238,6 +247,8 @@ const MenuModal = ({
               <input
                 type="text"
                 value={adminDisplayName}
+                onFocus={() => setFocus((f) => ({ ...f, admin: true }))}
+                onBlur={() => setFocus((f) => ({ ...f, admin: false }))}
                 onChange={(e) =>
                   setAdminDisplayName(removeEmojiAll(e.target.value))
                 }
@@ -256,9 +267,10 @@ const MenuModal = ({
                 }`}
               >
                 <span
-                  className={` ${
-                    adminDisplayName.length > 0 ? "text-black" : "text-gray-400"
-                  }`}
+                  className={` ${counterClass(
+                    focus.admin,
+                    adminDisplayName.length > 0
+                  )}`}
                 >
                   {adminDisplayName.length}
                 </span>{" "}
@@ -275,15 +287,18 @@ const MenuModal = ({
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              onFocus={() => setFocus((f) => ({ ...f, desc: true }))}
+              onBlur={() => setFocus((f) => ({ ...f, desc: false }))}
               maxLength={250}
               className="w-full border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white h-[120px] px-4 py-2 border rounded-lg text-14-regular h-24"
               placeholder="메뉴 소개를 입력해주세요."
             />
             <p className="absolute bottom-[12px] right-4 text-right text-13-regular text-gray-400">
               <span
-                className={`${
-                  description.length > 0 ? "text-black" : "text-gray-400"
-                }`}
+                className={`${counterClass(
+                  focus.desc,
+                  description.length > 0
+                )}`}
               >
                 {description.length}
               </span>{" "}
