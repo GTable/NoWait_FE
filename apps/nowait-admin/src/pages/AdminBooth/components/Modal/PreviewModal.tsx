@@ -45,6 +45,9 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   bannerImages = [],
   onClose,
 }) => {
+  const waitingCount = Number(localStorage.getItem("waitingCount"));
+  console.log(boothIntro, "게시글");
+
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="flex flex-col items-center bg-white rounded-[20px] w-[372px] h-[706px] p-[30px] ">
@@ -82,7 +85,11 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                 />
               </div>
             </div>
-            <RedBadge label="대기 0팀" small={true} />
+            {waitingCount > 0 ? (
+              <RedBadge label={`대기 ${waitingCount}팀`} small={true} />
+            ) : (
+              <></>
+            )}
             <div className="h-[1px] my-[13px] bg-[#F4F4F4]" />
             <span className="flex text-location text-black-80 gap-[3.78px]">
               <img src={pin} /> {location}
@@ -95,7 +102,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             <div
               className="h-[98px] mt-[15.43px] mb-[28.5px] text-10-regular"
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(boothIntro),
+                __html: DOMPurify.sanitize(boothIntro.replace(/\n/g, "<br />")),
               }}
             ></div>
             {/* 공지 알림 */}

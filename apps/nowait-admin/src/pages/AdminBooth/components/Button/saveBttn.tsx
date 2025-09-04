@@ -1,4 +1,5 @@
 import React from "react";
+import loadingSpanner from "../../../../assets/loading.svg";
 
 interface SaveButtonProps {
   onClick: () => void;
@@ -30,7 +31,13 @@ const SaveButton: React.FC<SaveButtonProps> = ({
             : "bg-[#16191E] text-white cursor-pointer"
         }`}
     >
-      {loading ? <div className="loader"></div> : "저장하기"}
+      {loading ? (
+        <div>
+          <img src={loadingSpanner} className="animate-spin" />
+        </div>
+      ) : (
+        "저장하기"
+      )}
     </button>
   );
 };

@@ -60,6 +60,8 @@ const AdminHome = () => {
   const waitingCount = reservations.filter(
     (res) => res.status === "WAITING"
   ).length;
+
+  localStorage.setItem("waitingCount", waitingCount.toString());
   //호출 중 카드 개수
   const callingCount = reservations.filter(
     (res) => res.status === "CALLING"

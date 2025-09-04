@@ -58,6 +58,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
+  const [tempImages, setTempImages] = useState<Record<number, string>>({});
 
   const { mutate: soldOut } = useToggleMenuSoldOut();
   const storeId = Number(localStorage.getItem("storeId"));
@@ -107,7 +108,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
           price: created.price,
           soldOut: created.isSoldOut,
           sortOrder: created.sortOrder,
-          // imageUrl은 업로드 후에 업데이트
         };
         // 일단 메뉴 배열에 추가
         setMenus((prev) => [...prev, menuItem]);
@@ -115,6 +115,14 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
 
         // 이미지가 있으면 업로드하고, 성공 시 imageUrl 필드만 state에 patch
         if (newMenu.image) {
+          const tempUrl = URL.createObjectURL(newMenu.image);
+          setTempImages((prev) => ({ ...prev, [created.menuId]: tempUrl }));
+
+          setMenus((prev) =>
+            prev.map((m) =>
+              m.id === created.menuId ? { ...m, imageUrl: tempUrl } : m
+            )
+          );
           uploadMenuImage(
             {
               menuId: created.menuId,
@@ -176,6 +184,8 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     });
 
     if (updated.image && updated.image instanceof File) {
+      const tempUrl = URL.createObjectURL(updated.image);
+      setTempImages((prev) => ({ ...prev, [updated.id]: tempUrl }));
       uploadMenuImage(
         { menuId: updated.id, image: updated.image },
         {
@@ -348,7 +358,11 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           >
                             <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                               <img
-                                src={menu.imageUrl ?? imgPlaceHolder}
+                                src={
+                                  tempImages[menu.id] ??
+                                  menu.imageUrl ??
+                                  imgPlaceHolder
+                                }
                                 className="w-full h-full object-cover"
                                 alt="placeholder"
                               />
@@ -391,7 +405,11 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           >
                             <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                               <img
-                                src={menu.imageUrl ?? imgPlaceHolder}
+                                src={
+                                  tempImages[menu.id] ??
+                                  menu.imageUrl ??
+                                  imgPlaceHolder
+                                }
                                 className="w-full h-full object-cover"
                                 alt="placeholder"
                               />
