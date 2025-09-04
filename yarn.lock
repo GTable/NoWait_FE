@@ -1686,6 +1686,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-hard-break@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@tiptap/extension-hard-break@npm:3.4.0"
+  peerDependencies:
+    "@tiptap/core": ^3.4.0
+  checksum: 10c0/258136391138594c62b3f9e5a407f3007c69c5c8f4036a0460e7805c439f6ea813d1b645bb09745071444a37fdfe36e419c051d352eb62b6fe86f739a5656519
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-heading@npm:^3.1.0":
   version: 3.1.0
   resolution: "@tiptap/extension-heading@npm:3.1.0"
@@ -5164,6 +5173,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-nowaitFE@workspace:."
   dependencies:
+    "@tiptap/extension-hard-break": "npm:^3.4.0"
     "@tiptap/extension-placeholder": "npm:^3.4.0"
     "@tiptap/extension-underline": "npm:^3.0.7"
     "@tiptap/react": "npm:^3.0.7"
@@ -5354,6 +5364,7 @@ __metadata:
     "@tailwindcss/postcss": "npm:^4.1.5"
     "@tanstack/react-query": "npm:^5.81.2"
     "@tiptap/core": "npm:^3.0.7"
+    "@tiptap/extension-hard-break": "npm:^3.4.0"
     "@tiptap/extension-placeholder": "npm:^2"
     "@tiptap/extension-underline": "npm:^3.0.7"
     "@tiptap/pm": "npm:^3.0.7"
