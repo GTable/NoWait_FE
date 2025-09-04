@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { formatDate } from "../../../utils/formatDate";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import FullPageLoader from "../../../components/FullPageLoader";
+import { useEffect } from "react";
 
 interface OrderDetailsType {
   menuId: number;
@@ -30,6 +31,10 @@ const OrderDetailsPage = () => {
     queryFn: () => getOrderDetails(storeId!, Number(tableId!)),
     select: (data) => data?.response,
   });
+
+  useEffect(()=>{
+    alert(JSON.stringify(orderDetails))
+  },[orderDetails])
   console.log(orderDetails);
   if (isLoading) return <FullPageLoader />;
   //주문내역 없을 시
