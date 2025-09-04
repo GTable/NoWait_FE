@@ -17,6 +17,7 @@ import DepartmentImage from "../../../components/DepartmentImage";
 import NotFound from "../../NotFound/NotFound";
 import { getStoreMenus } from "../../../api/menu";
 import FullPageLoader from "../../../components/FullPageLoader";
+import { useEffect } from "react";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
@@ -38,7 +39,12 @@ const StoreDetailPage = () => {
     select: (data) => data?.response,
   });
 
-    const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
+  //맨위로 위치 초기화
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
     { withInvalidate: true },
     Number(store?.storeId!)
   );

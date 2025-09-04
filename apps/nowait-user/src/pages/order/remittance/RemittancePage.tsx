@@ -33,7 +33,12 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data?.response,
   });
-  
+
+  //맨위로 위치 초기화
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // 정보 없으면 홈으로 이동
   useEffect(() => {
     if (cart.length === 0) {
