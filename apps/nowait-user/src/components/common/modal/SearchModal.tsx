@@ -121,7 +121,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
         {store.profileImage ? (
           <img
             alt={`${store.name} 주점 이미지`}
-            src={store.profileImage}
+            src={store.profileImage?.imageUrl}
             className="w-full h-full object-cover rounded-full"
           />
         ) : (

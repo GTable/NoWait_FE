@@ -154,10 +154,16 @@ export default function NewOrderToast() {
               onTap={() => {
                 const params = new URLSearchParams();
                 params.set("order", String(t.orderId));
-                navigate({
-                  pathname: `/admin/orders/${storeId}`,
-                  search: params.toString(),
-                });
+                params.set("status", t.status);
+                navigate(
+                  {
+                    pathname: `/admin/orders/${storeId}`,
+                    search: params.toString(),
+                  },
+                  { replace: true }
+                );
+
+                removeToast(t.id);
               }}
             >
               <div
@@ -171,7 +177,7 @@ export default function NewOrderToast() {
               >
                 {/* 상단: 라벨 & 닫기 */}
                 <div className="flex items-center justify-between">
-                  <span className="text-13-semibold text-[#222222]/60">
+                  <span className="toast-13-semibold text-[#222222]/60">
                     신규 주문
                   </span>
                   <CloseButton
@@ -187,16 +193,16 @@ export default function NewOrderToast() {
                 {/* 본문 */}
                 <div className="mt-[6px] flex items-center gap-[8px]">
                   <div className="w-9 h-9 rounded-full bg-[#6C7B94] flex items-center justify-center">
-                    <span className="text-18-semibold">{tableId ?? "-"}</span>
+                    <span className="toast-18-semibold">{tableId ?? "-"}</span>
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <div className="text-15-semibold">
+                    <div className="toast-15-semibold">
                       {orderName}
                       <span className="mx-[6px] text-[#D5D5D5]">|</span>
                       {formatCurrency(computedTotal)}
                     </div>
-                    <div className="mt-[2px] text-13-medium whitespace-nowrap">
+                    <div className="mt-[2px] toast-13-medium whitespace-nowrap">
                       {summary}
                     </div>
                   </div>

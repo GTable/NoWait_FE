@@ -40,6 +40,11 @@ const OrderListPage = () => {
     select: (data) => data?.response?.menuReadDto,
   });
 
+  //맨위로 위치 초기화
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   if (cart.length === 0 && isAnimatingOut) return <EmptyCart />;
 
   return (
@@ -135,16 +140,6 @@ const OrderListPage = () => {
               >
                 주문 계속하기
               </Button>
-              {/* <Button
-                  onClick={() => {
-                    navigate(-1);
-                    soldOutMenus?.forEach((menu: CartType) =>
-                      removeFromCart(menu.menuId)
-                    );
-                  }}
-                >
-                  더 추가하기
-                </Button> */}
             </div>
           </div>
         </Portal>

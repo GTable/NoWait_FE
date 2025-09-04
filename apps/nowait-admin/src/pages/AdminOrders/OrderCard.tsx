@@ -125,7 +125,8 @@ const CookCard = ({
     return 7; // sm
   };
 
-  const handleCookCompleteClick = () => {
+  const handleCookCompleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 부모 onClick 이벤트 방지
     setShowCookCompleteModal(true);
   };
 

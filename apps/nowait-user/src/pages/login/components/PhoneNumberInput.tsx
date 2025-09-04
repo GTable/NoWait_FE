@@ -11,8 +11,6 @@ interface PhoneNumberInputProps {
 const PhoneNumberInput = ({
   value: controlledValue,
   onChange,
-  placeholder = "전화번호 입력",
-  className = "text-title-20-semibold text-black-90 leading-[144%] tracking-[-0.01em] placeholder:text-black-50 outline-none focus:outline-none",
 }: PhoneNumberInputProps) => {
   const [internalValue, setInternalValue] = useState("");
 
@@ -58,18 +56,18 @@ const PhoneNumberInput = ({
   };
 
   return (
-    <div className="flex items-center justify-between px-3.5 py-5 rounded-[12px] border-black-25 bg-black-15">
+    <div className="relative flex w-full items-center px-3.5 py-5 rounded-[12px] border-black-25 bg-black-15">
       <input
         type="tel"
         inputMode="numeric"
         pattern="[0-9]*"
         value={currentValue}
         onChange={handlePhoneNumberChange}
-        placeholder={placeholder}
-        className={className}
+        placeholder="전화번호 입력"
+        className="w-full text-title-20-semibold text-black-90 leading-[144%] tracking-[-0.01em] placeholder:text-black-50 outline-none focus:outline-none"
       />
       <div
-        className="flex items-center justify-center w-6 h-6 cursor-pointer"
+        className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6 cursor-pointer"
         onClick={handleClearPhoneNumber}
       >
         <XCircle className="icons-m" />

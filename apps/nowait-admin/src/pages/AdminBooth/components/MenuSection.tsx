@@ -12,6 +12,7 @@ import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
 import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort";
+import imgPlaceHolder from "../../../assets/menu_placeholder.png";
 import { SwipeableRow } from "./Swipe/SwipeableRow";
 
 function lockVertical(
@@ -57,6 +58,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
+  const [tempImages, setTempImages] = useState<Record<number, string>>({});
 
   const { mutate: soldOut } = useToggleMenuSoldOut();
   const storeId = Number(localStorage.getItem("storeId"));
@@ -106,7 +108,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
           price: created.price,
           soldOut: created.isSoldOut,
           sortOrder: created.sortOrder,
-          // imageUrl은 업로드 후에 업데이트
         };
         // 일단 메뉴 배열에 추가
         setMenus((prev) => [...prev, menuItem]);
@@ -114,6 +115,14 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
 
         // 이미지가 있으면 업로드하고, 성공 시 imageUrl 필드만 state에 patch
         if (newMenu.image) {
+          const tempUrl = URL.createObjectURL(newMenu.image);
+          setTempImages((prev) => ({ ...prev, [created.menuId]: tempUrl }));
+
+          setMenus((prev) =>
+            prev.map((m) =>
+              m.id === created.menuId ? { ...m, imageUrl: tempUrl } : m
+            )
+          );
           uploadMenuImage(
             {
               menuId: created.menuId,
@@ -175,6 +184,8 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     });
 
     if (updated.image && updated.image instanceof File) {
+      const tempUrl = URL.createObjectURL(updated.image);
+      setTempImages((prev) => ({ ...prev, [updated.id]: tempUrl }));
       uploadMenuImage(
         { menuId: updated.id, image: updated.image },
         {
@@ -274,6 +285,8 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     setMenus(transformed);
   }, [fetchedMenus]);
 
+  console.log(menus, "메뉴목록들");
+
   return (
     <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
@@ -331,7 +344,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                       );
 
                       return editMode ? (
-                        // ✅ 편집 모드: SwipeableRow 사용 안 함 (충돌 차단)
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
@@ -346,7 +358,11 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           >
                             <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                               <img
-                                src={menu.imageUrl}
+                                src={
+                                  tempImages[menu.id] ??
+                                  menu.imageUrl ??
+                                  imgPlaceHolder
+                                }
                                 className="w-full h-full object-cover"
                                 alt="placeholder"
                               />
@@ -361,7 +377,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             </div>
                           </div>
 
-                          {/* ✨ 여기만 드래그 핸들! */}
                           <img
                             src={editOrderIcon}
                             alt="순서 변경"
@@ -370,7 +385,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           />
                         </div>
                       ) : (
-                        // ✅ 보기 모드: SwipeableRow로 스와이프 삭제
                         <SwipeableRow
                           ref={provided.innerRef}
                           disabled={false}
@@ -391,7 +405,11 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           >
                             <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                               <img
-                                src={menu.imageUrl}
+                                src={
+                                  tempImages[menu.id] ??
+                                  menu.imageUrl ??
+                                  imgPlaceHolder
+                                }
                                 className="w-full h-full object-cover"
                                 alt="placeholder"
                               />

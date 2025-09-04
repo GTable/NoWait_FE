@@ -28,6 +28,7 @@ const BoothForm = () => {
   const isTablet = width > 768;
   const isMobile = !isTablet;
   const storeId = Number(localStorage.getItem("storeId"));
+
   console.log(storeId, "스토어 아이디");
 
   const { data: store, refetch } = useGetStore(storeId);
@@ -301,6 +302,8 @@ const BoothForm = () => {
       ],
     });
   }, [store]);
+
+  console.log(store, "부스정보");
 
   return (
     <div

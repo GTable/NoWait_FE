@@ -14,10 +14,12 @@ interface HeaderStatusProps {
     menuId: number;
     menuName: string;
     soldCount: number;
+    imageUrl?: string;
   }[];
   saleDisabled: boolean;
   poupularMenuDisabled: boolean;
   isTablet: boolean;
+  isMobile: boolean;
 }
 
 const HeaderStatus: React.FC<HeaderStatusProps> = ({
@@ -26,6 +28,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
   saleDisabled,
   poupularMenuDisabled,
   isTablet,
+  isMobile,
 }) => {
   const todayAmount = sales?.todaySalesSum ?? 0;
   const yesterdayAmount = sales?.yesterdaySalesSum ?? 0;
@@ -63,7 +66,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
         isTablet
           ? "grid grid-cols-1 lg:grid-cols-2 gap-[10px] w-full h-[50%]"
           : "flex flex-col gap-[10px]"
-      }`}
+      } ${isMobile ? "min-h-[227px]" : ""}`}
     >
       <div className="flex flex-col gap-[10px]">
         <SalesCard
@@ -93,7 +96,13 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
       <div
         className={`flex flex-col bg-white rounded-[16px] ${
           poupularMenuDisabled ? "justify-center items-center relative" : ""
-        } ${isTablet ? "p-6" : "p-[22px] w-[335px] h-[227px]"}`}
+        } ${
+          isTablet
+            ? "p-6"
+            : isMobile
+            ? "p-[22px]"
+            : "p-[22px] w-[335px] h-[227px]"
+        }`}
       >
         <div className={`flex flex-col `}>
           <p
@@ -116,12 +125,26 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
           )}
         </div>
 
-        <ul>
+        <ul className="mt-[25px]">
           {!poupularMenuDisabled &&
             (popularMenu ?? []).slice(0, 5).map((menu, i) => (
-              <li key={menu.menuId} className="flex justify-between h-[52px]">
-                <span className="flex text-16-bold gap-[10px]">
-                  {i + 1} <p className="text-16-semibold">{menu.menuName}</p>
+              <li key={menu.menuId} className="flex  justify-between h-[52px]">
+                <span className="flex text-16-bold items-center gap-[10px]">
+                  {i + 1}{" "}
+                  <div
+                    className={`h-9 w-9 rounded-[8px] overflow-hidden ${
+                      menu.imageUrl ?? "bg-[#788FB6]"
+                    }`}
+                  >
+                    <img src={menu.imageUrl} className="object-cover" />
+                  </div>
+                  <p
+                    className={`text-16-semibold ${
+                      isMobile ? "truncate w-[100px]" : ""
+                    }`}
+                  >
+                    {menu.menuName}
+                  </p>
                 </span>
                 <span className="text-16-medium">{menu.soldCount}개</span>
               </li>

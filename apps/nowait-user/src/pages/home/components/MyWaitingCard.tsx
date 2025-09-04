@@ -1,5 +1,6 @@
-import { useState, useEffect, memo, useCallback, useMemo } from "react";
+import { useState, useEffect, memo, useCallback } from "react";
 import { MemoizedRefresh } from "../../../components/icons/MemoizedIcons";
+import { useTimerStore } from "../../../stores/timerStore";
 
 // 대기 중인 주점 데이터 타입
 interface WaitingStoreData {
@@ -35,15 +36,12 @@ const MyWaitingCard = memo(
   }: MyWaitingCardProps) => {
     const [startX, setStartX] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(0); // 현재 남은 시간 (초, CALLING 상태일 때만 설정)
+
+    // 전역 타이머 상태 사용
+    const { setTimer, updateTimer, getTimeLeft, isTimerActive } =
+      useTimerStore();
 
     const totalSlides = waitingStores?.length || 0;
-
-    // 슬라이드별 초기 시간 (초 단위) - 모두 10분으로 통일
-    const initialTimes = useMemo(
-      () => Array(totalSlides).fill(600),
-      [totalSlides]
-    );
 
     // 시간을 MM:SS 형식으로 포맷팅
     const formatTime = useCallback((seconds: number) => {
@@ -57,31 +55,37 @@ const MyWaitingCard = memo(
     // 현재 슬라이드의 데이터 가져오기
     const currentStore = waitingStores[currentSlide];
 
-    // 슬라이드가 변경될 때 타이머 리셋 (CALLING 상태일 때만)
-    useEffect(() => {
-      if (currentStore?.status === "CALLING") {
-        setTimeLeft(initialTimes[currentSlide] || 600);
-      }
-    }, [currentSlide, initialTimes, currentStore?.status]);
+    // 현재 store의 남은 시간 가져오기
+    const timeLeft = currentStore ? getTimeLeft(currentStore.storeId) : 0;
 
-    // 타이머 로직 (CALLING 상태일 때만 작동)
+    // 슬라이드가 변경될 때 타이머 초기화 (CALLING 상태일 때만)
     useEffect(() => {
-      // CALLING 상태가 아니면 타이머 비활성화
-      if (currentStore?.status !== "CALLING" || timeLeft <= 0) {
+      if (currentStore?.status === "CALLING" && currentStore?.storeId) {
+        // 타이머가 없거나 비활성화된 경우에만 새로 설정
+        if (!isTimerActive(currentStore.storeId)) {
+          setTimer(currentStore.storeId, 600); // 10분으로 설정
+        }
+      }
+    }, [
+      currentSlide,
+      currentStore?.status,
+      currentStore?.storeId,
+      setTimer,
+      isTimerActive,
+    ]);
+
+    // 타이머 업데이트 로직 (CALLING 상태일 때만 작동)
+    useEffect(() => {
+      if (currentStore?.status !== "CALLING" || !currentStore?.storeId) {
         return;
       }
 
       const timer = setInterval(() => {
-        setTimeLeft((prev: number) => {
-          if (prev <= 1) {
-            return 0;
-          }
-          return prev - 1;
-        });
+        updateTimer(currentStore.storeId);
       }, 1000);
 
       return () => clearInterval(timer);
-    }, [timeLeft, currentStore?.status]);
+    }, [currentStore?.status, currentStore?.storeId, updateTimer]);
 
     // 터치 시작
     const handleTouchStart = useCallback((e: React.TouchEvent) => {

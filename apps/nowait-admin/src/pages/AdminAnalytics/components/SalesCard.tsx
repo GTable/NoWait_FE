@@ -94,9 +94,8 @@ const SalesCard: React.FC<SalesCardProps> = ({
           </p>
 
           {!disabled && showToday && (
-            <span>
-              {today.percent > 0 ? "+" : ""}
-              {today.percent > 0 ? today.percent + "%" : ""}
+            <span className="text-[#FF4103]">
+              {today.percent > 0 ? `+${today.percent}%` : ""}
             </span>
           )}
         </div>
