@@ -42,7 +42,6 @@ const OrderDetailsPage = () => {
   });
 
   if (isLoading) return <FullPageLoader />;
-  if (!tableId) return alert("테이블 아이디 없음");
   //주문내역 없을 시
   if (!orderDetails || orderDetails?.length < 1) return <EmptyOrderDetails />;
 
