@@ -12,7 +12,7 @@ const MenuList = ({
 }) => {
 
   return (
-    <div className="py-[30px]">
+    <div className="pt-[30px] pb-[10px]">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>
       <ul>
         {!isLoading ? (

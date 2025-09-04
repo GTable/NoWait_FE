@@ -60,6 +60,8 @@ const AdminHome = () => {
   const waitingCount = reservations.filter(
     (res) => res.status === "WAITING"
   ).length;
+
+  localStorage.setItem("waitingCount", waitingCount.toString());
   //호출 중 카드 개수
   const callingCount = reservations.filter(
     (res) => res.status === "CALLING"
@@ -290,7 +292,7 @@ const AdminHome = () => {
         </div>
       </section>
 
-      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 md:gap-[8px] xl:gap-[30px] [@media(max-width:431px)]:place-items-center">
+      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  [@media(max-width:431px)]:place-items-center">
         {filteredReservations.map((res) => {
           const requested = new Date(res.requestedAt);
           console.log(res, "웨이팅 카드 정보");

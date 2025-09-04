@@ -1978,6 +1978,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-hard-break@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@tiptap/extension-hard-break@npm:3.4.0"
+  peerDependencies:
+    "@tiptap/core": ^3.4.0
+  checksum: 10c0/258136391138594c62b3f9e5a407f3007c69c5c8f4036a0460e7805c439f6ea813d1b645bb09745071444a37fdfe36e419c051d352eb62b6fe86f739a5656519
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-heading@npm:^3.1.0":
   version: 3.1.0
   resolution: "@tiptap/extension-heading@npm:3.1.0"
@@ -2061,6 +2070,25 @@ __metadata:
   peerDependencies:
     "@tiptap/core": ^3.1.0
   checksum: 10c0/0d4fe2e1ea2b09807b6d14b6b4e2ea87cea78dce489d69819f48e66fe48a149b58b8f93252fab7d4e26107154abf66e712abe45f8626b4169af0c381dca9538c
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-placeholder@npm:^2":
+  version: 2.26.1
+  resolution: "@tiptap/extension-placeholder@npm:2.26.1"
+  peerDependencies:
+    "@tiptap/core": ^2.7.0
+    "@tiptap/pm": ^2.7.0
+  checksum: 10c0/c1471ac31fc0c99a3a88ac9a70d2c42e871b657d3055f6b51d772f8f6dac51370ef0ae8b4c28d9aac7dda739d2318afd615bcce687cdbee7803e0a67c5668010
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-placeholder@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@tiptap/extension-placeholder@npm:3.4.0"
+  peerDependencies:
+    "@tiptap/extensions": ^3.4.0
+  checksum: 10c0/4b167e5c8912f25d03ed17ad342a28316ad8184f0fca73584160df4046ce0cfcab876527e22b99ebb2baf98d4ac4ddbf1377d0870c118468005609b9f277589d
   languageName: node
   linkType: hard
 
@@ -5538,6 +5566,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-nowaitFE@workspace:."
   dependencies:
+    "@tiptap/extension-hard-break": "npm:^3.4.0"
+    "@tiptap/extension-placeholder": "npm:^3.4.0"
     "@tiptap/extension-underline": "npm:^3.0.7"
     "@tiptap/react": "npm:^3.0.7"
     "@tiptap/starter-kit": "npm:^3.0.7"
@@ -5748,6 +5778,8 @@ __metadata:
     "@tailwindcss/postcss": "npm:^4.1.5"
     "@tanstack/react-query": "npm:^5.81.2"
     "@tiptap/core": "npm:^3.0.7"
+    "@tiptap/extension-hard-break": "npm:^3.4.0"
+    "@tiptap/extension-placeholder": "npm:^2"
     "@tiptap/extension-underline": "npm:^3.0.7"
     "@tiptap/pm": "npm:^3.0.7"
     "@tiptap/react": "npm:^3.0.7"

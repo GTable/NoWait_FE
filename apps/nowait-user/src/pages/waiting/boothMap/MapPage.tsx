@@ -8,6 +8,12 @@ import { motion } from "framer-motion";
 import MapHeader from "./components/MapHeader";
 import { boothPosition } from "./constants/boothPosition";
 import BoothMap from "../../../assets/boothMap.png";
+import type { StoreType } from "../../../types/wait/store";
+
+interface BoothWithPosition extends StoreType {
+  left: string;
+  top: string;
+}
 
 const MapPage = () => {
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
@@ -15,23 +21,25 @@ const MapPage = () => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
-  const { data: storeMarkers } = useQuery({
+  const { data: booths } = useQuery({
     queryKey: ["storesMarkers"],
     queryFn: getAllStores,
     select: (data) => data?.response?.storePageReadResponses,
   });
+
+  // 부스 + 마커 좌표
+  const boothsWithPosition: BoothWithPosition[] =
+    booths?.map((booth) => ({
+      ...booth,
+      ...boothPosition[booth.storeId],
+    })) || [];
 
   // 뷰포트 크기 계산
   const viewportRef = useRef<HTMLDivElement>(null);
   const viewportWidth = viewportRef.current?.clientWidth ?? 430;
   const viewportHeight = viewportRef.current?.clientHeight ?? 812;
 
-  // 부스 + 마커 좌표
-  const booths = storeMarkers?.map((booth) => ({
-    ...booth,
-    ...boothPosition[booth.storeId],
-  }));
-  console.log(booths, "부스");
+  console.log(booths);
   useEffect(() => {
     if (!booths || booths.length === 0) return;
     console.log("실행");
@@ -113,7 +121,7 @@ const MapPage = () => {
             />
             {/* 마커 */}
             <ul className="absolute top-0 left-0 w-full h-full">
-              {booths?.map((booth) => (
+              {boothsWithPosition?.map((booth) => (
                 <li
                   key={booth.storeId}
                   className="absolute"
@@ -148,7 +156,7 @@ const MapPage = () => {
           booth={booths?.find((booth) => booth.storeId === selectedBooth)}
         />
       ) : (
-        <BoothList totalBooth={storeMarkers?.length} />
+        <BoothList booths={booths!} totalBooth={booths?.length} />
       )}
     </div>
   );
