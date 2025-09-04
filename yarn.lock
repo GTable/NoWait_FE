@@ -1772,6 +1772,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-placeholder@npm:^2":
+  version: 2.26.1
+  resolution: "@tiptap/extension-placeholder@npm:2.26.1"
+  peerDependencies:
+    "@tiptap/core": ^2.7.0
+    "@tiptap/pm": ^2.7.0
+  checksum: 10c0/c1471ac31fc0c99a3a88ac9a70d2c42e871b657d3055f6b51d772f8f6dac51370ef0ae8b4c28d9aac7dda739d2318afd615bcce687cdbee7803e0a67c5668010
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-placeholder@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@tiptap/extension-placeholder@npm:3.4.0"
+  peerDependencies:
+    "@tiptap/extensions": ^3.4.0
+  checksum: 10c0/4b167e5c8912f25d03ed17ad342a28316ad8184f0fca73584160df4046ce0cfcab876527e22b99ebb2baf98d4ac4ddbf1377d0870c118468005609b9f277589d
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-strike@npm:^3.1.0":
   version: 3.1.0
   resolution: "@tiptap/extension-strike@npm:3.1.0"
@@ -5145,6 +5164,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo-nowaitFE@workspace:."
   dependencies:
+    "@tiptap/extension-placeholder": "npm:^3.4.0"
     "@tiptap/extension-underline": "npm:^3.0.7"
     "@tiptap/react": "npm:^3.0.7"
     "@tiptap/starter-kit": "npm:^3.0.7"
@@ -5334,6 +5354,7 @@ __metadata:
     "@tailwindcss/postcss": "npm:^4.1.5"
     "@tanstack/react-query": "npm:^5.81.2"
     "@tiptap/core": "npm:^3.0.7"
+    "@tiptap/extension-placeholder": "npm:^2"
     "@tiptap/extension-underline": "npm:^3.0.7"
     "@tiptap/pm": "npm:^3.0.7"
     "@tiptap/react": "npm:^3.0.7"

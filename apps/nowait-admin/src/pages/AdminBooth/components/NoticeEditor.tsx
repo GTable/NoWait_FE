@@ -7,6 +7,7 @@ import boldIcon from "../../../assets/editorToolBar/bold.svg";
 import italicIcon from "../../../assets/editorToolBar/italic.svg";
 import sunderIcon from "../../../assets/editorToolBar/sunder.svg";
 import underlineIcon from "../../../assets/editorToolBar/underline.svg";
+import Placeholder from "@tiptap/extension-placeholder";
 
 const MenuBar = ({ editor }: { editor: any }) => {
   const [editorChanged, setEditorChanged] = useState(0);
@@ -106,7 +107,15 @@ const NoticeEditor = ({
   setNotice: (val: string) => void;
 }) => {
   const editor = useEditor({
-    extensions: [StarterKit, Underline],
+    extensions: [
+      StarterKit,
+      Underline,
+      Placeholder.configure({
+        placeholder: "내용을 입력해주세요",
+        showOnlyCurrent: false, // 포커스 없을 때도 표시
+        emptyNodeClass: "is-editor-empty", // CSS 타겟 클래스
+      }),
+    ],
     content: notice || "",
   });
   const { removeEmojiAll } = useRemoveEmoji();
