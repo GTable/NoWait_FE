@@ -29,6 +29,5 @@ export const useGetAllMenus = (storeId: number) => {
       return res.data.response.menuReadDto;
     },
     enabled: !!storeId,
-    staleTime: 1000 * 60,
   });
 };
