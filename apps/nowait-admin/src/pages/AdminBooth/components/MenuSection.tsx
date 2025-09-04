@@ -12,6 +12,7 @@ import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
 import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort";
+import imgPlaceHolder from "../../../assets/menu_placeholder.png";
 import { SwipeableRow } from "./Swipe/SwipeableRow";
 
 function lockVertical(
@@ -274,6 +275,8 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     setMenus(transformed);
   }, [fetchedMenus]);
 
+  console.log(menus, "메뉴목록들");
+
   return (
     <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
@@ -345,7 +348,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           >
                             <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                               <img
-                                src={menu.imageUrl}
+                                src={menu.imageUrl ?? imgPlaceHolder}
                                 className="w-full h-full object-cover"
                                 alt="placeholder"
                               />
@@ -360,7 +363,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             </div>
                           </div>
 
-                          {/* ✨ 여기만 드래그 핸들! */}
                           <img
                             src={editOrderIcon}
                             alt="순서 변경"
@@ -369,7 +371,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           />
                         </div>
                       ) : (
-                        // ✅ 보기 모드: SwipeableRow로 스와이프 삭제
                         <SwipeableRow
                           ref={provided.innerRef}
                           disabled={false}
@@ -390,7 +391,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           >
                             <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                               <img
-                                src={menu.imageUrl}
+                                src={menu.imageUrl ?? imgPlaceHolder}
                                 className="w-full h-full object-cover"
                                 alt="placeholder"
                               />

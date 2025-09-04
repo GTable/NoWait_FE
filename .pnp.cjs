@@ -58,6 +58,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@tiptap/extension-placeholder", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.0"],\
           ["@tiptap/extension-underline", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.1.0"],\
           ["@tiptap/react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.1.0"],\
           ["@tiptap/starter-kit", "npm:3.1.0"],\
@@ -3004,6 +3005,52 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@tiptap/core",\
           "@types/tiptap__core"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@tiptap/extension-placeholder", [\
+      ["npm:2.26.1", {\
+        "packageLocation": "./.yarn/cache/@tiptap-extension-placeholder-npm-2.26.1-fce6aefc10-c1471ac31f.zip/node_modules/@tiptap/extension-placeholder/",\
+        "packageDependencies": [\
+          ["@tiptap/extension-placeholder", "npm:2.26.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["npm:3.4.0", {\
+        "packageLocation": "./.yarn/cache/@tiptap-extension-placeholder-npm-3.4.0-b4244826d8-4b167e5c89.zip/node_modules/@tiptap/extension-placeholder/",\
+        "packageDependencies": [\
+          ["@tiptap/extension-placeholder", "npm:3.4.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.0", {\
+        "packageLocation": "./.yarn/__virtual__/@tiptap-extension-placeholder-virtual-7221eec1cc/0/cache/@tiptap-extension-placeholder-npm-3.4.0-b4244826d8-4b167e5c89.zip/node_modules/@tiptap/extension-placeholder/",\
+        "packageDependencies": [\
+          ["@tiptap/extension-placeholder", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.0"],\
+          ["@tiptap/extensions", null],\
+          ["@types/tiptap__extensions", null]\
+        ],\
+        "packagePeers": [\
+          "@tiptap/extensions",\
+          "@types/tiptap__extensions"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:2.26.1", {\
+        "packageLocation": "./.yarn/__virtual__/@tiptap-extension-placeholder-virtual-4bda4c83f1/0/cache/@tiptap-extension-placeholder-npm-2.26.1-fce6aefc10-c1471ac31f.zip/node_modules/@tiptap/extension-placeholder/",\
+        "packageDependencies": [\
+          ["@tiptap/core", "virtual:f8a3cb00e42d72a340973a0e5155f252a3c8ffaa7cd248bf67dc60191bc93804a10b05ae2dccfd6917900af76348bdfa016d136e8a7c06a4ff2e828f3e3726c3#npm:3.1.0"],\
+          ["@tiptap/extension-placeholder", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:2.26.1"],\
+          ["@tiptap/pm", "npm:3.1.0"],\
+          ["@types/tiptap__core", null],\
+          ["@types/tiptap__pm", null]\
+        ],\
+        "packagePeers": [\
+          "@tiptap/core",\
+          "@tiptap/pm",\
+          "@types/tiptap__core",\
+          "@types/tiptap__pm"\
         ],\
         "linkType": "HARD"\
       }]\
@@ -7390,6 +7437,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:.", {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@tiptap/extension-placeholder", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.0"],\
           ["@tiptap/extension-underline", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.1.0"],\
           ["@tiptap/react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.1.0"],\
           ["@tiptap/starter-kit", "npm:3.1.0"],\
@@ -7634,6 +7682,7 @@ const RAW_RUNTIME_STATE =
           ["@tailwindcss/postcss", "npm:4.1.11"],\
           ["@tanstack/react-query", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:5.84.2"],\
           ["@tiptap/core", "virtual:f8a3cb00e42d72a340973a0e5155f252a3c8ffaa7cd248bf67dc60191bc93804a10b05ae2dccfd6917900af76348bdfa016d136e8a7c06a4ff2e828f3e3726c3#npm:3.1.0"],\
+          ["@tiptap/extension-placeholder", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:2.26.1"],\
           ["@tiptap/extension-underline", "virtual:f8a3cb00e42d72a340973a0e5155f252a3c8ffaa7cd248bf67dc60191bc93804a10b05ae2dccfd6917900af76348bdfa016d136e8a7c06a4ff2e828f3e3726c3#npm:3.1.0"],\
           ["@tiptap/pm", "npm:3.1.0"],\
           ["@tiptap/react", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:3.1.0"],\

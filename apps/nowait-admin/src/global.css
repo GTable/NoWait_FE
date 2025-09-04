@@ -33,6 +33,18 @@ body,
   box-sizing: border-box;
 }
 
+/* 에디터 본문: 너의 커스텀 텍스트 유틸 적용 */
+.editor-root .ProseMirror {
+  font-size: 14px;
+}
+.editor-root .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  font-size: 14px;
+  color: #aaaaaa;
+}
+
 /* Admin 앱 전용 스타일 */
 .admin-container {
   max-width: 1600px;
