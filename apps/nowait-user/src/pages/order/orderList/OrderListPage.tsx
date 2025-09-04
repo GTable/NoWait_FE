@@ -28,11 +28,10 @@ const OrderListPage = () => {
 
   // 메뉴가 1개일 때에도 애니메이션 작동
   useEffect(() => {
-    if (cart.length === 0 && !isAnimatingOut) {
-      setTimeout(() => {
-        setIsAnimatingOut(true);
-      }, 300);
-    }
+    if (cart.length === 0 && !isAnimatingOut) return;
+    setTimeout(() => {
+      setIsAnimatingOut(true);
+    }, 300);
   }, [cart]);
 
   const { data: menus } = useQuery({
@@ -45,18 +44,6 @@ const OrderListPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  // 장바구니와 최신 메뉴 데이터 동기화
-  useEffect(() => {
-    if (!menus) return;
-
-    const soldOut = getSoldOutMenusInCart(cart, menus);
-
-    if (soldOut.length > 0) {
-      setSoldOutMenus(soldOut);
-      modal.open();
-    }
-  }, [menus, cart]);
 
   if (cart.length === 0 && isAnimatingOut) return <EmptyCart />;
 
@@ -90,7 +77,9 @@ const OrderListPage = () => {
                 className="py-5 border-none"
               >
                 메뉴 추가하기
-                <Add className="w-4 h-4" fill="currentColor" />
+                <span className="block w-4 h-4 mb-0.5">
+                  <Add className="w-full h-full" fill="currentColor" />
+                </span>
               </SmallActionButton>
             </motion.li>
           </AnimatePresence>
@@ -99,7 +88,17 @@ const OrderListPage = () => {
       <PageFooterButton background="gradient">
         <Button
           textColor="white"
-          onClick={() => navigate(`/${storeId}/remittance`)}
+          onClick={() => {
+            if (!menus) return;
+            // 장바구니와 최신 메뉴 데이터 동기화
+            const soldOut = getSoldOutMenusInCart(cart, menus);
+            if (soldOut.length > 0) {
+              setSoldOutMenus(soldOut);
+              modal.open();
+            } else {
+              navigate(`/${storeId}/remittance`);
+            }
+          }}
         >
           <TotalButton variant="orderPage" actionText="주문하기" />
         </Button>
@@ -115,7 +114,10 @@ const OrderListPage = () => {
               );
             }}
           >
-            <div className="absolute left-1/2 bottom-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-40px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-35px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]"
+            >
               <h1 className="text-title-20-bold text-black-90 text-center mb-[20px] break-keep">
                 현재{" "}
                 {soldOutMenus?.map((menu: CartType, idx: number) => (

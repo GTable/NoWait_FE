@@ -36,8 +36,9 @@ const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
             onClick={() => {
               setTimeout(() => removeFromCart(id), 300);
             }}
+            className="p-1"
           >
-            <Close />
+            <Close color="#AAAAAA" />
           </button>
         </div>
         <QuantitySelector
