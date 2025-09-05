@@ -16,7 +16,7 @@ const EmptyPage = ({ mode, title, buttonText }: PropsType) => {
     <div>
       <BackOnlyHeader />
       <div
-        className={`min-h-screen flex flex-col justify-center items-center ${
+        className={`min-h-dvh flex flex-col justify-center items-center ${
           mode === "default" ? "bg-white" : "bg-black-15"
         }`}
       >

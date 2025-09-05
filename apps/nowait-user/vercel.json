@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/orders/:path*",
+      "destination": "https://nowait.co.kr/orders/:path*"
+    },
+    {
+      "source": "/v1/:path*",
+      "destination": "https://nowait.co.kr/v1/:path*"
+    },
+    {
       "source": "/api/images/:path*",
       "destination": "https://gtablestoreimage-resize-bucket.s3.ap-northeast-2.amazonaws.com/:path*"
     },
