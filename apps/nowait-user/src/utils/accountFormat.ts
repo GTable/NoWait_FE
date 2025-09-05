@@ -25,5 +25,8 @@ export const accountFormat = (bank: string, accountNumber: string) => {
     result.push(number);
     start = end;
   }
+  if (start < accountNumber.length) {
+    result.push(accountNumber.slice(start));
+  }
   return result.join("-");
 };
