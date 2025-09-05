@@ -58,6 +58,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@tiptap/extension-code-block-lowlight", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.1"],\
           ["@tiptap/extension-hard-break", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.0"],\
           ["@tiptap/extension-placeholder", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.0"],\
           ["@tiptap/extension-underline", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.1.0"],\
@@ -69,8 +70,10 @@ const RAW_RUNTIME_STATE =
           ["dompurify", "npm:3.2.6"],\
           ["framer-motion", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:12.23.12"],\
           ["heic2any", "npm:0.0.4"],\
+          ["highlight.js", "npm:11.11.1"],\
           ["jsqr", "npm:1.4.0"],\
           ["lottie-react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.4.1"],\
+          ["lowlight", "npm:3.3.0"],\
           ["monorepo-nowaitFE", "workspace:."],\
           ["prop-types", "npm:15.8.1"],\
           ["prosemirror-model", "npm:1.25.3"],\
@@ -2344,6 +2347,44 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@tiptap/extension-code-block-lowlight", [\
+      ["npm:3.4.1", {\
+        "packageLocation": "./.yarn/cache/@tiptap-extension-code-block-lowlight-npm-3.4.1-516cda7ebf-19094d6a36.zip/node_modules/@tiptap/extension-code-block-lowlight/",\
+        "packageDependencies": [\
+          ["@tiptap/extension-code-block-lowlight", "npm:3.4.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.1", {\
+        "packageLocation": "./.yarn/__virtual__/@tiptap-extension-code-block-lowlight-virtual-ea3e317d84/0/cache/@tiptap-extension-code-block-lowlight-npm-3.4.1-516cda7ebf-19094d6a36.zip/node_modules/@tiptap/extension-code-block-lowlight/",\
+        "packageDependencies": [\
+          ["@tiptap/core", null],\
+          ["@tiptap/extension-code-block", null],\
+          ["@tiptap/extension-code-block-lowlight", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.1"],\
+          ["@tiptap/pm", null],\
+          ["@types/highlight.js", null],\
+          ["@types/lowlight", null],\
+          ["@types/tiptap__core", null],\
+          ["@types/tiptap__extension-code-block", null],\
+          ["@types/tiptap__pm", null],\
+          ["highlight.js", "npm:11.11.1"],\
+          ["lowlight", "npm:3.3.0"]\
+        ],\
+        "packagePeers": [\
+          "@tiptap/core",\
+          "@tiptap/extension-code-block",\
+          "@tiptap/pm",\
+          "@types/highlight.js",\
+          "@types/lowlight",\
+          "@types/tiptap__core",\
+          "@types/tiptap__extension-code-block",\
+          "@types/tiptap__pm",\
+          "highlight.js",\
+          "lowlight"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@tiptap/extension-document", [\
       ["npm:3.1.0", {\
         "packageLocation": "./.yarn/cache/@tiptap-extension-document-npm-3.1.0-9bdb7d2c70-8311d854e9.zip/node_modules/@tiptap/extension-document/",\
@@ -3175,6 +3216,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/hast", [\
+      ["npm:3.0.4", {\
+        "packageLocation": "./.yarn/cache/@types-hast-npm-3.0.4-640776a343-3249781a51.zip/node_modules/@types/hast/",\
+        "packageDependencies": [\
+          ["@types/hast", "npm:3.0.4"],\
+          ["@types/unist", "npm:3.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/hoist-non-react-statics", [\
       ["npm:3.3.7", {\
         "packageLocation": "./.yarn/cache/@types-hoist-non-react-statics-npm-3.3.7-efbaafecfe-ed8f4e8833.zip/node_modules/@types/hoist-non-react-statics/",\
@@ -3389,6 +3440,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-trusted-types-npm-2.0.7-a07fc44f59-4c4855f10d.zip/node_modules/@types/trusted-types/",\
         "packageDependencies": [\
           ["@types/trusted-types", "npm:2.0.7"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/unist", [\
+      ["npm:3.0.3", {\
+        "packageLocation": "./.yarn/cache/@types-unist-npm-3.0.3-1c20461f2e-2b1e4adcab.zip/node_modules/@types/unist/",\
+        "packageDependencies": [\
+          ["@types/unist", "npm:3.0.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4739,6 +4799,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["dequal", [\
+      ["npm:2.0.3", {\
+        "packageLocation": "./.yarn/cache/dequal-npm-2.0.3-53a630c60e-f98860cdf5.zip/node_modules/dequal/",\
+        "packageDependencies": [\
+          ["dequal", "npm:2.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["detect-libc", [\
       ["npm:1.0.3", {\
         "packageLocation": "./.yarn/cache/detect-libc-npm-1.0.3-c30ac344d4-4da0deae9f.zip/node_modules/detect-libc/",\
@@ -4751,6 +4820,16 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/detect-libc-npm-2.0.4-e8a2aba8b6-c15541f836.zip/node_modules/detect-libc/",\
         "packageDependencies": [\
           ["detect-libc", "npm:2.0.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["devlop", [\
+      ["npm:1.1.0", {\
+        "packageLocation": "./.yarn/cache/devlop-npm-1.1.0-d4a98d724c-e0928ab8f9.zip/node_modules/devlop/",\
+        "packageDependencies": [\
+          ["dequal", "npm:2.0.3"],\
+          ["devlop", "npm:1.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -6030,6 +6109,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["highlight.js", [\
+      ["npm:11.11.1", {\
+        "packageLocation": "./.yarn/cache/highlight.js-npm-11.11.1-1afef66f5e-40f53ac19d.zip/node_modules/highlight.js/",\
+        "packageDependencies": [\
+          ["highlight.js", "npm:11.11.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["hoist-non-react-statics", [\
       ["npm:3.3.2", {\
         "packageLocation": "./.yarn/cache/hoist-non-react-statics-npm-3.3.2-e7b709e6c1-fe0889169e.zip/node_modules/hoist-non-react-statics/",\
@@ -6759,6 +6847,18 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["lowlight", [\
+      ["npm:3.3.0", {\
+        "packageLocation": "./.yarn/cache/lowlight-npm-3.3.0-db2122ba38-9b796fa844.zip/node_modules/lowlight/",\
+        "packageDependencies": [\
+          ["@types/hast", "npm:3.0.4"],\
+          ["devlop", "npm:1.1.0"],\
+          ["highlight.js", "npm:11.11.1"],\
+          ["lowlight", "npm:3.3.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["lru-cache", [\
       ["npm:10.4.3", {\
         "packageLocation": "./.yarn/cache/lru-cache-npm-10.4.3-30c10b861a-ebd04fbca9.zip/node_modules/lru-cache/",\
@@ -7059,6 +7159,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:.", {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@tiptap/extension-code-block-lowlight", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.1"],\
           ["@tiptap/extension-hard-break", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.0"],\
           ["@tiptap/extension-placeholder", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.4.0"],\
           ["@tiptap/extension-underline", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:3.1.0"],\
@@ -7070,8 +7171,10 @@ const RAW_RUNTIME_STATE =
           ["dompurify", "npm:3.2.6"],\
           ["framer-motion", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:12.23.12"],\
           ["heic2any", "npm:0.0.4"],\
+          ["highlight.js", "npm:11.11.1"],\
           ["jsqr", "npm:1.4.0"],\
           ["lottie-react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.4.1"],\
+          ["lowlight", "npm:3.3.0"],\
           ["monorepo-nowaitFE", "workspace:."],\
           ["prop-types", "npm:15.8.1"],\
           ["prosemirror-model", "npm:1.25.3"],\

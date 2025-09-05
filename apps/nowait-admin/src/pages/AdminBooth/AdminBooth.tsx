@@ -76,7 +76,6 @@ const BoothForm = () => {
   }, [profileImage]);
 
   const currentBannerSig = useMemo<(string | number | null)[]>(() => {
-    // UI가 3 슬롯이라 가정
     const slots = [bannerImages[0], bannerImages[1], bannerImages[2]];
     return slots.map((img) => {
       if (!img) return null;
@@ -175,7 +174,7 @@ const BoothForm = () => {
           },
           {
             onSuccess: () => resolve(),
-            onError: () => reject(new Error("부스 정보 수정 실패")),
+            onError: (err) => reject(err),
           }
         );
       });
@@ -222,7 +221,7 @@ const BoothForm = () => {
       refetch();
       after?.();
     } catch (e) {
-      console.error(e);
+      console.log(e, "부스정보저장 에러메세지");
       alert("저장 중 오류가 발생했어요. 다시 시도해주세요.");
     }
   };
