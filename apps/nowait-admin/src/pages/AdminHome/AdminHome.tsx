@@ -22,7 +22,7 @@ interface Reservation {
   waitMinutes: number;
   peopleCount: number;
   name: string;
-  phone: string;
+  phoneNumber: string;
   status: WaitingStatus;
   calledAt?: string;
 }
