@@ -208,7 +208,7 @@ const AdminHome = () => {
         waitMinutes: Math.floor((now - requested.getTime()) / 60000),
         peopleCount: res.partySize,
         name: res.userName,
-        phone: "010-****-****",
+        phoneNumber: res.phoneNumber,
         status: res.status,
         calledAt:
           res.status === "CALLING" && called ? called.toISOString() : undefined,
@@ -311,7 +311,7 @@ const AdminHome = () => {
               )}
               peopleCount={res.peopleCount}
               name={res.name}
-              phone="010-1234-1234"
+              phoneNumber={res.phoneNumber}
               status={res.status}
               requestedAt={res.requestedAt}
               calledAt={res.calledAt}
