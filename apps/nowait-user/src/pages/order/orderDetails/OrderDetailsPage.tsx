@@ -24,7 +24,21 @@ type OrderStatus = keyof typeof statusMap;
 const OrderDetailsPage = () => {
   const { storeId } = useParams();
   const tableId = localStorage.getItem("tableId");
-
+  function getCookie(cookieName:string) {
+    cookieName = cookieName + '=';
+    let cookieData = document.cookie;
+    let start = cookieData.indexOf(cookieName);
+    let cookieValue = '';
+    if (start != -1) {
+        start += cookieName.length;
+        let end = cookieData.indexOf(';', start);
+        if (end == -1) end = cookieData.length;
+        cookieValue = cookieData.substring(start, end);
+    }
+    
+    return decodeURIComponent(cookieValue);
+}
+  console.log(getCookie("JSESSIONID"))
   const { data: orderDetails, isLoading } = useQuery({
     queryKey: ["orderDetails", storeId],
     queryFn: () => getOrderDetails(storeId!, Number(tableId!)),
