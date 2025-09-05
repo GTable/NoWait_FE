@@ -136,7 +136,10 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
                       menu.imageUrl ?? "bg-[#788FB6]"
                     }`}
                   >
-                    <img src={menu.imageUrl} className="object-cover" />
+                    <img
+                      src={menu.imageUrl}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                   <p
                     className={`text-16-semibold ${

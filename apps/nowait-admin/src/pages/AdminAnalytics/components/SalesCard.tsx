@@ -26,8 +26,6 @@ const SalesCard: React.FC<SalesCardProps> = ({
   isTablet,
 }) => {
   const [showToday, setShowToday] = useState(true);
-  // const [isHoverBack, setIsHoverBack] = useState(false);
-  // const [isHoverForward, setIsHoverForward] = useState(false);
 
   const formatDate = (date: String) => {
     if (!date) return "";

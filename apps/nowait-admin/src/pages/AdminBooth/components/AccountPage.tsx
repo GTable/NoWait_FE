@@ -434,7 +434,7 @@ const AccountPage = () => {
         <div className="flex space-x-[10px]">
           <DropdownSelect
             type="bank"
-            value={bank}
+            value={bank === "IBK기업" ? "IBK 기업" : bank}
             onChange={setBank}
             options={bankOptions}
             placeholder="은행 선택"
