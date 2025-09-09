@@ -192,7 +192,7 @@ export const updateUserOptionInfo = async (data: {
   accessToken: string;
 }) => {
   try {
-    const response = await UserApi.put("/users/option-info", data);
+    const response = await UserApi.put("/users/optional-info", data);
     return response.data;
   } catch (error) {
     console.error("사용자 옵션 정보 업데이트 실패:", error);
