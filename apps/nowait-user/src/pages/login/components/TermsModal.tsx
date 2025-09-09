@@ -2,12 +2,14 @@ import { useState } from "react";
 import Checkbox from "./Checkbox";
 import TermsItem from "./TermsItem";
 import { useNavigate } from "react-router-dom";
+import { updateUserOptionInfo } from "../../../utils/UserApi";
 
 interface TermsModalProps {
   onOpenViewModal: (termType: "service" | "privacy" | "marketing") => void;
+  phoneNumber: string;
 }
 
-const TermsModal = ({ onOpenViewModal }: TermsModalProps) => {
+const TermsModal = ({ onOpenViewModal, phoneNumber }: TermsModalProps) => {
   // onClose는 나중에 모달 닫기 기능에서 사용될 예정 (현재는 사용하지 않음)
   const [isAllAgreed, setIsAllAgreed] = useState(false);
   const [isServiceAgreed, setIsServiceAgreed] = useState(false);
@@ -58,8 +60,42 @@ const TermsModal = ({ onOpenViewModal }: TermsModalProps) => {
     }
   };
 
-  const signupHandler = () => {
-    navigate("/onboarding/success");
+  const signupHandler = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) {
+        console.error("Access token이 없습니다.");
+        navigate("/login");
+        return;
+      }
+
+      const requestData = {
+        phoneNumber: phoneNumber,
+        consent: isMarketingAgreed,
+        accessToken: accessToken,
+      };
+
+      console.log("사용자 옵션 정보 업데이트 요청:", requestData);
+
+      const response = await updateUserOptionInfo(requestData);
+
+      console.log("사용자 옵션 정보 업데이트 성공:", response);
+
+      // phoneEntered를 true로 설정 (전화번호 입력 완료)
+      localStorage.setItem("phoneEntered", "true");
+
+      // 응답에서 새로운 accessToken이 있으면 localStorage에 저장
+      if (response.accessToken) {
+        localStorage.setItem("accessToken", response.accessToken);
+        console.log("새로운 accessToken 저장 완료");
+      }
+
+      navigate("/onboarding/success");
+    } catch (error) {
+      console.error("사용자 옵션 정보 업데이트 실패:", error);
+      // 에러 발생 시에도 성공 페이지로 이동 (필요에 따라 에러 처리 로직 추가)
+      navigate("/onboarding/success");
+    }
   };
 
   // 필수 약관이 모두 체크되었는지 확인

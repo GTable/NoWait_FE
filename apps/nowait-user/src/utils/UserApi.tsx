@@ -185,4 +185,19 @@ UserApi.interceptors.response.use(
   }
 );
 
+// 사용자 옵션 정보 업데이트 API
+export const updateUserOptionInfo = async (data: {
+  phoneNumber: string;
+  consent: boolean;
+  accessToken: string;
+}) => {
+  try {
+    const response = await UserApi.put("/users/option-info", data);
+    return response.data;
+  } catch (error) {
+    console.error("사용자 옵션 정보 업데이트 실패:", error);
+    throw error;
+  }
+};
+
 export default UserApi;
