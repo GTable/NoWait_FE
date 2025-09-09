@@ -70,7 +70,7 @@ const TermsModal = ({ onOpenViewModal, phoneNumber }: TermsModalProps) => {
       }
 
       const requestData = {
-        phoneNumber: phoneNumber,
+        phoneNumber: phoneNumber.replace(/[^\d]/g, ""), // 하이픈 제거하여 숫자만 추출
         consent: isMarketingAgreed,
         accessToken: accessToken,
       };
