@@ -13,7 +13,7 @@ interface WaitingCardProps {
   waitMinutes: number;
   peopleCount: number;
   name: string;
-  phone: string;
+  phoneNumber: string;
   status: WaitingCardStatus;
   calledAt: string | undefined;
   requestedAt?: string;
@@ -43,7 +43,7 @@ export function WaitingCard({
   waitMinutes,
   peopleCount,
   name,
-  phone,
+  phoneNumber,
   status,
   requestedAt,
   calledAt,
@@ -152,7 +152,9 @@ export function WaitingCard({
         {/* 전화번호 */}
         <div className="flex flex-col py-2 w-[50%]">
           <div className="text-14-medium text-black-60 mb-1">전화번호</div>
-          <div className="text-17-bold text-black-85">{phone}</div>
+          <div className="text-17-bold text-black-85">
+            {phoneNumber === "" ? "010-****-****" : phoneNumber}
+          </div>
         </div>
       </div>
 
