@@ -24,7 +24,9 @@ function App() {
       <SpeedInsights />
       <BrowserRouter>
         <Suspense fallback={<div>로딩중..................</div>}>
-          <Router />
+          <div className="mobile-container bg-white">
+            <Router />
+          </div>
         </Suspense>
         <Toast />
         <ErrorToast />
