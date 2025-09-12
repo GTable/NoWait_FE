@@ -1,41 +1,54 @@
 .navigate-push-enter {
-  opacity: 0;
   transform: translateX(100%);
 }
+
 .navigate-push-enter-active {
-  opacity: 1;
-  transform: translateX(0%);
-  transition: all 300ms ease-in-out;
+  z-index: 1;
+  transform: translateX(0);
+  transition: transform 300ms ease-in-out;
 }
+
 .navigate-push-exit {
-  opacity: 1;
-  transform: translateX(0%);
+  transform: translateX(0);
 }
+
 .navigate-push-exit-active {
-  opacity: 0;
-  transform: translateX(-30%);
-  transition: all 300ms ease-in-out;
+  transform: translateX(0);
+  transition: transform 300ms ease-in-out;
 }
 
-.page-wrapper {
+/* 뒤로가기 애니메이션 */
+.navigate-pop-enter {
+  transform: translateX(0);
+}
+
+.navigate-pop-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms ease-in-out;
+}
+
+.navigate-pop-exit {
+  transform: translateX(0);
+}
+
+.navigate-pop-exit-active {
+  z-index: 1;
+  transform: translateX(100%);
+  transition: transform 300ms ease-in-out;
+}
+
+.transition-wrapper {
   position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.page-wrapper {
-  transition: opacity 100ms ease, transform 100ms ease;
-  width: 100%;
-  height: 100%;
+  width: 430px;
+  height: 100dvh;
   background-color: white;
 }
 
-/* Fade-out before route change */
-.page-wrapper.fadeOut {
-  transform: translateX(-100%);
-}
-
-/* Fade-in after route change */
-.page-wrapper.fadeIn {
-  transform: translateX(0%);
+.transition-wrapper > div {
+  position: absolute; /* 페이지들이 겹치게 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
 }

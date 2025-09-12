@@ -31,7 +31,7 @@ const OrderListPage = () => {
     if (cart.length === 0 && !isAnimatingOut) return;
     setTimeout(() => {
       setIsAnimatingOut(true);
-    }, 300);
+    }, 1500);
   }, [cart]);
 
   const { data: menus } = useQuery({

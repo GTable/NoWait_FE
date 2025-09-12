@@ -23,9 +23,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <SpeedInsights />
       <BrowserRouter>
-        <Suspense fallback={<div>로딩중..................</div>}>
-          <Router />
-        </Suspense>
+        <Router />
         <Toast />
         <ErrorToast />
       </BrowserRouter>
