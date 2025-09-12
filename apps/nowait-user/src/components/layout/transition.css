@@ -39,8 +39,9 @@
 
 .transition-wrapper {
   position: relative;
-  width: 430px;
-  height: 100dvh;
+  max-width: 430px;
+  min-width: 360px;
+  height: 100%;
   background-color: white;
 }
 

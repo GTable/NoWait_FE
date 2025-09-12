@@ -3,7 +3,6 @@ import Router from "./routes/Router";
 import { BrowserRouter } from "react-router-dom";
 import Toast from "./components/common/toast/Toast";
 import ErrorToast from "./components/common/toast/ErrorToast";
-import { Suspense } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
