@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./transition.css";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useNavigationType } from "react-router-dom";
@@ -22,14 +22,14 @@ const PageTransitionWrapper = ({ location, children }: PropsType) => {
   const isBack = location.state?.isBack as boolean | undefined;
   console.log(isBack, "이즈백");
   //라우터 이동 방향에 따른 애니메이션 분리
-  const isNavigatePush = navigateType === "PUSH" && !isBack;;
+  const isNavigatePush = navigateType === "PUSH" && !isBack;
   const isNavigatePop = navigateType === "POP" || isBack;
   const isNavigateReplace = navigateType === "REPLACE";
   const isAnimation = () => {
     if (isNavigatePush) return "navigate-push";
     if (isNavigatePop) return "navigate-pop";
     if (isNavigateReplace) return "";
-    return ""
+    return "";
   };
 
   // 각 pathname별 ref를 분리해서 객체로 관리
@@ -40,7 +40,12 @@ const PageTransitionWrapper = ({ location, children }: PropsType) => {
   }
 
   const currentNodeRef = nodeRefs.current[pathname];
-  console.log(navigateType);
+
+  useEffect(() => {
+    if (isNavigatePush || isNavigatePop) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, isNavigatePush, isNavigatePop]);
   return (
     <TransitionGroup
       className={"transition-wrapper"}
@@ -51,7 +56,7 @@ const PageTransitionWrapper = ({ location, children }: PropsType) => {
       }
     >
       <CSSTransition key={pathname} timeout={300} nodeRef={currentNodeRef}>
-        <div ref={currentNodeRef}>{children}</div>
+        <div className="overflow-y-auto" ref={currentNodeRef}>{children}</div>
       </CSSTransition>
     </TransitionGroup>
   );

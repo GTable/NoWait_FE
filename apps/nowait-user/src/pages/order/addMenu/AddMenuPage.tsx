@@ -44,7 +44,7 @@ const AddMenuPage = () => {
   if (isLoading) return <FullPageLoader />;
 
   return (
-    <div className="flex flex-col min-h-dvh">
+    <div className="flex flex-col min-h-dvh bg-white">
       <div className="flex flex-col flex-grow px-5">
         <h1 className="-mx-5 h-[246px] object-cover">
           <img
