@@ -24,11 +24,7 @@ const OrderListPage = () => {
   const { cart, removeFromCart } = useCartStore();
   const modal = useModal();
   const [soldOutMenus, setSoldOutMenus] = useState<CartType[] | undefined>();
-
-  // 이 값은 장바구니가 처음에 비어있으면 true로 시작 -> 바로 EmptyCart 표시
-  const [isAnimatingOut, setIsAnimatingOut] = useState<boolean>(
-    false
-  );
+  const [isAnimatingOut, setIsAnimatingOut] = useState<boolean>(false);
 
   const { data: menus } = useQuery({
     queryKey: ["storeMenuList", storeId],
@@ -41,20 +37,16 @@ const OrderListPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // ----- 핵심: cart가 비워질 때 exit 애니메이션이 끝난 뒤 EmptyCart를 보여주도록 지연 처리 -----
   useEffect(() => {
     let timerId: number | undefined;
 
     if (cart.length === 0) {
-      // 이미 isAnimatingOut 상태이면(=초기 진입으로 EmptyCart가 보이는 경우) 타이머 불필요
       if (!isAnimatingOut) {
-        // CartItem의 exit transition duration이 0.3s이므로 약간 여유를 두어 350ms 사용
         timerId = window.setTimeout(() => {
           setIsAnimatingOut(true);
         }, 350);
       }
     } else {
-      // 아이템이 있으면(다시 추가되면) 즉시 isAnimatingOut 해제하고, 타이머 취소
       if (isAnimatingOut) setIsAnimatingOut(false);
     }
 
@@ -62,9 +54,7 @@ const OrderListPage = () => {
       if (timerId) clearTimeout(timerId);
     };
   }, [cart, isAnimatingOut]);
-  // -------------------------------------------------------------------------------------
 
-  // 애니메이션이 완료되어 빈 상태로 전환된 경우에만 EmptyCart를 바로 렌더링
   if (cart.length === 0 && isAnimatingOut) {
     return <EmptyCart />;
   }

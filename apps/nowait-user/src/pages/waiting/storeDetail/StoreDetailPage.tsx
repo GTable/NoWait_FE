@@ -65,7 +65,7 @@ const StoreDetailPage = () => {
   if (isError) return <NotFound />;
   return (
     <div>
-      <div className="px-5 w-full min-h-dvh mb-[112px]">
+      <div className="px-5 w-full min-h-dvh">
         {/* 주점 배너 이미지 */}
         <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
         {/* 학과 정보 섹션 */}

@@ -22,7 +22,7 @@ const PageFooterButton = ({
 
   return (
     <footer
-      className={`fixed bottom-0 w-full max-w-[430px] min-w-[320px] ${backgroundClass}`}
+      className={`sticky bottom-0 w-full max-w-[430px] min-w-[320px] ${backgroundClass}`}
     >
       <div className={`${className} flex justify-center pt-8 pb-6 px-5`}>
         {children}
