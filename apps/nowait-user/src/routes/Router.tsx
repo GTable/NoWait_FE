@@ -10,7 +10,6 @@ import OrderSuccessPage from "../pages/order/orderSuccess/OrderSuccessPage";
 import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
-import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
 import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
@@ -34,7 +33,6 @@ const withAuth = (Component: React.ComponentType) => (
 const Router = () => {
   const location = useLocation();
   return (
-    <PageTransitionWrapper location={location}>
       <Routes location={location}>
         {/* 공개 라우트 - 인증 불필요 */}
         <Route path="/login/success" element={<KakaoRedirectHandler />} />
@@ -84,7 +82,6 @@ const Router = () => {
         <Route path="/:storeId/orderDetails" element={<OrderDetailsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </PageTransitionWrapper>
   );
 };
 
