@@ -36,7 +36,7 @@ const AddMenuPage = () => {
     addToCart(item);
 
     navigate(`/${storeId}`, {
-      state: { added: true, addedPrice: menu!.price * quantity },
+      state: { added: true, addedPrice: menu!.price * quantity, isBack: true },
       replace: false,
     });
   };
@@ -54,8 +54,12 @@ const AddMenuPage = () => {
           />
         </h1>
         <div className="py-8">
-          <h1 className="text-headline-22-bold mb-2 break-keep">{menu!.name}</h1>
-          <h2 className="text-16-regular text-black-70 break-keep">{menu!.description}</h2>
+          <h1 className="text-headline-22-bold mb-2 break-keep">
+            {menu!.name}
+          </h1>
+          <h2 className="text-16-regular text-black-70 break-keep">
+            {menu!.description}
+          </h2>
         </div>
       </div>
       {/* 메뉴 가격 및 수량 컨트롤 */}

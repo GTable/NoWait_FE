@@ -32,12 +32,7 @@ const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
               {originPrice.toLocaleString()}원
             </h2>
           </div>
-          <button
-            onClick={() => {
-              setTimeout(() => removeFromCart(id), 300);
-            }}
-            className="p-1"
-          >
+          <button onClick={() => removeFromCart(id)} className="p-1">
             <Close color="#AAAAAA" />
           </button>
         </div>

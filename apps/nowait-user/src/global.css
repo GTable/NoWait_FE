@@ -205,7 +205,7 @@ body {
 .mobile-container {
   width: 100%;
   max-width: 430px;
-  min-width: 320px;
+  min-width: 360px;
   height: 100dvh;
   margin: 0 auto;
 }
