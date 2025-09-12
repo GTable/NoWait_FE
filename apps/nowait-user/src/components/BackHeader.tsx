@@ -8,7 +8,7 @@ interface PropsType {
 const BackHeader = ({ title }: PropsType) => {
   const navigate = useNavigate()
   return (
-    <header className="w-full fixed left-0 top-0 bg-white">
+    <header className="w-full fixed left-0 top-0 bg-white z-50">
       <div className="flex justify-between items-center">
         <button onClick={()=>navigate(-1)} className="p-2.5">
           <Back />

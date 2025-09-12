@@ -74,7 +74,7 @@ const RemittancePage = () => {
   return (
     <div className="flex flex-col flex-grow pb-[112px]">
       <BackHeader title="주문하기" />
-      <section className="px-5 mt-[38px]">
+      <section className="px-5 mt-[48px]">
         <OrderSummary cart={cart} />
         <SectionDivider />
         <PayerInput

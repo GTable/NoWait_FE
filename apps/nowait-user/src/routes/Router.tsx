@@ -34,7 +34,6 @@ const withAuth = (Component: React.ComponentType) => (
 const Router = () => {
   const location = useLocation();
   return (
-    <div>
     <PageTransitionWrapper location={location}>
       <Routes location={location}>
         {/* 공개 라우트 - 인증 불필요 */}
@@ -85,7 +84,7 @@ const Router = () => {
         <Route path="/:storeId/orderDetails" element={<OrderDetailsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </PageTransitionWrapper></div>
+    </PageTransitionWrapper>
   );
 };
 
