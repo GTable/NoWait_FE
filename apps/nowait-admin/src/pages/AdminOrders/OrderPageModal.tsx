@@ -1,6 +1,7 @@
 import { useUpdateOrderStatus } from "../../hooks/useUpdateOrderStatus";
 import { getTableBackgroundColor } from "../../utils/tableColors";
 import { DropdownLoader } from "@repo/ui";
+import { cancelOrder } from "../../utils/AdminApi";
 
 // Payment Check Modal
 interface PaymentCheckModalProps {
@@ -196,5 +197,74 @@ const CookCompleteModal = ({
   />
 );
 
-export { PaymentCheckModal, CookedModal, CookCompleteModal, OrderStatusModal };
-export type { PaymentCheckModalProps, CookedModalProps, OrderStatusModalProps };
+// Order Cancel Modal
+interface OrderCancelModalProps {
+  orderId: number;
+  onClose: () => void;
+  onSuccess?: () => void;
+}
+
+const OrderCancelModal = ({
+  orderId,
+  onClose,
+  onSuccess,
+}: OrderCancelModalProps) => {
+  const cancelReasons = [
+    { id: "SOLD_OUT", label: "메뉴 품절" },
+    { id: "SIMPLE_CANCEL", label: "단순 취소" },
+    { id: "ETC", label: "기타" },
+  ];
+
+  const handleReasonSelect = async (reason: string) => {
+    try {
+      await cancelOrder(orderId, reason);
+      onSuccess?.();
+      onClose();
+    } catch (error) {
+      console.error("주문 취소 실패:", error);
+      // 에러 처리 (예: 토스트 메시지 표시)
+    }
+  };
+
+  return (
+    <div
+      className="flex flex-col justify-center items-center bg-white rounded-[20px] max-w-sm w-full p-5.5 px-5.5 gap-5"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="flex flex-col text-center justify-center items-center gap-2.5">
+        <div className="flex text-title-20-bold text-black-90">
+          주문 취소 사유를 선택해주세요
+        </div>
+        <div className="flex text-14-regular text-black-60">
+          선택 즉시 주문이 취소됩니다.
+        </div>
+      </div>
+
+      <div className="flex flex-col w-full gap-2">
+        {cancelReasons.map((reason) => (
+          <div
+            key={reason.id}
+            className="flex w-full bg-black-20 rounded-[10px] px-4 py-[13px] items-center justify-center text-16-semibold text-black-70 cursor-pointer"
+            onClick={() => handleReasonSelect(reason.id)}
+          >
+            {reason.label}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export {
+  PaymentCheckModal,
+  CookedModal,
+  CookCompleteModal,
+  OrderStatusModal,
+  OrderCancelModal,
+};
+export type {
+  PaymentCheckModalProps,
+  CookedModalProps,
+  OrderStatusModalProps,
+  OrderCancelModalProps,
+};

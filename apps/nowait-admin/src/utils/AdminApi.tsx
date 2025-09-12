@@ -12,7 +12,6 @@ const AdminApi = axios.create({
 AdminApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("adminToken");
-    console.log(token, "토큰 알려줘");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,5 +32,25 @@ AdminApi.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// 주문 취소 API
+export const cancelOrder = async (orderId: number, reason: string) => {
+  try {
+    // 1. 주문 취소 사유 전송 (DELETE)
+    await AdminApi.delete(`/admin/orders/${orderId}`, {
+      data: { reason },
+    });
+
+    // 2. 주문 상태를 CANCEL로 변경 (PATCH)
+    await AdminApi.patch(`/admin/orders/status/${orderId}`, {
+      orderStatus: "CANCELLED",
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("주문 취소 실패:", error);
+    throw error;
+  }
+};
 
 export default AdminApi;
