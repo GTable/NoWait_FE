@@ -62,7 +62,7 @@ const OrderListPage = () => {
   return (
     <div>
       <BackHeader title="장바구니" />
-      <section className="flex flex-col flex-grow min-h-[calc(100dvh-48px)] mt-[48px] pt-7 px-5">
+      <section className="flex flex-col flex-grow min-h-[calc(100dvh-164px)] pt-7 px-5">
         <h1 className="text-headline-22-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
         </h1>
@@ -85,7 +85,9 @@ const OrderListPage = () => {
                 mode="default"
                 type="button"
                 ariaLabel="메뉴 추가하기"
-                onClick={() => navigate(`/${storeId}`)}
+                onClick={() =>
+                  navigate(`/${storeId}`, { state: { isBack: true } })
+                }
                 className="py-5 border-none"
               >
                 메뉴 추가하기
