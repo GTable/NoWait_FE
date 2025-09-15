@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import BoothProfileImage from "./BoothProfileImage";
 import NoticeEditor from "./NoticeEditor";
 import OperatingTimeSelector from "./OperatingTimeSelector";
@@ -70,6 +70,14 @@ const BoothSection = ({
   const [showPreview, setShowPreview] = useState(false);
   const { mutate: deleteBannerImage } = useDeleteBannerImage();
   const { removeEmojiAll } = useRemoveEmoji();
+
+  // 빈 슬롯에서만 사용할 숨김 file input refs
+  const fileInputsRef = useRef<(HTMLInputElement | null)[]>([]);
+
+  const openFilePicker = (index: number) => {
+    const input = fileInputsRef.current[index];
+    if (input) input.click();
+  };
 
   return (
     <>
@@ -215,34 +223,23 @@ const BoothSection = ({
         <div className="flex gap-[10px]">
           {Array(3)
             .fill(null)
-            .map((_, i) => (
-              <label
-                key={i}
-                className="w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center cursor-pointer relative"
-              >
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const newImages = [...bannerImages];
-                      newImages[i] = file;
-                      setBannerImages(newImages);
-                      e.target.value = "";
-                    }
-                  }}
-                />
+            .map((_, i) => {
+            const hasImage = Boolean(bannerImages[i]);
+            const img = bannerImages[i] as any;
 
-                {/* 이미지 미리보기 */}
-                {bannerImages[i] ? (
+            return (
+              <div
+                key={i}
+                // className={`w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center relative ${hasImage ? "cursor-default" : "cursor-pointer"}`}
+                className={`w-[150px] aspect-[375/246] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center relative ${hasImage ? "cursor-default" : "cursor-pointer"}`}
+                onClick={hasImage ? undefined : () => openFilePicker(i)}
+                role={hasImage ? undefined : "button"}
+                tabIndex={hasImage ? undefined : 0}
+              >
+                {hasImage ? (
                   <div className="relative w-full h-full">
                     <img
-                      src={
-                        bannerImages[i] instanceof File
-                          ? URL.createObjectURL(bannerImages[i] as File)
-                          : (bannerImages[i] as any).imageUrl
-                      }
+                      src={img instanceof File ? URL.createObjectURL(img) : img.imageUrl}
                       alt={`배너 ${i + 1}`}
                       className="object-cover w-full h-full rounded-xl overflow-hidden"
                     />
@@ -254,7 +251,7 @@ const BoothSection = ({
                       </span>
                     )}
 
-                    {/* 삭제 버튼 */}
+                    {/* 삭제 버튼 (오직 X 버튼으로만 삭제) */}
                     <button
                       type="button"
                       className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10"
@@ -262,34 +259,49 @@ const BoothSection = ({
                         e.preventDefault();
                         e.stopPropagation();
 
-                        const target = bannerImages[i];
-                        const newImages = bannerImages.filter(
-                          (_, idx) => idx !== i
-                        );
+                        const target = bannerImages[i] as any;
+                        const newImages = bannerImages.filter((_, idx) => idx !== i);
+
                         if (target && !(target instanceof File)) {
-                          // 서버 이미지일 경우
+                          // 서버 이미지 삭제
                           deleteBannerImage(target.id, {
-                            onSuccess: () => {
-                              setBannerImages(newImages);
-                            },
-                            onError: () => {
-                              console.log("이미지 삭제에 실패했습니다.");
-                            },
+                            onSuccess: () => setBannerImages(newImages),
+                            onError: () => console.log("이미지 삭제에 실패했습니다."),
                           });
                         } else {
-                          // File 타입만 있을 경우는 로컬에서만 제거
+                          // 로컬 파일만 있을 때는 상태만 갱신
                           setBannerImages(newImages);
                         }
                       }}
+                      aria-label={`배너 ${i + 1} 삭제`}
                     >
                       <img src={deleteBttn} alt="삭제" />
                     </button>
                   </div>
                 ) : (
-                  <img src={placeholderIcon} alt="업로드" />
+                  <>
+                    <img src={placeholderIcon} alt="업로드" />
+                    <input
+                      ref={(el) => { fileInputsRef.current[i] = el; }}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const newImages = [...bannerImages];
+                          (newImages as any)[i] = file;
+                          setBannerImages(newImages);
+                          // 동일 파일 재선택 허용
+                          e.currentTarget.value = "";
+                        }
+                      }}
+                    />
+                  </>
                 )}
-              </label>
-            ))}
+              </div>
+            );
+          })}
         </div>
       </div>
 
