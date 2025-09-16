@@ -9,6 +9,7 @@ import deleteBttn from "../../../assets/booth/del.svg";
 import PreviewModal from "./Modal/PreviewModal";
 import { useDeleteBannerImage } from "../../../hooks/booth/menu/useDeleteBannerImage";
 import { useRemoveEmoji } from "../../../hooks/useRemoveEmoji";
+import ImageCropModal from "./Modal/ImageCropModal";
 
 const BoothSection = ({
   location,
@@ -70,6 +71,28 @@ const BoothSection = ({
   const [showPreview, setShowPreview] = useState(false);
   const { mutate: deleteBannerImage } = useDeleteBannerImage();
   const { removeEmojiAll } = useRemoveEmoji();
+  const [cropSpec, setCropSpec] = useState<{
+    file: File;
+    aspect: number;
+    outW: number;
+    outH: number;
+    target: "profile" | { bannerIndex: number };
+  } | null>(null);
+
+  const handleCropDone = (cropped: File) => {
+    if (!cropSpec) return;
+    if (cropSpec.target === "profile") {
+      setProfileImage(cropped);
+    } else {
+      const idx = cropSpec.target.bannerIndex;
+      setBannerImages((prev) => {
+        const next = [...prev];
+        next[idx] = cropped;
+        return next;
+      });
+    }
+    setCropSpec(null);
+  };
 
   // 빈 슬롯에서만 사용할 숨김 file input refs
   const fileInputsRef = useRef<(HTMLInputElement | null)[]>([]);
@@ -119,15 +142,27 @@ const BoothSection = ({
                     : profileImage
                   : null
               }
-              bannerImages={bannerImages.map((img, i) =>
-                img instanceof File
-                  ? {
-                      id: i,
-                      imageUrl: URL.createObjectURL(img),
-                      imageType: "BANNER",
-                    }
-                  : { ...img, imageType: "BANNER" }
-              )}
+              bannerImages={bannerImages.map((img, i) => {
+                if (img instanceof File) {
+                  return {
+                    id: i, // 항상 number
+                    imageUrl: URL.createObjectURL(img),
+                    imageType: "BANNER" as const,
+                  };
+                } else if (img) {
+                  return {
+                    id: img.id ?? null,
+                    imageUrl: img.imageUrl ?? "",
+                    imageType: "BANNER" as const,
+                  };
+                } else {
+                  return {
+                    id: null,
+                    imageUrl: "",
+                    imageType: "BANNER" as const,
+                  };
+                }
+              })}
             />
           )}
         </div>
@@ -140,6 +175,15 @@ const BoothSection = ({
             profileImage={profileImage}
             setProfileImage={setProfileImage}
             isMobile={isMobile}
+            onPick={(f) =>
+              setCropSpec({
+                file: f,
+                aspect: 1,
+                outW: 100,
+                outH: 100,
+                target: "profile",
+              })
+            }
           />
           <div
             className={`flex flex-col w-full ${
@@ -224,84 +268,89 @@ const BoothSection = ({
           {Array(3)
             .fill(null)
             .map((_, i) => {
-            const hasImage = Boolean(bannerImages[i]);
-            const img = bannerImages[i] as any;
+              const inputId = `banner-input-${i}`;
+              return (
+                <label
+                  key={i}
+                  htmlFor={inputId}
+                  className="w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center cursor-pointer relative"
+                >
+                  <input
+                    id={inputId}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (!f) return;
+                      setCropSpec({
+                        file: f,
+                        aspect: 375 / 246,
+                        outW: 375,
+                        outH: 246,
+                        target: { bannerIndex: i },
+                      });
+                      e.currentTarget.value = "";
+                    }}
+                  />
 
-            return (
-              <div
-                key={i}
-                // className={`w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center relative ${hasImage ? "cursor-default" : "cursor-pointer"}`}
-                className={`w-[150px] aspect-[375/246] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center relative ${hasImage ? "cursor-default" : "cursor-pointer"}`}
-                onClick={hasImage ? undefined : () => openFilePicker(i)}
-                role={hasImage ? undefined : "button"}
-                tabIndex={hasImage ? undefined : 0}
-              >
-                {hasImage ? (
-                  <div className="relative w-full h-full">
-                    <img
-                      src={img instanceof File ? URL.createObjectURL(img) : img.imageUrl}
-                      alt={`배너 ${i + 1}`}
-                      className="object-cover w-full h-full rounded-xl overflow-hidden"
-                    />
-
-                    {/* 대표 사진 라벨 */}
-                    {i === 0 && (
-                      <span className="absolute bottom-0 left-0 bg-black bg-opacity-80 h-[22px] text-white text-[10px] font-bold px-6 py-1 w-full text-center rounded-b-xl">
-                        대표 사진
-                      </span>
-                    )}
-
-                    {/* 삭제 버튼 (오직 X 버튼으로만 삭제) */}
-                    <button
-                      type="button"
-                      className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        const target = bannerImages[i] as any;
-                        const newImages = bannerImages.filter((_, idx) => idx !== i);
-
-                        if (target && !(target instanceof File)) {
-                          // 서버 이미지 삭제
-                          deleteBannerImage(target.id, {
-                            onSuccess: () => setBannerImages(newImages),
-                            onError: () => console.log("이미지 삭제에 실패했습니다."),
-                          });
-                        } else {
-                          // 로컬 파일만 있을 때는 상태만 갱신
-                          setBannerImages(newImages);
+                  {bannerImages[i] ? (
+                    <div className="relative w-full h-full">
+                      <img
+                        src={
+                          bannerImages[i] instanceof File
+                            ? URL.createObjectURL(bannerImages[i] as File)
+                            : (bannerImages[i] as any).imageUrl
                         }
-                      }}
-                      aria-label={`배너 ${i + 1} 삭제`}
-                    >
-                      <img src={deleteBttn} alt="삭제" />
-                    </button>
-                  </div>
-                ) : (
-                  <>
+                        alt={`배너 ${i + 1}`}
+                        className="object-cover w-full h-full rounded-xl overflow-hidden"
+                      />
+
+                      {i === 0 && (
+                        <span className="absolute bottom-0 left-0 bg-black bg-opacity-80 h-[22px] text-white text-[10px] font-bold px-6 py-1 w-full text-center rounded-b-xl">
+                          대표 사진
+                        </span>
+                      )}
+
+                      <button
+                        type="button"
+                        className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          const target = bannerImages[i];
+
+                          if (target && !(target instanceof File)) {
+                            deleteBannerImage(target.id, {
+                              onSuccess: () => {
+                                setBannerImages((prev) => {
+                                  const next = [...prev];
+                                  next[i] = null; // 슬롯 비우기
+                                  return next;
+                                });
+                              },
+                              onError: () =>
+                                console.log("이미지 삭제에 실패했습니다."),
+                            });
+                          } else {
+                            setBannerImages((prev) => {
+                              const next = [...prev];
+                              next[i] = null; // 로컬만 비우기
+                              return next;
+                            });
+                          }
+                        }}
+                        aria-label={`배너 ${i + 1} 삭제`}
+                      >
+                        <img src={deleteBttn} alt="삭제" />
+                      </button>
+                    </div>
+                  ) : (
                     <img src={placeholderIcon} alt="업로드" />
-                    <input
-                      ref={(el) => { fileInputsRef.current[i] = el; }}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const newImages = [...bannerImages];
-                          (newImages as any)[i] = file;
-                          setBannerImages(newImages);
-                          // 동일 파일 재선택 허용
-                          e.currentTarget.value = "";
-                        }
-                      }}
-                    />
-                  </>
-                )}
-              </div>
-            );
-          })}
+                  )}
+                </label>
+              );
+            })}
         </div>
       </div>
 
@@ -334,7 +383,23 @@ const BoothSection = ({
         setNotice={setBoothNotice}
       />
 
-      {/* 버튼 */}
+      {cropSpec && (
+        <ImageCropModal
+          file={cropSpec.file}
+          aspect={cropSpec.aspect}
+          outWidth={cropSpec.outW}
+          outHeight={cropSpec.outH}
+          mime={cropSpec.target === "profile" ? "image/png" : "image/jpeg"}
+          quality={0.92}
+          onDone={handleCropDone}
+          onClose={() => setCropSpec(null)}
+          title={
+            cropSpec.target === "profile"
+              ? "프로필 이미지 1:1 자르기"
+              : "배너 이미지 375:246 자르기"
+          }
+        />
+      )}
     </>
   );
 };
