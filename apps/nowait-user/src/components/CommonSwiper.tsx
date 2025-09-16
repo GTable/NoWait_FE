@@ -8,6 +8,7 @@ import type { BannerImages } from "../types/wait/store";
 import DefaultImage from "../assets/default-image-lg.png";
 
 const CommonSwiper = ({ slideImages }: { slideImages: BannerImages[] }) => {
+  console.log(slideImages,"1111111111111111111111111")
   return (
     <section className="swiper-wrap">
       <Swiper
@@ -17,7 +18,7 @@ const CommonSwiper = ({ slideImages }: { slideImages: BannerImages[] }) => {
         pagination
       >
         {slideImages && slideImages.length > 0 ? (
-          slideImages?.map((slideImage) => {
+          slideImages?.splice(0,3).map((slideImage) => {
             return (
               <SwiperSlide className="swiper-slide">
                 <img

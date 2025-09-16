@@ -1,61 +1,82 @@
-import BoothMarker from "../../../assets/icon/BoothMarker.svg?react";
-import BoothList from "./components/BoothList";
-import { useEffect, useRef, useState } from "react";
-import BoothDetail from "./components/BoothDetail";
+import React, { useCallback, useState } from "react";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Polygon,
+  OverlayView,
+  MarkerF,
+} from "@react-google-maps/api";
+import boothMarker from "../../../assets/icon/BoothMarker.svg";
 import { useQuery } from "@tanstack/react-query";
 import { getAllStores } from "../../../api/reservation";
-import { motion } from "framer-motion";
-import MapHeader from "./components/MapHeader";
-import { boothPosition } from "./constants/boothPosition";
-import BoothMap from "../../../assets/boothMap.png";
 import type { StoreType } from "../../../types/wait/store";
+import { boothPosition } from "./constants/boothPosition";
+import { mapStyle } from "./constants/mapStyle";
+import BoothDetail from "./components/BoothDetail";
+import BoothList from "./components/BoothList";
 
 interface BoothWithPosition extends StoreType {
-  left: string;
-  top: string;
+  lat: number;
+  lng: number;
 }
 
+const outerCoords = [
+  { lat: 38.526241, lng: 124.733136 },
+  { lat: 32.46642053948427, lng: 125.2172585268403 },
+  { lat: 35.05971, lng: 130.461921 },
+  { lat: 39.13384240860686, lng: 129.17092743948996 },
+];
+
+// 2️⃣ 가천대 캠퍼스 좌표 (hole)
+const gachonCoords = [
+  { lat: 37.448004, lng: 127.126886 },
+  { lat: 37.452842, lng: 127.126768 },
+  { lat: 37.451624, lng: 127.132154 },
+  { lat: 37.449333, lng: 127.13268 },
+];
+
+const containerStyle = {
+  width: "100%",
+  height: "100dvh",
+};
+
 const MapPage = () => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
+  });
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [positionX, setPositionX] = useState(0);
-  const [positionY, setPositionY] = useState(0);
+
+  const [map, setMap] = useState<null>(null);
 
   const { data: booths } = useQuery({
     queryKey: ["storesMarkers"],
     queryFn: getAllStores,
     select: (data) => data?.response?.storePageReadResponses,
   });
-
+  console.log(booths)
   // 부스 + 마커 좌표
-  const boothsWithPosition: BoothWithPosition[] =
+  const boothsWithPosition: any[] =
     booths?.map((booth) => ({
       ...booth,
       ...boothPosition[booth.storeId],
     })) || [];
 
-  // 뷰포트 크기 계산
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const viewportWidth = viewportRef.current?.clientWidth ?? 430;
-  const viewportHeight = viewportRef.current?.clientHeight ?? 812;
+  const onLoad = useCallback((mapInstance: any) => {
+    setMap(mapInstance);
+    // 한국 영역 제한
+    // mapInstance.setOptions({
+    //   restriction: {
+    //     latLngBounds: koreaBounds,
+    //     strictBounds: true,
+    //   },
+    //   // minZoom: 15,
+    //   // maxZoom: 19,
+    // });
+  }, []);
 
-  console.log(booths);
-  useEffect(() => {
-    if (!booths || booths.length === 0) return;
-    console.log("실행");
-    const positions = Object.values(boothPosition).map((booth) => ({
-      top: parseFloat(booth.top),
-      left: parseFloat(booth.left),
-    }));
-    const avgTop =
-      positions.reduce((sum, booth) => sum + booth.top, 0) / positions.length;
-    const avgLeft =
-      positions.reduce((sum, booth) => sum + booth.left, 0) / positions.length;
-    const initialX = -((avgLeft / 100) * 1100 - viewportWidth / 2);
-    const initialY = -((avgTop / 100) * 1100 - viewportHeight / 2);
-    setPositionX(initialX);
-    setPositionY(initialY);
-  }, [booths]);
+  const onUnmount = useCallback(() => {
+    setMap(null);
+  }, []);
 
   const openBoothButton = (id: number) => {
     if (selectedBooth === id) {
@@ -64,92 +85,66 @@ const MapPage = () => {
       setSelectedBooth(id);
     }
   };
+
   return (
-    <div className="relative overflow-hidden">
-      {/* 헤더 */}
-      <MapHeader />
-      {/* 축제 맵 */}
-      <div className="relative top-0 left-0 min-h-dvh w-full">
-        <div
-          style={{
-            width: "430px",
-            height: "100%",
-            overflow: "hidden",
+    <div>
+      {isLoaded ? (
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={{ lat: 37.4507128, lng: 127.1288495 }}
+          zoom={16}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+          options={{
+            styles: mapStyle,
+            gestureHandling: "greedy",
+            disableDefaultUI: true,
           }}
         >
-          <motion.div
-            drag
-            dragElastic={false}
-            dragTransition={{
-              power: 0,
-              timeConstant: 0,
+          {/* 캠퍼스 경계 */}
+          <Polygon
+            paths={[outerCoords, gachonCoords]}
+            options={{
+              fillColor: "#333333",
+              fillOpacity: 0.5, // 바깥만 어둡게
+              strokeColor: "#555555",
+              strokeWeight: 1,
             }}
-            dragConstraints={{
-              left: -(1100 - viewportWidth),
-              right: 0,
-              top: -(1100 - viewportHeight),
-              bottom: 0,
-            }}
-            // 클릭, 드래그 구분
-            onPointerDown={() => setIsDragging(false)}
-            onDragStart={() => setIsDragging(true)}
-            onPointerUp={(e) => {
-              if (!isDragging) {
-                if ((e.target as HTMLElement).closest("button")) return;
-                setSelectedBooth(null);
-              }
-            }}
-            style={{
-              width: "1100px",
-              height: "1100px",
-              position: "relative",
-              cursor: "grab",
-              x: positionX,
-              y: positionY,
-            }}
-          >
-            <img
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "block",
-                pointerEvents: "none",
-                userSelect: "none",
+          />
+
+          {/* 주점 마커 */}
+          {boothsWithPosition.map((booth, i) => (
+            // <OverlayView
+            //   key={i}
+            //   position={{ lat: booth.lat, lng: booth.lng }}
+            //   mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            // >
+            //   <div
+            //     onClick={(e) => {
+            //       e.stopPropagation();
+            //       openBoothButton(booth.storeId);
+            //     }}
+            //     className={`cursor-pointer transition-transform duration-200 ${
+            //       selectedBooth === booth.storeId ? "scale-125" : "scale-100"
+            //     }`}
+            //   >
+            //     <img src={boothMarker} alt="booth marker" />
+            //   </div>
+            // </OverlayView>
+            <MarkerF
+              key={booth.storeId}
+              position={{ lat: Number(booth.lat), lng: Number(booth.lng) }}
+              icon={{ url: boothMarker }}
+              onClick={(e) => {
+                // e.stopPropagation();
+                openBoothButton(booth.storeId);
               }}
-              src={BoothMap}
-              alt="축제 맵 이미지"
             />
-            {/* 마커 */}
-            <ul className="absolute top-0 left-0 w-full h-full">
-              {boothsWithPosition?.map((booth) => (
-                <li
-                  key={booth.storeId}
-                  className="absolute"
-                  style={{
-                    top: booth.top,
-                    left: booth.left,
-                    transform: "translate(-50%, -100%)",
-                  }}
-                >
-                  <button
-                    className={`transition-transform origin-bottom duration-200 ${
-                      selectedBooth === booth.storeId
-                        ? "scale-120"
-                        : "scale-100"
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openBoothButton(booth.storeId);
-                    }}
-                  >
-                    <BoothMarker />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </div>
+          ))}
+        </GoogleMap>
+      ) : (
+        <></>
+      )}
       {/* 부스 리스트 */}
       {selectedBooth !== null ? (
         <BoothDetail

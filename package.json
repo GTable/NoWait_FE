@@ -17,6 +17,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.7",
     "@tiptap/extension-code-block-lowlight": "^3.4.1",
     "@tiptap/extension-hard-break": "^3.4.0",
     "@tiptap/extension-placeholder": "^3.4.0",
@@ -24,6 +25,7 @@
     "@tiptap/react": "^3.0.7",
     "@tiptap/starter-kit": "^3.0.7",
     "@toast-ui/react-editor": "^3.2.3",
+    "@vis.gl/react-google-maps": "^1.5.5",
     "clsx": "^2.1.1",
     "dompurify": "^3.2.6",
     "framer-motion": "^12.20.1",
