@@ -97,11 +97,6 @@ const BoothSection = ({
   // 빈 슬롯에서만 사용할 숨김 file input refs
   const fileInputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
-  const openFilePicker = (index: number) => {
-    const input = fileInputsRef.current[index];
-    if (input) input.click();
-  };
-
   return (
     <>
       <div className="flex flex-col items-center pb-[50px] max-w-[614px]">
@@ -173,7 +168,6 @@ const BoothSection = ({
         >
           <BoothProfileImage
             profileImage={profileImage}
-            setProfileImage={setProfileImage}
             isMobile={isMobile}
             onPick={(f) =>
               setCropSpec({

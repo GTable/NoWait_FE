@@ -68,14 +68,6 @@ const BoothForm = () => {
     bannerIds: Array<number | null>;
   } | null>(null);
 
-  const [cropSpec, setCropSpec] = useState<{
-    file: File;
-    aspect: number;
-    outW: number;
-    outH: number;
-    target: "profile" | "banner" | { bannerIndex: number };
-  } | null>(null);
-
   const currentProfileSig = useMemo(() => {
     if (!profileImage) return null;
     return profileImage instanceof File

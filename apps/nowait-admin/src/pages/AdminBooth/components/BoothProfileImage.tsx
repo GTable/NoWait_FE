@@ -5,12 +5,10 @@ import type { ProfileImage } from "../types/booth";
 
 const BoothProfileImage = ({
   profileImage,
-  setProfileImage,
   isMobile,
   onPick,
 }: {
   profileImage: ProfileImage;
-  setProfileImage: React.Dispatch<React.SetStateAction<ProfileImage>>;
   isMobile: boolean;
   onPick: (file: File) => void;
 }) => {
