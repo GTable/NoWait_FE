@@ -68,6 +68,14 @@ const BoothForm = () => {
     bannerIds: Array<number | null>;
   } | null>(null);
 
+  const [cropSpec, setCropSpec] = useState<{
+    file: File;
+    aspect: number;
+    outW: number;
+    outH: number;
+    target: "profile" | "banner" | { bannerIndex: number };
+  } | null>(null);
+
   const currentProfileSig = useMemo(() => {
     if (!profileImage) return null;
     return profileImage instanceof File
@@ -415,15 +423,27 @@ const BoothForm = () => {
                         : profileImage
                       : null
                   }
-                  bannerImages={bannerImages.map((img, i) =>
-                    img instanceof File
-                      ? {
-                          id: i,
-                          imageUrl: URL.createObjectURL(img),
-                          imageType: "BANNER",
-                        }
-                      : { ...img, imageType: "BANNER" }
-                  )}
+                  bannerImages={bannerImages.map((img, i) => {
+                    if (img instanceof File) {
+                      return {
+                        id: i, // 항상 number
+                        imageUrl: URL.createObjectURL(img),
+                        imageType: "BANNER" as const,
+                      };
+                    } else if (img) {
+                      return {
+                        id: img.id ?? null,
+                        imageUrl: img.imageUrl ?? "",
+                        imageType: "BANNER" as const,
+                      };
+                    } else {
+                      return {
+                        id: null,
+                        imageUrl: "",
+                        imageType: "BANNER" as const,
+                      };
+                    }
+                  })}
                 />
               )}
               {showUnsaved && (

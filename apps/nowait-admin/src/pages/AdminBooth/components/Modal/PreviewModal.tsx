@@ -7,7 +7,7 @@ import RedBadge from "../../../../components/RedBadge";
 import DOMPurify from "dompurify";
 import imagePlaceHolder from "../../../../assets/preview/previewPlaceHolder.svg";
 interface PreviewBannerImage {
-  id: number;
+  id: number | null;
   imageUrl: string;
   imageType: "BANNER";
 }

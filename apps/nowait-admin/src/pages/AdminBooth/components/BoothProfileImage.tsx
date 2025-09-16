@@ -7,10 +7,12 @@ const BoothProfileImage = ({
   profileImage,
   setProfileImage,
   isMobile,
+  onPick,
 }: {
   profileImage: ProfileImage;
   setProfileImage: React.Dispatch<React.SetStateAction<ProfileImage>>;
   isMobile: boolean;
+  onPick: (file: File) => void;
 }) => {
   const getImageSrc = (): string => {
     if (profileImage instanceof File) {
@@ -49,9 +51,9 @@ const BoothProfileImage = ({
           accept="image/*"
           className="hidden"
           onChange={(e) => {
-            if (e.target.files?.[0]) {
-              setProfileImage(e.target.files[0]);
-            }
+            const f = e.target.files?.[0];
+            if (f) onPick(f);
+            e.currentTarget.value = "";
           }}
         />
       </label>
