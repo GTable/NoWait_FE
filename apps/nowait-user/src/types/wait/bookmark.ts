@@ -18,6 +18,7 @@ export interface BookmarkResponse {
     openTime: string;
     profileImage: ProfileImage;
     storeId: number;
+    publicCode: string;
     waitingCount: number;
   }[];
 }

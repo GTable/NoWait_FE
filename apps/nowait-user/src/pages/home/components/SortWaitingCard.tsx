@@ -8,7 +8,7 @@ import { useInView } from "framer-motion";
 interface SortWaitingCardProps {
   order: "asc" | "desc";
   onModalOpen: () => void;
-  onNavigateToStore: (storeId: number) => void;
+  onNavigateToStore: (publicCode: string) => void;
 }
 
 // 바로 입장 가능한 주점 섹션 컴포넌트
@@ -119,7 +119,7 @@ const SortWaitingCard = memo(
                 storeName={store.storeName}
                 departmentName={store.departmentName}
                 waitingCount={store.waitingCount}
-                onClick={() => onNavigateToStore(Number(store.storeId))}
+                onClick={() => {onNavigateToStore(store.publicCode)}}
               />
             </div>
           ))}

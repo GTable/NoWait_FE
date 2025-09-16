@@ -25,7 +25,7 @@ const RemitOptions = ({
   isLoading,
 }: PropsType) => {
   if (isLoading) return <RemitOptionsSkeleton />;
-
+  
   return (
     <section>
       <div className="py-7.5">
@@ -41,7 +41,7 @@ const RemitOptions = ({
             setRemitValue={setRemitValue}
           />
         ) : null}
-        {account && (
+        {account?.trim() !== "" && (
           <DirectRemitOption
             remitValue={remitValue}
             setRemitValue={setRemitValue}

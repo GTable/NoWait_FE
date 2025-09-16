@@ -2,6 +2,7 @@
 export interface MenuType {
   menuId: number;
   storeId: number;
+  publicCode: string;
   name: string;
   description: string;
   price: number;

@@ -8,6 +8,7 @@ interface WaitingStore {
   bannerImageUrl: string | null;
   departmentName: string;
   storeId: number;
+  publicCode:string;
   storeName: string;
   waitingCount: number;
 }

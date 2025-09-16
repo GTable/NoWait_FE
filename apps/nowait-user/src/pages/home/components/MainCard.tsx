@@ -16,6 +16,7 @@ interface WaitingCardProps {
 interface StoreCardProps {
   type: "store";
   storeId: number;
+  publicCode: string;
   name: string;
   departmentName: string;
   profileImageUrl: string;
@@ -276,7 +277,7 @@ const WaitingCard = ({ item }: { item: WaitingItem }) => {
 
 // 스토어 카드 컴포넌트
 const StoreCardComponent = ({
-  storeId,
+  publicCode,
   name,
   departmentName,
   profileImageUrl,
@@ -295,7 +296,7 @@ const StoreCardComponent = ({
 
   // 스토어 클릭 핸들러
   const handleStoreClick = () => {
-    navigate(`/store/${storeId}`);
+    navigate(`/store/${publicCode}`);
   };
 
   return (
@@ -318,7 +319,7 @@ const StoreCardComponent = ({
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex flex-row gap-2 items-center min-w-0">
-          <div className="text-title-16-semibold text-black-90 text-start truncate flex-shrink min-w-0">
+          <div className="text-title-16-semibold text-black-90 text-start truncate flex-shrink max-sm:max-w-[200px]">
             {name}
           </div>
           {status === "open" && (waitingCount || 0) > 0 ? (
@@ -413,6 +414,7 @@ const MainCard = memo(
       return (
         <StoreCardComponent
           storeId={props.storeId}
+          publicCode={props.publicCode}
           name={props.name}
           departmentName={props.departmentName}
           profileImageUrl={props.profileImageUrl}

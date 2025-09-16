@@ -102,6 +102,7 @@ interface CookCardProps {
   tableNumber: number;
   menuDetails?: MenuDetails;
   onSuccess?: () => void;
+  onClick?: () => void;
 }
 
 const CookCard = ({
@@ -109,6 +110,7 @@ const CookCard = ({
   tableNumber,
   menuDetails,
   onSuccess,
+  onClick,
 }: CookCardProps) => {
   const [showCookCompleteModal, setShowCookCompleteModal] = useState(false);
   const windowWidth = useWindowWidth();
@@ -123,7 +125,8 @@ const CookCard = ({
     return 7; // sm
   };
 
-  const handleCookCompleteClick = () => {
+  const handleCookCompleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 부모 onClick 이벤트 방지
     setShowCookCompleteModal(true);
   };
 
@@ -134,9 +137,10 @@ const CookCard = ({
   return (
     <>
       <div
-        className={`flex flex-row justify-between ${
+        className={`flex flex-row justify-between cursor-pointer ${
           isOneMenu ? "items-center" : ""
         }`}
+        onClick={onClick}
       >
         <div className="flex flex-row gap-2.5">
           <div

@@ -60,8 +60,8 @@ const HomePage = () => {
   }, []);
 
   const handleNavigateToStore = useCallback(
-    (storeId: number) => {
-      navigate(`/store/${storeId}`);
+    (publicCode: string) => {
+      navigate(`/store/${publicCode}`);
     },
     [navigate]
   );

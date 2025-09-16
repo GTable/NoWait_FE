@@ -16,7 +16,7 @@ const EmptyPage = ({ mode, title, buttonText }: PropsType) => {
     <div>
       <BackOnlyHeader />
       <div
-        className={`min-h-screen flex flex-col justify-center items-center ${
+        className={`min-h-dvh flex flex-col justify-center items-center ${
           mode === "default" ? "bg-white" : "bg-black-15"
         }`}
       >
@@ -26,12 +26,12 @@ const EmptyPage = ({ mode, title, buttonText }: PropsType) => {
         <SmallActionButton
           mode={mode}
           type="button"
-          ariaLabel="메뉴 추가"
+          ariaLabel="주문하기"
           onClick={() => navigate(`/${storeId}`)}
         >
           <h1>{buttonText}</h1>
-          <span>
-            <Add className="w-4 h-4" fill="currentColor" />
+          <span className="block w-4 h-4 mb-0.5">
+            <Add className="w-full h-full" fill="currentColor" />
           </span>
         </SmallActionButton>
       </div>

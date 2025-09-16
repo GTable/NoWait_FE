@@ -31,11 +31,7 @@ const RemittanceWaitPage = () => {
         })),
         totalPrice,
       };
-      const res = await createOrder(
-        storeId!,
-        Number(tableId!),
-        payload
-      );
+      const res = await createOrder(storeId!, Number(tableId!), payload);
       console.log(res, "주문 생성");
       if (res?.success) {
         //입금자명 로컬스토리지 저장

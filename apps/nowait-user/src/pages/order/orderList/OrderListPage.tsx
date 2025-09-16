@@ -24,40 +24,45 @@ const OrderListPage = () => {
   const { cart, removeFromCart } = useCartStore();
   const modal = useModal();
   const [soldOutMenus, setSoldOutMenus] = useState<CartType[] | undefined>();
-  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-
-  // 메뉴가 1개일 때에도 애니메이션 작동
-  useEffect(() => {
-    if (cart.length === 0 && !isAnimatingOut) {
-      setTimeout(() => {
-        setIsAnimatingOut(true);
-      }, 300);
-    }
-  }, [cart]);
+  const [isAnimatingOut, setIsAnimatingOut] = useState<boolean>(false);
 
   const { data: menus } = useQuery({
     queryKey: ["storeMenuList", storeId],
     queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response?.menuReadDto,
   });
-  // 장바구니와 최신 메뉴 데이터 동기화
+
+  // 맨위로 위치 초기화
   useEffect(() => {
-    if (!menus) return;
+    window.scrollTo(0, 0);
+  }, []);
 
-    const soldOut = getSoldOutMenusInCart(cart, menus);
+  useEffect(() => {
+    let timerId: number | undefined;
 
-    if (soldOut.length > 0) {
-      setSoldOutMenus(soldOut);
-      modal.open();
+    if (cart.length === 0) {
+      if (!isAnimatingOut) {
+        timerId = window.setTimeout(() => {
+          setIsAnimatingOut(true);
+        }, 350);
+      }
+    } else {
+      if (isAnimatingOut) setIsAnimatingOut(false);
     }
-  }, [menus, cart]);
 
-  if (cart.length === 0 && isAnimatingOut) return <EmptyCart />;
+    return () => {
+      if (timerId) clearTimeout(timerId);
+    };
+  }, [cart, isAnimatingOut]);
+
+  if (cart.length === 0 && isAnimatingOut) {
+    return <EmptyCart />;
+  }
 
   return (
     <div>
       <BackHeader title="장바구니" />
-      <section className="flex flex-col flex-grow min-h-dvh mt-[38px] pt-7 px-5 pb-[112px]">
+      <section className="flex flex-col flex-grow min-h-[calc(100dvh-164px)] pt-7 px-5">
         <h1 className="text-headline-22-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
         </h1>
@@ -80,11 +85,15 @@ const OrderListPage = () => {
                 mode="default"
                 type="button"
                 ariaLabel="메뉴 추가하기"
-                onClick={() => navigate(`/${storeId}`)}
+                onClick={() =>
+                  navigate(`/${storeId}`, { state: { isBack: true } })
+                }
                 className="py-5 border-none"
               >
                 메뉴 추가하기
-                <Add className="w-4 h-4" fill="currentColor" />
+                <span className="block w-4 h-4 mb-0.5">
+                  <Add className="w-full h-full" fill="currentColor" />
+                </span>
               </SmallActionButton>
             </motion.li>
           </AnimatePresence>
@@ -93,7 +102,17 @@ const OrderListPage = () => {
       <PageFooterButton background="gradient">
         <Button
           textColor="white"
-          onClick={() => navigate(`/${storeId}/remittance`)}
+          onClick={() => {
+            if (!menus) return;
+            // 장바구니와 최신 메뉴 데이터 동기화
+            const soldOut = getSoldOutMenusInCart(cart, menus);
+            if (soldOut.length > 0) {
+              setSoldOutMenus(soldOut);
+              modal.open();
+            } else {
+              navigate(`/${storeId}/remittance`);
+            }
+          }}
         >
           <TotalButton variant="orderPage" actionText="주문하기" />
         </Button>
@@ -109,7 +128,10 @@ const OrderListPage = () => {
               );
             }}
           >
-            <div className="absolute left-1/2 bottom-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-40px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-35px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]"
+            >
               <h1 className="text-title-20-bold text-black-90 text-center mb-[20px] break-keep">
                 현재{" "}
                 {soldOutMenus?.map((menu: CartType, idx: number) => (
@@ -132,16 +154,6 @@ const OrderListPage = () => {
               >
                 주문 계속하기
               </Button>
-              {/* <Button
-                  onClick={() => {
-                    navigate(-1);
-                    soldOutMenus?.forEach((menu: CartType) =>
-                      removeFromCart(menu.menuId)
-                    );
-                  }}
-                >
-                  더 추가하기
-                </Button> */}
             </div>
           </div>
         </Portal>

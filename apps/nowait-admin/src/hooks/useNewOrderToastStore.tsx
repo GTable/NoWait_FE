@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import type { Order } from "../types/order";
-
-type OrderStatus = "WAITING_FOR_PAYMENT" | "COOKING" | "COOKED";
+import type { Order, OrderStatus } from "../types/order";
 
 type Toast = {
   id: string;

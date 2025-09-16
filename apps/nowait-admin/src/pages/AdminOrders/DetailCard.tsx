@@ -1,10 +1,15 @@
 import ArrowRight from "../../assets/arrow_back.svg?react";
 import { useState } from "react";
-import { PaymentCheckModal, CookedModal } from "./OrderPageModal";
+import {
+  PaymentCheckModal,
+  CookedModal,
+  CookCompleteModal,
+  OrderCancelModal,
+} from "./OrderPageModal";
 import type { MenuDetails } from "../../types/order";
 import { getTableBackgroundColor } from "../../utils/tableColors";
 
-type DetailType = "payment" | "cooked";
+type DetailType = "payment" | "cooking" | "cooked";
 
 interface DetailCardProps {
   type: DetailType;
@@ -30,6 +35,7 @@ const DetailCard = ({
   onSuccess,
 }: DetailCardProps) => {
   const [showModal, setShowModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const menuEntries = menuDetails ? Object.entries(menuDetails) : [];
 
@@ -37,8 +43,28 @@ const DetailCard = ({
     setShowModal(true);
   };
 
+  const handleCancelClick = () => {
+    setShowCancelModal(true);
+  };
+
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const handleCloseCancelModal = () => {
+    setShowCancelModal(false);
+  };
+
+  const handleModalSuccess = () => {
+    setShowModal(false);
+    onSuccess?.();
+    onClose(); // 디테일 화면도 닫기
+  };
+
+  const handleCancelModalSuccess = () => {
+    setShowCancelModal(false);
+    onSuccess?.();
+    onClose(); // 디테일 화면도 닫기
   };
 
   // 타입에 따른 설정
@@ -50,6 +76,16 @@ const DetailCard = ({
         amountLabel: "입금 금액",
         actionText: "입금 확인",
         modalComponent: PaymentCheckModal,
+        buttonStyle:
+          "flex px-2.5 py-1.25 bg-black-20 items-center justify-center rounded-lg w-full h-12 text-14-semibold text-black-70 cursor-pointer",
+      };
+    } else if (type === "cooking") {
+      return {
+        title: "조리 중 주문",
+        depositorLabel: "주문자",
+        amountLabel: "주문 금액",
+        actionText: "조리 완료",
+        modalComponent: CookCompleteModal,
         buttonStyle:
           "flex px-2.5 py-1.25 bg-black-20 items-center justify-center rounded-lg w-full h-12 text-14-semibold text-black-70 cursor-pointer",
       };
@@ -143,9 +179,26 @@ const DetailCard = ({
           </div>
         </div>
 
-        <div className={config.buttonStyle} onClick={handleActionClick}>
-          {config.actionText}
-        </div>
+        {type === "payment" ? (
+          <div className="flex flex-row gap-1.5">
+            <div
+              className="flex px-2.5 py-1.25 bg-[#FFF0EB] items-center justify-center rounded-lg flex-1 h-12 text-14-semibold text-[#FF6736] cursor-pointer"
+              onClick={handleCancelClick}
+            >
+              주문 취소
+            </div>
+            <div
+              className="flex px-2.5 py-1.25 bg-black-20 items-center justify-center rounded-lg flex-1 h-12 text-14-semibold text-black-70 cursor-pointer"
+              onClick={handleActionClick}
+            >
+              {config.actionText}
+            </div>
+          </div>
+        ) : (
+          <div className={config.buttonStyle} onClick={handleActionClick}>
+            {config.actionText}
+          </div>
+        )}
       </div>
 
       {/* Modal 오버레이 */}
@@ -161,7 +214,21 @@ const DetailCard = ({
             totalAmount={totalAmount}
             timeText={timeText}
             onClose={handleCloseModal}
-            onSuccess={onSuccess}
+            onSuccess={handleModalSuccess}
+          />
+        </div>
+      )}
+
+      {/* 주문 취소 Modal 오버레이 */}
+      {showCancelModal && (
+        <div
+          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 max-[450px]:px-5"
+          onClick={handleCloseCancelModal}
+        >
+          <OrderCancelModal
+            orderId={orderId}
+            onClose={handleCloseCancelModal}
+            onSuccess={handleCancelModalSuccess}
           />
         </div>
       )}

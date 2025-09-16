@@ -17,16 +17,11 @@ import DepartmentImage from "../../../components/DepartmentImage";
 import NotFound from "../../NotFound/NotFound";
 import { getStoreMenus } from "../../../api/menu";
 import FullPageLoader from "../../../components/FullPageLoader";
+import { useEffect } from "react";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
-
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
-    { withInvalidate: true },
-    Number(storeId)
-  );
-  const { isBookmarked } = useBookmarkState(Number(storeId));
 
   const {
     data: store,
@@ -37,11 +32,23 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(storeId!),
     select: (data) => data?.response,
   });
+
   const { data: menus, isLoading: menusIsLoading } = useQuery({
     queryKey: ["storeMenus", storeId],
     queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response,
   });
+
+  //맨위로 위치 초기화
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
+    { withInvalidate: true },
+    Number(store?.storeId!)
+  );
+  const { isBookmarked } = useBookmarkState(Number(store?.storeId!));
 
   const handleBookmarkButton = async () => {
     try {
@@ -58,7 +65,7 @@ const StoreDetailPage = () => {
   if (isError) return <NotFound />;
   return (
     <div>
-      <div className="px-5 w-full min-h-dvh mb-[112px]">
+      <div className="px-5 w-full min-h-dvh">
         {/* 주점 배너 이미지 */}
         <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
         {/* 학과 정보 섹션 */}
@@ -148,9 +155,6 @@ const StoreDetailPage = () => {
           borderColor="#ececec"
           buttonType="icon"
           onClick={handleBookmarkButton}
-          disabled={
-            createBookmarkMutate.isPending || deleteBookmarkMutate.isPending
-          }
         >
           <BookmarkIcon isBookmarked={isBookmarked} />
         </Button>

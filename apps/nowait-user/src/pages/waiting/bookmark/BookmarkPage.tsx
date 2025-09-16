@@ -47,6 +47,7 @@ const BookmarkPage = () => {
                 name={data.name}
                 departmentName={data.departmentName}
                 storeId={data.storeId}
+                publicCode={data.publicCode}
               />
             ))}
           </ul>

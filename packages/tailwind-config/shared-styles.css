@@ -277,7 +277,7 @@ pre {
     letter-spacing: 0em;
     font-weight: 400;
   }
-  
+
   .text-14-semibold {
     font-size: 14px;
     line-height: 136%;
@@ -406,6 +406,23 @@ pre {
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 500;
+  }
+
+  /* 이용약관 폰트 */
+  .term-text-13-semibold {
+    font-size: 13px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    font-weight: 600;
+    color: var(--black-70);
+  }
+
+  .term-text-13-regular {
+    font-size: 13px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    font-weight: 400;
+    color: var(--black-70);
   }
 
   /* Work Sans 폰트 유틸리티 */

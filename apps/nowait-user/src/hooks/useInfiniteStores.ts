@@ -5,6 +5,7 @@ import { useApiErrorHandler } from "./useApiErrorHandler";
 
 interface Store {
   storeId: number;
+  publicCode : string;
   bannerImages: {
     id: number;
     imageType: string;

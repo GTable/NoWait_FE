@@ -33,6 +33,12 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data?.response,
   });
+
+  //맨위로 위치 초기화
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // 정보 없으면 홈으로 이동
   useEffect(() => {
     if (cart.length === 0) {
@@ -66,9 +72,9 @@ const RemittancePage = () => {
   };
   console.log(remittance);
   return (
-    <div className="flex flex-col flex-grow pb-[112px]">
+    <div className="flex flex-col flex-grow">
       <BackHeader title="주문하기" />
-      <section className="px-5 mt-[38px]">
+      <section className="px-5">
         <OrderSummary cart={cart} />
         <SectionDivider />
         <PayerInput

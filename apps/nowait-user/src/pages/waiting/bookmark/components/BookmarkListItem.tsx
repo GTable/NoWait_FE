@@ -13,6 +13,7 @@ interface PropsType {
   name: string;
   departmentName: string;
   storeId: number;
+  publicCode: string;
 }
 
 const BookmarkListItem = ({
@@ -22,6 +23,7 @@ const BookmarkListItem = ({
   name,
   departmentName,
   storeId,
+  publicCode,
 }: PropsType) => {
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
     {
@@ -31,25 +33,27 @@ const BookmarkListItem = ({
   );
 
   const [isBookmarked, setIsBookmarked] = useState(true);
-
+  
   const handleBookmarkButton = async () => {
+    const prev = isBookmarked;
+    setIsBookmarked(!isBookmarked);
+
     try {
-      if (isBookmarked) {
-        await deleteBookmarkMutate.mutate();
-        setIsBookmarked(false);
+      if (prev) {
+        await deleteBookmarkMutate.mutateAsync();
       } else {
-        await createBookmarkMutate.mutate();
-        setIsBookmarked(true);
+        await createBookmarkMutate.mutateAsync();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setIsBookmarked(prev);
     }
   };
 
   return (
     <li className="mb-6">
       <div className="relative top-0 right-0">
-        <Link to={`/store/${storeId}`}>
+        <Link to={`/store/${publicCode}`}>
           <img
             className="w-full h-[195px] rounded-[14px] overflow-hidden object-cover"
             src={bannerImages || defaultMenuImageLg}
@@ -64,7 +68,10 @@ const BookmarkListItem = ({
       </div>
       <div className="flex items-start justify-between py-3">
         <div>
-          <Link to={`/store/${storeId}`} className="flex items-center gap-2.5">
+          <Link
+            to={`/store/${publicCode}`}
+            className="flex items-center gap-2.5"
+          >
             <DepartmentImage width="40px" height="40px" src={profileImage} />
             <div className="flex flex-col justify-between">
               <h1 className="text-title-16-bold text-black-90">{name}</h1>

@@ -3,6 +3,7 @@ export interface StoreResponse {
   success: boolean;
   response: {
     storeId: number;
+    publicCode: string;
     waitingCount: number;
     isWaiting: false;
     departmentId: number;
@@ -64,6 +65,7 @@ export interface StoreType {
   openTime: string;
   profileImage: ProfileImage;
   storeId: number;
+  publicCode: string;
   waitingCount: number;
   createdAt: string;
   deleted: boolean;
@@ -84,5 +86,6 @@ export interface BookmarkListType {
   openTime: string;
   profileImage: ProfileImage;
   storeId: number;
+  publicCode: string;
   waitingCount: number;
 }

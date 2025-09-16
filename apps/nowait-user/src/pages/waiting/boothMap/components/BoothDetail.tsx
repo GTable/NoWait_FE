@@ -13,7 +13,7 @@ interface PropsType {
 const BoothDetail = ({ booth }: PropsType) => {
   const navigate = useNavigate();
 
-  const { storeId, name, departmentName, waitingCount } = booth;
+  const { storeId, publicCode, name, departmentName, waitingCount } = booth;
 
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
     {
@@ -61,7 +61,7 @@ const BoothDetail = ({ booth }: PropsType) => {
           </span>
           {waitingCount === 0 ? "대기없음" : `대기 ${waitingCount}명`}
         </p>
-        <Button onClick={() => navigate(`/store/${storeId}`)}>상세 보기</Button>
+        <Button onClick={() => navigate(`/store/${publicCode}`)}>상세 보기</Button>
       </div>
     </motion.div>
   );

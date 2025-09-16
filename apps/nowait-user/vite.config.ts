@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
@@ -11,9 +12,23 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   return {
-    plugins: [react(), svgr()],
+    plugins: [
+      react(),
+      svgr(),
+      sentryVitePlugin({
+        authToken: env.SENTRY_AUTH_TOKEN,
+        org: "stayready",
+        project: "nowait-user",
+
+        sourcemaps: {
+          assets: "./dist/**",
+          filesToDeleteAfterUpload: "./dist/**/*.map",
+        },
+      }),
+    ],
     build: {
       outDir: "dist",
+      sourcemap: true,
     },
     server: {
       proxy: {

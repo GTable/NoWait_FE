@@ -105,6 +105,7 @@ const InfiniteStoreList = memo(() => {
               key={store.storeId}
               type="store"
               storeId={store.storeId}
+              publicCode={store.publicCode}
               name={store.name}
               departmentName={store.departmentName}
               profileImageUrl={store.profileImage?.imageUrl || ""}
