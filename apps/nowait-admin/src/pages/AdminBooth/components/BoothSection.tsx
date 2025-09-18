@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import BoothProfileImage from "./BoothProfileImage";
 import NoticeEditor from "./NoticeEditor";
 import OperatingTimeSelector from "./OperatingTimeSelector";
@@ -93,9 +93,6 @@ const BoothSection = ({
     }
     setCropSpec(null);
   };
-
-  // 빈 슬롯에서만 사용할 숨김 file input refs
-  const fileInputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   return (
     <>
