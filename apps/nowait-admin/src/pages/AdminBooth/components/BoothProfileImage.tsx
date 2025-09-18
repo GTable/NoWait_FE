@@ -1,4 +1,3 @@
-import React from "react";
 import editIcon from "../../../assets/edit_icon.svg";
 import booth_thumbnail from "../../../assets/booth_thumbnail.svg";
 import type { ProfileImage } from "../types/booth";
