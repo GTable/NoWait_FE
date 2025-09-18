@@ -247,6 +247,7 @@ const BoothSection = ({
       </div>
 
       {/* 배너 이미지 */}
+      {/* 배너 이미지 */}
       <div className="flex flex-col mb-[50px] max-w-[614px]">
         <label
           className={`block text-title-18-bold text-black-80 ${
@@ -258,46 +259,64 @@ const BoothSection = ({
         <p className="text-14-regular text-black-70 mt-[6px] mb-[14px]">
           첫번째 이미지는 우리 부스를 대표하는 이미지로 설정돼요
         </p>
+
         <div className="flex gap-[10px]">
           {Array(3)
             .fill(null)
             .map((_, i) => {
               const inputId = `banner-input-${i}`;
-              return (
-                <label
-                  key={i}
-                  htmlFor={inputId}
-                  className="w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center cursor-pointer relative"
-                >
-                  <input
-                    id={inputId}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (!f) return;
-                      setCropSpec({
-                        file: f,
-                        aspect: 375 / 246,
-                        outW: 375,
-                        outH: 246,
-                        target: { bannerIndex: i },
-                      });
-                      e.currentTarget.value = "";
-                    }}
-                  />
+              const img = bannerImages[i] as any;
+              const hasImage = Boolean(img);
 
-                  {bannerImages[i] ? (
-                    <div className="relative w-full h-full">
+              return (
+                <div key={i} className="relative">
+                  {/* 빈칸일 때만 파일 입력 렌더 */}
+                  {!hasImage && (
+                    <input
+                      id={inputId}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (!f) return;
+                        setCropSpec({
+                          file: f,
+                          aspect: 375 / 246,
+                          outW: 375,
+                          outH: 246,
+                          target: { bannerIndex: i },
+                        });
+                        e.currentTarget.value = "";
+                      }}
+                    />
+                  )}
+
+                  {hasImage ? (
+                    /* 이미지 있는 슬롯: label 사용 금지(업로드 연결 제거) */
+                    <div
+                      className="w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center relative cursor-default"
+                      onClick={(e) => {
+                        // 슬롯 면 클릭은 아무 동작도 하지 않음
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      onMouseDownCapture={(e) => {
+                        // 드래그/더블클릭 등도 무시
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      aria-disabled
+                    >
                       <img
                         src={
-                          bannerImages[i] instanceof File
-                            ? URL.createObjectURL(bannerImages[i] as File)
-                            : (bannerImages[i] as any).imageUrl
+                          img instanceof File
+                            ? URL.createObjectURL(img)
+                            : img.imageUrl
                         }
                         alt={`배너 ${i + 1}`}
-                        className="object-cover w-full h-full rounded-xl overflow-hidden"
+                        className="object-cover w-full h-full rounded-xl overflow-hidden pointer-events-none"
+                        draggable={false}
                       />
 
                       {i === 0 && (
@@ -306,32 +325,30 @@ const BoothSection = ({
                         </span>
                       )}
 
+                      {/* 오직 X 버튼으로만 삭제 가능 */}
                       <button
                         type="button"
                         className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          const target = bannerImages[i];
+                          const target = bannerImages[i] as any;
+
+                          const clearSlot = () =>
+                            setBannerImages((prev) => {
+                              const next = [...prev];
+                              next[i] = null; // 이 슬롯만 비우기 (압축 금지)
+                              return next;
+                            });
 
                           if (target && !(target instanceof File)) {
                             deleteBannerImage(target.id, {
-                              onSuccess: () => {
-                                setBannerImages((prev) => {
-                                  const next = [...prev];
-                                  next[i] = null; // 슬롯 비우기
-                                  return next;
-                                });
-                              },
+                              onSuccess: clearSlot,
                               onError: () =>
                                 console.log("이미지 삭제에 실패했습니다."),
                             });
                           } else {
-                            setBannerImages((prev) => {
-                              const next = [...prev];
-                              next[i] = null; // 로컬만 비우기
-                              return next;
-                            });
+                            clearSlot();
                           }
                         }}
                         aria-label={`배너 ${i + 1} 삭제`}
@@ -340,9 +357,25 @@ const BoothSection = ({
                       </button>
                     </div>
                   ) : (
-                    <img src={placeholderIcon} alt="업로드" />
+                    /* 빈칸: label로 파일 입력과 연결 → 업로드 가능 */
+                    <label
+                      htmlFor={inputId}
+                      className="w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center cursor-pointer relative"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          const el = document.getElementById(
+                            inputId
+                          ) as HTMLInputElement | null;
+                          el?.click();
+                        }
+                      }}
+                    >
+                      <img src={placeholderIcon} alt="업로드" />
+                    </label>
                   )}
-                </label>
+                </div>
               );
             })}
         </div>
