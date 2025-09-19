@@ -256,7 +256,7 @@ const BoothSection = ({
           첫번째 이미지는 우리 부스를 대표하는 이미지로 설정돼요
         </p>
 
-        <div className="flex gap-[10px]">
+        <div className="flex gap-[10px] pt-[20px] overflow-x-auto scrollbar-hide">
           {Array(3)
             .fill(null)
             .map((_, i) => {
