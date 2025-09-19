@@ -204,7 +204,7 @@ const BoothForm = () => {
       if (newBannerFiles.length > 0) {
         const croppedBanners = await Promise.all(
           newBannerFiles.map((file) =>
-            cropCenterToSize(file, 375, 246, "image/jpeg", 0.9)
+            cropCenterToSize(file, 750, 492, "image/jpeg", 0.95)
           )
         );
 

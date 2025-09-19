@@ -21,7 +21,7 @@ export async function getCroppedFile(
   cropPx: CroppedAreaPixels,
   outW: number,
   outH: number,
-  mime: "image/jpeg" | "image/png" = "image/jpeg",
+  mime: "image/jpeg" | "image/png",
   quality = 0.92
 ): Promise<File> {
   const imageURL = URL.createObjectURL(file);
