@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clock from "../../../../assets/preview/clock.svg";
 import pin from "../../../../assets/preview/map-pin.svg";
 import right from "../../../../assets/preview/keyboard_arrow_right.svg";
@@ -48,8 +48,40 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   const waitingCount = Number(localStorage.getItem("waitingCount"));
   console.log(boothIntro, "게시글");
 
+  useEffect(() => {
+    const body = document.body;
+    const scrollY =
+      window.scrollY ||
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      0;
+
+    // 스크롤바 사라져서 레이아웃 점프 방지용 padding-right
+    const scrollbarW = window.innerWidth - document.documentElement.clientWidth;
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+    if (scrollbarW > 0) body.style.paddingRight = `${scrollbarW}px`;
+
+    return () => {
+      // 원복 + 원래 위치로 스크롤 복구
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      body.style.overflow = "";
+      body.style.paddingRight = "";
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 overscroll-contain">
       <div className="flex flex-col items-center bg-white rounded-[20px] w-[372px] h-[706px] p-[30px] ">
         <h2 className="text-title-20-bold text-black-85 mb-[10px] text-center">
           화면 미리보기
@@ -100,13 +132,13 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             </span>
             {/* 게시글 */}
             <div
-              className="h-[98px] mt-[15.43px] mb-[28.5px] text-10-regular"
+              className="h-[98px] mt-[15.43px] mb-[28.5px] text-10-regular overflow-y-auto"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(boothIntro.replace(/\n/g, "<br />")),
               }}
             ></div>
             {/* 공지 알림 */}
-            <div className="flex items-center justify-between w-full rounded-[6.29px] px-[10px] py-[8.81px] bg-black-10 border-[#ECECEC] border-[0.63px]">
+            <div className="flex items-center justify-between w-full rounded-[6.29px] px-[10px] py-[8.81px] bg-black-10 border-[#ECECEC] border-[0.63px] ">
               <p className="text-notice-medium text-black-70 truncate">
                 <span className="text-black-50 text-notice mr-[3.78px]">
                   공지

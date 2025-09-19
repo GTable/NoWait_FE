@@ -244,7 +244,6 @@ const BoothSection = ({
       </div>
 
       {/* 배너 이미지 */}
-      {/* 배너 이미지 */}
       <div className="flex flex-col mb-[50px] max-w-[614px]">
         <label
           className={`block text-title-18-bold text-black-80 ${
