@@ -279,9 +279,9 @@ const BoothSection = ({
                         if (!f) return;
                         setCropSpec({
                           file: f,
-                          aspect: 375 / 246,
-                          outW: 375,
-                          outH: 246,
+                          aspect: 750 / 452,
+                          outW: 750,
+                          outH: 452,
                           target: { bannerIndex: i },
                         });
                         e.currentTarget.value = "";
@@ -414,7 +414,7 @@ const BoothSection = ({
           outWidth={cropSpec.outW}
           outHeight={cropSpec.outH}
           mime={cropSpec.target === "profile" ? "image/png" : "image/jpeg"}
-          quality={0.92}
+          quality={0.95}
           onDone={handleCropDone}
           onClose={() => setCropSpec(null)}
           title={
