@@ -62,11 +62,11 @@ const OrderListPage = () => {
   return (
     <div>
       <BackHeader title="장바구니" />
-      <section className="flex flex-col flex-grow min-h-[calc(100dvh-164px)] pt-7 px-5">
+      <section className="flex flex-col flex-grow min-h-[calc(100dvh-164px)] pt-7 px-5 mt-[48px]">
         <h1 className="text-headline-22-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
         </h1>
-        <motion.ul className="flex justify-center flex-col" layout>
+        <motion.ul className="flex justify-center flex-col mb-[116px]" layout>
           <AnimatePresence mode="sync">
             {cart.map((item) => {
               return (
