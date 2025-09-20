@@ -100,7 +100,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
           isTablet
             ? "p-6"
             : isMobile
-            ? "p-[22px]"
+            ? "p-[22px] w-[335px] h-[227px]"
             : "p-[22px] w-[335px] h-[227px]"
         }`}
       >

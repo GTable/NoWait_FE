@@ -204,7 +204,7 @@ const BoothForm = () => {
       if (newBannerFiles.length > 0) {
         const croppedBanners = await Promise.all(
           newBannerFiles.map((file) =>
-            cropCenterToSize(file, 375, 246, "image/jpeg", 0.9)
+            cropCenterToSize(file, 750, 492, "image/jpeg", 0.95)
           )
         );
 
@@ -415,15 +415,27 @@ const BoothForm = () => {
                         : profileImage
                       : null
                   }
-                  bannerImages={bannerImages.map((img, i) =>
-                    img instanceof File
-                      ? {
-                          id: i,
-                          imageUrl: URL.createObjectURL(img),
-                          imageType: "BANNER",
-                        }
-                      : { ...img, imageType: "BANNER" }
-                  )}
+                  bannerImages={bannerImages.map((img, i) => {
+                    if (img instanceof File) {
+                      return {
+                        id: i, // 항상 number
+                        imageUrl: URL.createObjectURL(img),
+                        imageType: "BANNER" as const,
+                      };
+                    } else if (img) {
+                      return {
+                        id: img.id ?? null,
+                        imageUrl: img.imageUrl ?? "",
+                        imageType: "BANNER" as const,
+                      };
+                    } else {
+                      return {
+                        id: null,
+                        imageUrl: "",
+                        imageType: "BANNER" as const,
+                      };
+                    }
+                  })}
                 />
               )}
               {showUnsaved && (
