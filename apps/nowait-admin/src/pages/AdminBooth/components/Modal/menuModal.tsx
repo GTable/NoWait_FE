@@ -107,6 +107,9 @@ const MenuModal = ({
     focused && hasValue ? "text-black" : "text-gray-400";
   const { removeEmojiAll, removeEmojiSome } = useRemoveEmoji();
 
+  const [isComposingName, setIsComposingName] = useState(false);
+  const [isComposingAdmin, setIsComposingAdmin] = useState(false);
+
   const isFormValid =
     name.trim() !== "" &&
     adminDisplayName.trim() !== "" &&
@@ -188,7 +191,16 @@ const MenuModal = ({
                   <input
                     type="text"
                     value={name}
-                    onChange={(e) => setName(removeEmojiSome(e.target.value))}
+                    onChange={(e) => {
+                      const v = e.target.value;
+
+                      setName(isComposingName ? v : removeEmojiSome(v));
+                    }}
+                    onCompositionStart={() => setIsComposingName(true)}
+                    onCompositionEnd={(e) => {
+                      setIsComposingName(false);
+                      setName(removeEmojiSome(e.currentTarget.value));
+                    }}
                     onFocus={() => setFocus((f) => ({ ...f, name: true }))}
                     onBlur={() => setFocus((f) => ({ ...f, name: false }))}
                     maxLength={25}
@@ -243,11 +255,19 @@ const MenuModal = ({
                 <input
                   type="text"
                   value={adminDisplayName}
+                  onCompositionStart={() => setIsComposingAdmin(true)}
+                  onCompositionEnd={(e) => {
+                    setIsComposingAdmin(false);
+                    setAdminDisplayName(removeEmojiAll(e.currentTarget.value));
+                  }}
                   onFocus={() => setFocus((f) => ({ ...f, admin: true }))}
                   onBlur={() => setFocus((f) => ({ ...f, admin: false }))}
-                  onChange={(e) =>
-                    setAdminDisplayName(removeEmojiAll(e.target.value))
-                  }
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setAdminDisplayName(
+                      isComposingAdmin ? v : removeEmojiAll(v)
+                    );
+                  }}
                   maxLength={10}
                   className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-14-regular"
                   placeholder={`${
