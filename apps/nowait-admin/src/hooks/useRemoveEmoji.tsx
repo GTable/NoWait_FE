@@ -28,13 +28,14 @@ export const useRemoveEmoji = (): Sanitizers => {
   // 메뉴명: 공백 유지, '(' '[' 만 허용
   const removeEmojiSome = useCallback(
     (t: string) =>
-      removeEmoji(t).replace(/[^ㄱ-ㅎ가-힣a-zA-Z0-9. \(\[\(\)\]]/g, ""),
+      removeEmoji(t).replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9 \(\[\]\)]/g, ""),
     [removeEmoji]
   );
 
   // 관리자용 메뉴명: 공백 유지, 특수문자 전부 제거
   const removeEmojiAll = useCallback(
-    (t: string) => removeEmoji(t).replace(/[^ㄱ-ㅎ가-힣a-zA-Z0-9. ]/g, ""),
+    (t: string) =>
+      removeEmoji(t).replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9 \(\[\]\)]/g, ""),
     [removeEmoji]
   );
 
