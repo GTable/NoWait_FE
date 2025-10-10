@@ -48,7 +48,7 @@ const MapPage = () => {
         style={{ width: "100%", height: "100vh" }}
         level={4}
         // maxLevel={5}
-        minLevel={4}
+        // minLevel={4}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={(map) => {
           setIsDragging(false);

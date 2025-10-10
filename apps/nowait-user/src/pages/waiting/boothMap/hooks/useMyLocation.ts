@@ -8,7 +8,7 @@ export const useMyLocation = () => {
 
   useEffect(() => {
     if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition((pos) => {
+    navigator.geolocation.watchPosition((pos) => {
       setLocation({
         center: { lat: pos.coords.latitude, lng: pos.coords.longitude },
         isLoading: false,
