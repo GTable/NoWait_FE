@@ -27,7 +27,7 @@ const BoothMarkers = ({ booths, openBooth }: BoothMarkersProps) => {
             background: `url(${createClusterSVG(
               0
             )}) no-repeat center / contain`,
-            color: "#fff", // 숫자 색상
+            color: "#fff",
             textAlign: "center",
             lineHeight: "30px",
             fontSize: "18px",

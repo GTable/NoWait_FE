@@ -43,12 +43,12 @@ const MapPage = () => {
       {/* 헤더 */}
       <MapHeader />
       <Map
-        center={{ lat: 37.45258899044431, lng: 127.13144579047594 }}
-        // center={state.center}
+        // center={{ lat: 37.45258899044431, lng: 127.13144579047594 }}
+        center={myLocation.center}
         style={{ width: "100%", height: "100vh" }}
         level={4}
         // maxLevel={5}
-        // minLevel={4}
+        minLevel={4}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={(map) => {
           setIsDragging(false);
