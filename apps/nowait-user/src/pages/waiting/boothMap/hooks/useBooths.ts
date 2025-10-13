@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllStores } from "../../../../api/reservation";
 import type { StoreType } from "../../../../types/wait/store";
-import { boothPosition } from "../constants/boothPosition";
+import { BOOTHPOSITION } from "../constants/boothPosition";
 
 interface BoothWithPosition extends StoreType {
   lat: number;
@@ -19,7 +19,7 @@ export const useBooths = () => {
   const boothsWithPosition: BoothWithPosition[] =
     booths?.map((booth) => ({
       ...booth,
-      ...boothPosition[booth.storeId],
+      ...BOOTHPOSITION[booth.storeId],
     })) || [];
-    return boothsWithPosition
+  return boothsWithPosition;
 };

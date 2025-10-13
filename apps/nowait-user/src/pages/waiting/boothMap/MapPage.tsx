@@ -1,24 +1,15 @@
 import MyLocationMarker from "../../../assets/myLocationMarker.png?url";
 import BoothList from "./components/BoothList";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BoothDetail from "./components/BoothDetail";
-
 import MapHeader from "./components/MapHeader";
-
-import {
-  Map,
-  MapMarker,
-
-} from "react-kakao-maps-sdk";
-import osmtogeojson from "osmtogeojson";
-import MyLocationButton from "./components/MyLocationButton";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
 import UniversityPolygon from "./components/UniversityPolygon";
 import { useGeoPolygon } from "./hooks/useGeoPolygon";
 import BoothMarkers from "./components/BoothMarkers";
 import { useBooths } from "./hooks/useBooths";
 import { useMyLocation } from "./hooks/useMyLocation";
-
-
+import MapControlButtons from "./components/mapControls/MapControls";
 
 const MapPage = () => {
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
@@ -26,9 +17,9 @@ const MapPage = () => {
   //대학교 폴리곤(영역) 설정
   const paths = useGeoPolygon();
   //좌표를 포함한 부스들 가져오기
-  const booths = useBooths()
+  const booths = useBooths();
   //내 위치 좌표 가져오기
-  const myLocation = useMyLocation()
+  const myLocation = useMyLocation();
 
   const openBooth = (id: number) => {
     if (selectedBooth === id) {
@@ -43,11 +34,9 @@ const MapPage = () => {
       {/* 헤더 */}
       <MapHeader />
       <Map
-        // center={{ lat: 37.45258899044431, lng: 127.13144579047594 }}
         center={myLocation.center}
         style={{ width: "100%", height: "100vh" }}
         level={4}
-        // maxLevel={5}
         minLevel={4}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={(map) => {
@@ -64,7 +53,7 @@ const MapPage = () => {
         }}
       >
         <UniversityPolygon paths={paths} />
-        <MyLocationButton center={myLocation.center} />
+        <MapControlButtons center={myLocation.center} />
         {!myLocation.isLoading && (
           <MapMarker
             position={myLocation.center}
@@ -77,7 +66,7 @@ const MapPage = () => {
             }}
           ></MapMarker>
         )}
-        <BoothMarkers booths={booths} openBooth={openBooth}/>
+        <BoothMarkers booths={booths} openBooth={openBooth} />
       </Map>
 
       {/* 부스 리스트 */}
