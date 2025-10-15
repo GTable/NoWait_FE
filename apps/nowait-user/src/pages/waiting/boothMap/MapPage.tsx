@@ -1,6 +1,6 @@
 import MyLocationMarker from "../../../assets/myLocationMarker.png?url";
 import BoothList from "./components/BoothList";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import BoothDetail from "./components/BoothDetail";
 import MapHeader from "./components/MapHeader";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
@@ -10,10 +10,13 @@ import BoothMarkers from "./components/BoothMarkers";
 import { useBooths } from "./hooks/useBooths";
 import { useMyLocation } from "./hooks/useMyLocation";
 import MapControlButtons from "./components/mapControls/MapControls";
+import { isCompassModeStore } from "../../../stores/mapStore";
 
 const MapPage = () => {
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const { setIsCompassMode } = isCompassModeStore();
+
+  const isDraggingRef = useRef(false);
   //대학교 폴리곤(영역) 설정
   const paths = useGeoPolygon();
   //좌표를 포함한 부스들 가져오기
@@ -21,14 +24,15 @@ const MapPage = () => {
   //내 위치 좌표 가져오기
   const myLocation = useMyLocation();
 
-  const openBooth = (id: number) => {
+
+  const openBooth = useCallback((id: number) => {
     if (selectedBooth === id) {
       setSelectedBooth(null);
     } else {
       setSelectedBooth(id);
     }
-  };
-
+  }, [selectedBooth]);
+  
   return (
     <div className="relative overflow-hidden">
       {/* 헤더 */}
@@ -38,16 +42,17 @@ const MapPage = () => {
         style={{ width: "100%", height: "100vh" }}
         level={4}
         minLevel={4}
-        onDragStart={() => setIsDragging(true)}
+        onDragStart={() => {
+          isDraggingRef.current = true;
+          setIsCompassMode(false);
+        }}
         onDragEnd={(map) => {
-          setIsDragging(false);
+          isDraggingRef.current = false;
           const latlng = map.getCenter();
-          console.log(
-            `변경된 지도 중심좌표는 ${latlng.getLat()} 이고, 경도는 ${latlng.getLng()} 입니다`
-          );
+          console.log(`지도 중심: ${latlng.getLat()}, ${latlng.getLng()}`);
         }}
         onClick={() => {
-          if (!isDragging) {
+          if (!isDraggingRef.current) {
             setSelectedBooth(null);
           }
         }}

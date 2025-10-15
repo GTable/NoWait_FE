@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import MyLocation from "../../../../../assets/icon/myLocation.svg?react";
+import { isCompassModeStore } from "../../../../../stores/mapStore";
 
 const CompassButton = ({
   map,
@@ -8,7 +9,7 @@ const CompassButton = ({
   map: kakao.maps.Map;
   center: { lat: number; lng: number };
 }) => {
-  const [isCompassMode, setIsCompassMode] = useState(false);
+  const { isCompassMode, setIsCompassMode } = isCompassModeStore();
   const markerRef = useRef<kakao.maps.Marker | null>(null);
   const handleClick = async () => {
     if (!isCompassMode) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../../../assets/logo.svg?react";
@@ -8,11 +8,11 @@ import Cancel from "../../../../assets/icon/cancel.svg?react";
 import Portal from "../../../../components/common/modal/Portal";
 import SearchModal from "../../../../components/common/modal/SearchModal";
 
-const HomeHeader = () => {
+const HomeHeader = React.memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
-
+  console.log("헤더 렌더링")
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -185,6 +185,6 @@ const HomeHeader = () => {
       <SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
     </>
   );
-};
+});
 
 export default HomeHeader;

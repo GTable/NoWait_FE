@@ -1,12 +1,13 @@
 import { MapMarker, MarkerClusterer } from "react-kakao-maps-sdk";
 import BoothMarker from "../../../../assets/icon/BoothMarker.svg?url";
+import React from "react";
 
 interface BoothMarkersProps {
   booths: { storeId: number; lat: number; lng: number }[];
   openBooth: (id: number) => void;
 }
 
-const BoothMarkers = ({ booths, openBooth }: BoothMarkersProps) => {
+const BoothMarkers = React.memo(({ booths, openBooth }: BoothMarkersProps) => {
   const createClusterSVG = () => {
     const svg = `
     <svg width="32" height="42" viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -15,6 +16,7 @@ const BoothMarkers = ({ booths, openBooth }: BoothMarkersProps) => {
   `;
     return `data:image/svg+xml;base64,${btoa(svg)}`;
   };
+  console.log("마커 렌더링")
   return (
     <>
       <MarkerClusterer
@@ -47,6 +49,6 @@ const BoothMarkers = ({ booths, openBooth }: BoothMarkersProps) => {
       </MarkerClusterer>
     </>
   );
-};
+});
 
 export default BoothMarkers;
