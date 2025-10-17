@@ -1,6 +1,6 @@
 import MyLocationMarker from "../../../assets/myLocationMarker.png?url";
 import BoothList from "./components/BoothList";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState,useEffect } from "react";
 import BoothDetail from "./components/BoothDetail";
 import MapHeader from "./components/MapHeader";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
@@ -11,11 +11,48 @@ import { useBooths } from "./hooks/useBooths";
 import { useMyLocation } from "./hooks/useMyLocation";
 import MapControlButtons from "./components/mapControls/MapControls";
 import { isCompassModeStore } from "../../../stores/mapStore";
+import mapboxgl from "mapbox-gl"
 
 const MapPage = () => {
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
   const { setIsCompassMode } = isCompassModeStore();
+  const mapRef = useRef<any>(null)
+  const mapContainerRef = useRef<any>(null)
+   useEffect(() => {
+    mapboxgl.accessToken = 'pk.eyJ1IjoicmFtN3NlcyIsImEiOiJjbWd1cGZtOGcwaTYwMmxwdHo4b211NXJyIn0.LorgQ07844HwnGHNT9pZ5A'
+    mapRef.current = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      center: [-74.0242, 40.6941],
+      zoom: 10.12
+    });
 
+    return () => {
+      mapRef.current.remove()
+    }
+  }, [])
+
+  if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lng = position.coords.longitude;
+      const lat = position.coords.latitude;
+
+      // 3. 지도 중심 이동
+      mapRef.current.setCenter([lng, lat]);
+
+      // 4. 마커 추가
+      new mapboxgl.Marker()
+        .setLngLat([lng, lat])
+        .setPopup(new mapboxgl.Popup().setText("여기가 내 위치"))
+        .addTo(mapRef.current);
+    },
+    (error) => {
+      console.error("위치 정보를 가져올 수 없습니다.", error);
+    }
+  );
+} else {
+  console.error("브라우저가 Geolocation API를 지원하지 않습니다.");
+}
   const isDraggingRef = useRef(false);
   //대학교 폴리곤(영역) 설정
   const paths = useGeoPolygon();
@@ -37,6 +74,7 @@ const MapPage = () => {
     <div className="relative overflow-hidden">
       {/* 헤더 */}
       <MapHeader />
+      <div className="w-full h-[100vh]" id='map-container' ref={mapContainerRef}/>
       <Map
         center={myLocation.center}
         style={{ width: "100%", height: "100vh" }}
