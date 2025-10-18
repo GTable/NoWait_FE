@@ -1,4 +1,4 @@
-import { Polygon } from "react-kakao-maps-sdk";
+import { Polygon } from "react-naver-maps";
 
 const UniversityPolygon = ({
   paths,
@@ -9,7 +9,7 @@ const UniversityPolygon = ({
 
   return (
     <Polygon
-      path={paths}
+      paths={paths}
       strokeWeight={2}
       strokeColor="#ffffff"
       strokeOpacity={0.8}

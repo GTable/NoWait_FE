@@ -1,12 +1,14 @@
 import { UNIVERSITY } from "../../constants/university";
-
+import { useNavermaps } from "react-naver-maps";
 const UniversityListModal = ({
   map,
   onClose,
 }: {
-  map: kakao.maps.Map;
+  map: any;
   onClose: () => void;
 }) => {
+  const navermaps = useNavermaps();
+
   return (
     <div className="fixed inset-0 z-50 bg-black/50" onClick={onClose}>
       <ul
@@ -17,8 +19,10 @@ const UniversityListModal = ({
           <li
             key={university.id}
             onClick={() => {
-              map.panTo(new kakao.maps.LatLng(university.lat, university.lng));
-              onClose();
+              if (map) {
+                map.panTo(new navermaps.LatLng(university.lat, university.lng));
+                onClose();
+              }
             }}
             className="flex gap-2 items-center px-2 py-2"
           >

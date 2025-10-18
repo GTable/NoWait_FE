@@ -1,16 +1,16 @@
 import University from "../../../../../assets/icon/map.svg?react";
-import { useMap } from "react-kakao-maps-sdk";
 import Portal from "../../../../../components/common/modal/Portal";
 import useModal from "../../../../../hooks/useModal";
 import UniversityListModal from "./UniversityListModal";
 import CompassButton from "./CompassButton";
 
 const MapControlButtons = ({
+  map,
   center,
 }: {
+  map: any
   center: { lat: number; lng: number };
 }) => {
-  const map = useMap();
   const modal = useModal();
 
   return (
@@ -28,7 +28,7 @@ const MapControlButtons = ({
       </div>
       {modal.isOpen === true && (
         <Portal>
-          <UniversityListModal map={map} onClose={modal.close} />
+          <UniversityListModal  onClose={modal.close} map={map}/>
         </Portal>
       )}
     </div>

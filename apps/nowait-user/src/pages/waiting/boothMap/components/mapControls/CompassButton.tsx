@@ -1,20 +1,23 @@
 import { useRef } from "react";
 import MyLocation from "../../../../../assets/icon/myLocation.svg?react";
 import { isCompassModeStore } from "../../../../../stores/mapStore";
+import { useNavermaps } from "react-naver-maps";
 
 const CompassButton = ({
   map,
   center,
 }: {
-  map: kakao.maps.Map;
+  map: any;
   center: { lat: number; lng: number };
 }) => {
   const { isCompassMode, setIsCompassMode } = isCompassModeStore();
+  const navermaps = useNavermaps();
+
   const markerRef = useRef<kakao.maps.Marker | null>(null);
   const handleClick = async () => {
     if (!isCompassMode) {
       // 내 위치로 이동
-      map.panTo(new kakao.maps.LatLng(center.lat, center.lng));
+      map.panTo(new navermaps.LatLng(center.lat, center.lng));
       setIsCompassMode(true);
     } else {
       // 나침반 모드 활성화
