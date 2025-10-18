@@ -29,6 +29,7 @@
     "react-draggable": "^4.5.0",
     "react-flip-numbers": "^3.0.9",
     "react-kakao-maps-sdk": "^1.2.0",
+    "react-naver-maps": "^0.1.4",
     "react-router-dom": "^7.6.2",
     "react-toastify": "^11.0.5",
     "react-transition-group": "^4.4.5",

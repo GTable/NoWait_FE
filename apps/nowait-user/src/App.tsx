@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import Toast from "./components/common/toast/Toast";
 import ErrorToast from "./components/common/toast/ErrorToast";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-
+import { NavermapsProvider } from "react-naver-maps";
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -20,12 +20,14 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SpeedInsights />
-      <BrowserRouter>
-        <Router />
-        <Toast />
-        <ErrorToast />
-      </BrowserRouter>
+      {/* <NavermapsProvider ncpKeyId={import.meta.env.VITE_NAVER_MAP_KEY}> */}
+        <SpeedInsights />
+        <BrowserRouter>
+          <Router />
+          <Toast />
+          <ErrorToast />
+        </BrowserRouter>
+      {/* </NavermapsProvider> */}
     </QueryClientProvider>
   );
 }

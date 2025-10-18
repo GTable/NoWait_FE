@@ -1,6 +1,6 @@
-import { MapMarker, MarkerClusterer } from "react-kakao-maps-sdk";
 import BoothMarker from "../../../../assets/icon/BoothMarker.svg?url";
 import React from "react";
+import { Marker } from "react-naver-maps";
 
 interface BoothMarkersProps {
   booths: { storeId: number; lat: number; lng: number }[];
@@ -16,10 +16,10 @@ const BoothMarkers = React.memo(({ booths, openBooth }: BoothMarkersProps) => {
   `;
     return `data:image/svg+xml;base64,${btoa(svg)}`;
   };
-  console.log("마커 렌더링")
+  console.log("마커 렌더링");
   return (
     <>
-      <MarkerClusterer
+      {/* <MarkerClusterer
         averageCenter
         minLevel={3}
         styles={[
@@ -34,19 +34,19 @@ const BoothMarkers = React.memo(({ booths, openBooth }: BoothMarkersProps) => {
             fontWeight: "bold",
           },
         ]}
-      >
-        {booths.map((booth) => (
-          <MapMarker
-            key={booth.storeId}
-            position={{ lat: booth.lat, lng: booth.lng }}
-            image={{
-              src: BoothMarker,
-              size: { width: 32, height: 42 },
-            }}
-            onClick={() => openBooth(booth.storeId)}
-          />
-        ))}
-      </MarkerClusterer>
+      > */}
+      {booths.map((booth) => (
+        <Marker
+          key={booth.storeId}
+          position={{ lat: booth.lat, lng: booth.lng }}
+          // image={{
+          //   src: BoothMarker,
+          //   size: { width: 32, height: 42 },
+          // }}
+          onClick={() => openBooth(booth.storeId)}
+        />
+      ))}
+      {/* </MarkerClusterer> */}
     </>
   );
 });
