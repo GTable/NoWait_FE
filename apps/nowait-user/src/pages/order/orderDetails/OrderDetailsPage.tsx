@@ -2,7 +2,6 @@ import EmptyOrderDetails from "./components/EmptyOrderDetails";
 import { useQuery } from "@tanstack/react-query";
 import { getOrderDetails } from "../../../api/order";
 import { useParams } from "react-router-dom";
-import { formatDate } from "../../../utils/formatDate";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import FullPageLoader from "../../../components/FullPageLoader";
 
@@ -59,7 +58,7 @@ const OrderDetailsPage = () => {
                     {statusData.label}
                   </h1>
                   <p className="text-14-regular text-black-60">
-                    {formatDate(order.createdAt)}
+                    {order.createdAt}
                   </p>
                 </div>
                 <ul className="border-b-1 border-[#ececec] pb-5 mb-5">
