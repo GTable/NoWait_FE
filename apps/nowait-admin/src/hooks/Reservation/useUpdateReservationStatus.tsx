@@ -3,7 +3,7 @@ import AdminApi from "../../utils/AdminApi";
 
 interface UpdateReservationParams {
   storeId: number;
-  userId: number;
+  reservationNumber: number;
   status: "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED" | "NO_SHOW";
 }
 
@@ -11,11 +11,11 @@ export const useUpdateReservationStatus = () => {
   return useMutation({
     mutationFn: async ({
       storeId,
-      userId,
+      reservationNumber,
       status,
     }: UpdateReservationParams) => {
       const res = await AdminApi.patch(
-        `/reservations/admin/update/${storeId}/${userId}`,
+        `/reservations/admin/update/${storeId}/${reservationNumber}`,
         { status }
       );
       return res.data;
