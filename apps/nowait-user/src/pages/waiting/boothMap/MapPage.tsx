@@ -60,30 +60,30 @@ const MapPage = () => {
     <div className="relative overflow-hidden">
       {/* 헤더 */}
       <MapHeader />
-
-      <MapDiv
-        style={{
-          width: "100%",
-          height: "600px",
-        }}
-      >
-        <NaverMap
-          defaultCenter={myLocation.center}
-          defaultZoom={16}
-          ref={setMap}
+      {!myLocation.isLoading && (
+        <MapDiv
+          style={{
+            width: "100%",
+            height: "600px",
+          }}
         >
-          <MapControlButtons center={myLocation.center} map={map} />
-          <UniversityPolygon paths={paths} />
+          <NaverMap
+            defaultCenter={myLocation.center}
+            defaultZoom={16}
+            ref={setMap}
+          >
+            <MapControlButtons center={myLocation.center} map={map} />
+            <UniversityPolygon paths={paths} />
 
-          {!myLocation.isLoading && <Marker position={myLocation.center} />}
-          <BoothMarkers
-            booths={booths}
-            openBooth={openBooth}
-            zoomLevel={zoomLevel}
-          />
-        </NaverMap>
-      </MapDiv>
-
+            {!myLocation.isLoading && <Marker position={myLocation.center} />}
+            <BoothMarkers
+              booths={booths}
+              openBooth={openBooth}
+              zoomLevel={zoomLevel}
+            />
+          </NaverMap>
+        </MapDiv>
+      )}
       {/* 부스 리스트 */}
       {selectedBooth !== null ? (
         <BoothDetail
