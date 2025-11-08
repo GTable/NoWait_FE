@@ -21,7 +21,6 @@ const SalesCard: React.FC<SalesCardProps> = ({
   onDateChange,
   currentDate,
 }) => {
-  const formattedDate = currentDate.replace(/-/g, ".");
   const todayISO = new Date().toISOString().slice(0, 10);
   const isFuture = currentDate > todayISO; // 오늘보다 미래인지 확인
   const isToday = currentDate === todayISO;
