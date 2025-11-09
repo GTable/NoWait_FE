@@ -64,3 +64,9 @@ yarn dlx @yarnpkg/sdks vscode
 yarn dev:user    # 사용자용 앱 실행  
 yarn dev:admin   # 관리자용 앱 실행
 ```
+
+## 🔗배포주소
+```txt
+사용자: https://www.nowait.co.kr
+관리자: https://www.nowait-admin.com
+```

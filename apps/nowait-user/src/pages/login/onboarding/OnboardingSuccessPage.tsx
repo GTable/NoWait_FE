@@ -1,6 +1,19 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SuccessImage from "../../../assets/icon/signup.svg?react";
 
 const OnboardingSuccessPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // 5초 후 메인 페이지로 자동 이동
+    const timer = setTimeout(() => {
+      navigate("/", { replace: true });
+    }, 5000);
+
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => clearTimeout(timer);
+  }, [navigate]);
   return (
     <div className="flex w-full h-[100dvh] items-center justify-center overflow-hidden">
       <div className="flex flex-col gap-[30px]">
@@ -13,6 +26,9 @@ const OnboardingSuccessPage = () => {
           </div>
           <div className="flex text-16-regular text-black-70">
             노웨잇과 함께 축제를 즐겨봐요!
+          </div>
+          <div className="flex text-16-regular text-black-70">
+            5초 후에 메인 페이지로 이동합니다
           </div>
         </div>
       </div>

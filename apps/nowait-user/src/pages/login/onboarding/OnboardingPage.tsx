@@ -93,7 +93,10 @@ const OnboardingPage = () => {
 
       {/* TermsModal 오버레이 */}
       <AnimatedModal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <TermsModal onOpenViewModal={handleOpenViewModal} />
+        <TermsModal
+          onOpenViewModal={handleOpenViewModal}
+          phoneNumber={phoneNumber}
+        />
       </AnimatedModal>
 
       {/* ViewModal 오버레이 */}

@@ -16,28 +16,30 @@ interface HeaderStatusProps {
     soldCount: number;
     imageUrl?: string;
   }[];
-  saleDisabled: boolean;
+  currentDate: string;
   poupularMenuDisabled: boolean;
   isTablet: boolean;
   isMobile: boolean;
+  onDateChange: (days: number) => void;
 }
 
 const HeaderStatus: React.FC<HeaderStatusProps> = ({
   sales,
+  currentDate,
   popularMenu,
-  saleDisabled,
   poupularMenuDisabled,
   isTablet,
   isMobile,
+  onDateChange,
 }) => {
   const todayAmount = sales?.todaySalesSum ?? 0;
   const yesterdayAmount = sales?.yesterdaySalesSum ?? 0;
   const totalAmount =
     (sales?.cumulativeSalesBeforeYesterday ?? 0) + todayAmount;
   const diffAmount = todayAmount - yesterdayAmount;
-  const percent = yesterdayAmount
-    ? parseFloat(((diffAmount / yesterdayAmount) * 100).toFixed(1))
-    : 0;
+  // const percent = yesterdayAmount
+  //   ? parseFloat(((diffAmount / yesterdayAmount) * 100).toFixed(1))
+  //   : 0;
 
   const formatDate = (date: Date | string): string => {
     if (typeof date === "string") {
@@ -56,7 +58,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
   yesterday.setDate(today.getDate() - 1);
 
   const todayDate = formatDate(today);
-  const yesterdayDate = formatDate(yesterday);
+  // const yesterdayDate = formatDate(yesterday);
 
   console.log(popularMenu, "인기 메뉴");
 
@@ -70,25 +72,29 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
     >
       <div className="flex flex-col gap-[10px]">
         <SalesCard
-          today={{
-            date: todayDate,
-            amount: todayAmount,
-            diffAmount,
-            percent,
+          sales={{
+            date: currentDate,
+            amount: sales?.todaySalesSum ?? 0,
+            diffAmount: diffAmount,
+            percent: sales?.yesterdaySalesSum
+              ? parseFloat(
+                  (
+                    ((sales?.todaySalesSum - sales?.yesterdaySalesSum) /
+                      sales?.yesterdaySalesSum) *
+                    100
+                  ).toFixed(1)
+                )
+              : 0,
           }}
-          previous={{
-            date: yesterdayDate,
-            amount: yesterdayAmount,
-          }}
-          disabled={saleDisabled}
+          currentDate={currentDate}
           isTablet={isTablet}
+          onDateChange={onDateChange}
         />
 
         <TotalSalesCard
           title="누적매출"
           date={`${todayDate} 기준`}
           amount={totalAmount}
-          disabled={saleDisabled}
           isTablet={isTablet}
         />
       </div>
@@ -100,7 +106,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
           isTablet
             ? "p-6"
             : isMobile
-            ? "p-[22px]"
+            ? "p-[22px] w-[335px] h-[227px]"
             : "p-[22px] w-[335px] h-[227px]"
         }`}
       >
@@ -136,7 +142,10 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
                       menu.imageUrl ?? "bg-[#788FB6]"
                     }`}
                   >
-                    <img src={menu.imageUrl} className="object-cover" />
+                    <img
+                      src={menu.imageUrl}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                   <p
                     className={`text-16-semibold ${

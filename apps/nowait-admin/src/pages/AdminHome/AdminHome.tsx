@@ -22,7 +22,7 @@ interface Reservation {
   waitMinutes: number;
   peopleCount: number;
   name: string;
-  phone: string;
+  phoneNumber: string;
   status: WaitingStatus;
   calledAt?: string;
 }
@@ -104,9 +104,9 @@ const AdminHome = () => {
   }, [reservations, activeTab]);
 
   // 호출 버튼 클릭 이벤트
-  const handleCall = (id: number, userId: number) => {
+  const handleCall = (id: number, reservationNumber: number) => {
     updateStatus(
-      { storeId, userId, status: "CALLING" },
+      { storeId, reservationNumber, status: "CALLING" },
       {
         onSuccess: () => {
           setReservations((prev) =>
@@ -130,10 +130,10 @@ const AdminHome = () => {
     );
   };
 
-  const handleEnter = (id: number, userId: number) => {
+  const handleEnter = (id: number, reservationNumber: number) => {
     const now = new Date().toISOString();
     updateStatus(
-      { storeId, userId, status: "CONFIRMED" },
+      { storeId, reservationNumber, status: "CONFIRMED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
@@ -147,10 +147,10 @@ const AdminHome = () => {
     );
   };
 
-  const handleClose = (id: number, userId: number) => {
+  const handleClose = (id: number, reservationNumber: number) => {
     const now = new Date().toISOString();
     updateStatus(
-      { storeId, userId, status: "CANCELLED" },
+      { storeId, reservationNumber, status: "CANCELLED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
@@ -208,7 +208,7 @@ const AdminHome = () => {
         waitMinutes: Math.floor((now - requested.getTime()) / 60000),
         peopleCount: res.partySize,
         name: res.userName,
-        phone: "010-****-****",
+        phoneNumber: res.phoneNumber,
         status: res.status,
         calledAt:
           res.status === "CALLING" && called ? called.toISOString() : undefined,
@@ -311,7 +311,7 @@ const AdminHome = () => {
               )}
               peopleCount={res.peopleCount}
               name={res.name}
-              phone="010-1234-1234"
+              phoneNumber={res.phoneNumber}
               status={res.status}
               requestedAt={res.requestedAt}
               calledAt={res.calledAt}

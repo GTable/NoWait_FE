@@ -63,9 +63,9 @@ const BoothForm = () => {
     description: string;
     noticeTitle: string;
     noticeContent: string;
-    openTime: string; // "HHmmHHmm"
+    openTime: string;
     profileId: number | null;
-    bannerIds: Array<number | null>; // 첫 3개 슬롯 기준
+    bannerIds: Array<number | null>;
   } | null>(null);
 
   const currentProfileSig = useMemo(() => {
@@ -76,7 +76,6 @@ const BoothForm = () => {
   }, [profileImage]);
 
   const currentBannerSig = useMemo<(string | number | null)[]>(() => {
-    // UI가 3 슬롯이라 가정
     const slots = [bannerImages[0], bannerImages[1], bannerImages[2]];
     return slots.map((img) => {
       if (!img) return null;
@@ -84,7 +83,7 @@ const BoothForm = () => {
     });
   }, [bannerImages]);
   const hasChanges = useMemo(() => {
-    if (!baseline) return false; // 아직 로딩 중이면 비활성화
+    if (!baseline) return false;
 
     const textChanged =
       norm(boothName) !== norm(baseline.name) ||
@@ -175,7 +174,7 @@ const BoothForm = () => {
           },
           {
             onSuccess: () => resolve(),
-            onError: () => reject(new Error("부스 정보 수정 실패")),
+            onError: (err) => reject(err),
           }
         );
       });
@@ -205,7 +204,7 @@ const BoothForm = () => {
       if (newBannerFiles.length > 0) {
         const croppedBanners = await Promise.all(
           newBannerFiles.map((file) =>
-            cropCenterToSize(file, 375, 246, "image/jpeg", 0.9)
+            cropCenterToSize(file, 750, 492, "image/jpeg", 0.95)
           )
         );
 
@@ -222,7 +221,7 @@ const BoothForm = () => {
       refetch();
       after?.();
     } catch (e) {
-      console.error(e);
+      console.log(e, "부스정보저장 에러메세지");
       alert("저장 중 오류가 발생했어요. 다시 시도해주세요.");
     }
   };
@@ -416,15 +415,27 @@ const BoothForm = () => {
                         : profileImage
                       : null
                   }
-                  bannerImages={bannerImages.map((img, i) =>
-                    img instanceof File
-                      ? {
-                          id: i,
-                          imageUrl: URL.createObjectURL(img),
-                          imageType: "BANNER",
-                        }
-                      : { ...img, imageType: "BANNER" }
-                  )}
+                  bannerImages={bannerImages.map((img, i) => {
+                    if (img instanceof File) {
+                      return {
+                        id: i, // 항상 number
+                        imageUrl: URL.createObjectURL(img),
+                        imageType: "BANNER" as const,
+                      };
+                    } else if (img) {
+                      return {
+                        id: img.id ?? null,
+                        imageUrl: img.imageUrl ?? "",
+                        imageType: "BANNER" as const,
+                      };
+                    } else {
+                      return {
+                        id: null,
+                        imageUrl: "",
+                        imageType: "BANNER" as const,
+                      };
+                    }
+                  })}
                 />
               )}
               {showUnsaved && (

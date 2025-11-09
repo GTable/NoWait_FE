@@ -38,7 +38,7 @@ const StorePage = () => {
   console.log(menus, "asd");
   return (
     <div>
-      <div className="flex flex-col flex-grow pb-[112px] min-h-dvh pt-7.5 px-5">
+      <div className={`flex flex-col flex-grow min-h-dvh pt-7.5 ${cart && cart.length > 0 ? "pb-[116px]" : ""} px-5`}>
         <div className="flex-grow">
           <StoreHeader storeName={menus?.storeName} isLoading={isLoading} />
           <SectionDivider />

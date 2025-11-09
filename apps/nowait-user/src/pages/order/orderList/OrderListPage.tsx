@@ -24,15 +24,7 @@ const OrderListPage = () => {
   const { cart, removeFromCart } = useCartStore();
   const modal = useModal();
   const [soldOutMenus, setSoldOutMenus] = useState<CartType[] | undefined>();
-  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-
-  // 메뉴가 1개일 때에도 애니메이션 작동
-  useEffect(() => {
-    if (cart.length === 0 && !isAnimatingOut) return;
-    setTimeout(() => {
-      setIsAnimatingOut(true);
-    }, 300);
-  }, [cart]);
+  const [isAnimatingOut, setIsAnimatingOut] = useState<boolean>(false);
 
   const { data: menus } = useQuery({
     queryKey: ["storeMenuList", storeId],
@@ -40,21 +32,41 @@ const OrderListPage = () => {
     select: (data) => data?.response?.menuReadDto,
   });
 
-  //맨위로 위치 초기화
+  // 맨위로 위치 초기화
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (cart.length === 0 && isAnimatingOut) return <EmptyCart />;
+  useEffect(() => {
+    let timerId: number | undefined;
+
+    if (cart.length === 0) {
+      if (!isAnimatingOut) {
+        timerId = window.setTimeout(() => {
+          setIsAnimatingOut(true);
+        }, 350);
+      }
+    } else {
+      if (isAnimatingOut) setIsAnimatingOut(false);
+    }
+
+    return () => {
+      if (timerId) clearTimeout(timerId);
+    };
+  }, [cart, isAnimatingOut]);
+
+  if (cart.length === 0 && isAnimatingOut) {
+    return <EmptyCart />;
+  }
 
   return (
     <div>
       <BackHeader title="장바구니" />
-      <section className="flex flex-col flex-grow min-h-dvh mt-[38px] pt-7 px-5 pb-[112px]">
+      <section className="flex flex-col flex-grow min-h-[calc(100dvh-164px)] pt-7 px-5 mt-[48px]">
         <h1 className="text-headline-22-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
         </h1>
-        <motion.ul className="flex justify-center flex-col" layout>
+        <motion.ul className="flex justify-center flex-col mb-[116px]" layout>
           <AnimatePresence mode="sync">
             {cart.map((item) => {
               return (
@@ -73,7 +85,9 @@ const OrderListPage = () => {
                 mode="default"
                 type="button"
                 ariaLabel="메뉴 추가하기"
-                onClick={() => navigate(`/${storeId}`)}
+                onClick={() =>
+                  navigate(`/${storeId}`, { state: { isBack: true } })
+                }
                 className="py-5 border-none"
               >
                 메뉴 추가하기

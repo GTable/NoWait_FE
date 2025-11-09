@@ -2,7 +2,6 @@ import EmptyOrderDetails from "./components/EmptyOrderDetails";
 import { useQuery } from "@tanstack/react-query";
 import { getOrderDetails } from "../../../api/order";
 import { useParams } from "react-router-dom";
-import { formatDate } from "../../../utils/formatDate";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import FullPageLoader from "../../../components/FullPageLoader";
 
@@ -27,20 +26,10 @@ const OrderDetailsPage = () => {
 
   const { data: orderDetails, isLoading } = useQuery({
     queryKey: ["orderDetails", storeId],
-    queryFn: async () => {
-      try {
-        const res = await getOrderDetails(storeId!, Number(tableId!));
-        console.log("API Response:", res);
-        return res;
-      } catch (err) {
-        console.error("API Error:", err);
-        alert("API Error: " + JSON.stringify(err));
-        throw err;
-      }
-    },
+    queryFn: () => getOrderDetails(storeId!, Number(tableId!)),
     select: (data) => data?.response,
   });
-
+  console.log(orderDetails);
   if (isLoading) return <FullPageLoader />;
   //주문내역 없을 시
   if (!orderDetails || orderDetails?.length < 1) return <EmptyOrderDetails />;
@@ -69,7 +58,7 @@ const OrderDetailsPage = () => {
                     {statusData.label}
                   </h1>
                   <p className="text-14-regular text-black-60">
-                    {formatDate(order.createdAt)}
+                    {order.createdAt}
                   </p>
                 </div>
                 <ul className="border-b-1 border-[#ececec] pb-5 mb-5">

@@ -1,4 +1,3 @@
-import BoothMarker from "../../../assets/icon/BoothMarker.svg?react";
 import BoothList from "./components/BoothList";
 import { useEffect, useRef, useState } from "react";
 import BoothDetail from "./components/BoothDetail";
@@ -7,7 +6,6 @@ import { getAllStores } from "../../../api/reservation";
 import { motion } from "framer-motion";
 import MapHeader from "./components/MapHeader";
 import { boothPosition } from "./constants/boothPosition";
-import BoothMap from "../../../assets/boothMap.png";
 import type { StoreType } from "../../../types/wait/store";
 
 interface BoothWithPosition extends StoreType {
@@ -108,7 +106,7 @@ const MapPage = () => {
               y: positionY,
             }}
           >
-            <img
+            {/* <img
               style={{
                 width: "100%",
                 height: "100%",
@@ -118,7 +116,7 @@ const MapPage = () => {
               }}
               src={BoothMap}
               alt="축제 맵 이미지"
-            />
+            /> */}
             {/* 마커 */}
             <ul className="absolute top-0 left-0 w-full h-full">
               {boothsWithPosition?.map((booth) => (
@@ -142,7 +140,6 @@ const MapPage = () => {
                       openBoothButton(booth.storeId);
                     }}
                   >
-                    <BoothMarker />
                   </button>
                 </li>
               ))}
