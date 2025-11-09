@@ -29,7 +29,7 @@ const AdminAnalytics = () => {
   const isTablet = width >= 768;
   const isMobile = width < 432;
   const { data: boothRank } = useGetTopSales();
-  const { data: sales } = useGetSalesByDate(formatted);
+  const { data: sales } = useGetSalesByDate(currentDate);
   const { data: popularMenu } = useGetPopularMenu();
 
   const boothDisabled = boothRank?.length === 0;
@@ -56,6 +56,7 @@ const AdminAnalytics = () => {
   };
 
   console.log(popularMenu, "인기메뉴 원래데이터");
+  console.log(sales, "날짜별 조회");
 
   return (
     <div
