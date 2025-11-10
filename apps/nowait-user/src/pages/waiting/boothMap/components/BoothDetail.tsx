@@ -12,7 +12,6 @@ interface PropsType {
 
 const BoothDetail = ({ booth }: PropsType) => {
   const navigate = useNavigate();
-
   const { storeId, publicCode, name, departmentName, waitingCount } = booth;
 
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(

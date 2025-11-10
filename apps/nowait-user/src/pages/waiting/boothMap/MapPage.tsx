@@ -1,152 +1,125 @@
 import BoothList from "./components/BoothList";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import BoothDetail from "./components/BoothDetail";
-import { useQuery } from "@tanstack/react-query";
-import { getAllStores } from "../../../api/reservation";
-import { motion } from "framer-motion";
 import MapHeader from "./components/MapHeader";
-import { boothPosition } from "./constants/boothPosition";
-import type { StoreType } from "../../../types/wait/store";
-
-interface BoothWithPosition extends StoreType {
-  left: string;
-  top: string;
+import UniversityPolygon from "./components/UniversityPolygon";
+import { useGeoPolygon } from "./hooks/useGeoPolygon";
+import BoothMarkers from "./components/BoothMarkers";
+import { useBooths } from "./hooks/useBooths";
+import { useMyLocation } from "./hooks/useMyLocation";
+import MapControlButtons from "./components/mapControls/MapControls";
+import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
+declare global {
+  interface Window {
+    naver: any;
+  }
 }
-
 const MapPage = () => {
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [positionX, setPositionX] = useState(0);
-  const [positionY, setPositionY] = useState(0);
+  const [map, setMap] = useState<any | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(14);
+  console.log(zoomLevel);
+  // const { setIsCompassMode } = isCompassModeStore();
+  const isDraggingRef = useRef(false);
+  //대학교 폴리곤(영역) 설정
+  const paths = useGeoPolygon();
+  //좌표를 포함한 부스들 가져오기
+  const booths = useBooths();
+  //내 위치 좌표 가져오기
+  const myLocation = useMyLocation();
 
-  const { data: booths } = useQuery({
-    queryKey: ["storesMarkers"],
-    queryFn: getAllStores,
-    select: (data) => data?.response?.storePageReadResponses,
-  });
-
-  // 부스 + 마커 좌표
-  const boothsWithPosition: BoothWithPosition[] =
-    booths?.map((booth) => ({
-      ...booth,
-      ...boothPosition[booth.storeId],
-    })) || [];
-
-  // 뷰포트 크기 계산
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const viewportWidth = viewportRef.current?.clientWidth ?? 430;
-  const viewportHeight = viewportRef.current?.clientHeight ?? 812;
-
-  console.log(booths);
+  //줌 레벨 가져오기
   useEffect(() => {
-    if (!booths || booths.length === 0) return;
-    console.log("실행");
-    const positions = Object.values(boothPosition).map((booth) => ({
-      top: parseFloat(booth.top),
-      left: parseFloat(booth.left),
-    }));
-    const avgTop =
-      positions.reduce((sum, booth) => sum + booth.top, 0) / positions.length;
-    const avgLeft =
-      positions.reduce((sum, booth) => sum + booth.left, 0) / positions.length;
-    const initialX = -((avgLeft / 100) * 1100 - viewportWidth / 2);
-    const initialY = -((avgTop / 100) * 1100 - viewportHeight / 2);
-    setPositionX(initialX);
-    setPositionY(initialY);
-  }, [booths]);
+    if (!map) return;
 
-  const openBoothButton = (id: number) => {
-    if (selectedBooth === id) {
-      setSelectedBooth(null);
-    } else {
-      setSelectedBooth(id);
-    }
-  };
+    const listener = window.naver.maps.Event.addListener(
+      map,
+      "zoom_changed",
+      () => {
+        const currentZoom = map.getZoom();
+        setZoomLevel(currentZoom);
+      }
+    );
+
+    return () => {
+      window.naver.maps.Event.removeListener(listener);
+    };
+  }, [map]);
+
+  //맵 드래그, 클릭 컨트롤
+  useEffect(() => {
+    if (!map) return;
+
+    const dragStartListener = window.naver.maps.Event.addListener(
+      map,
+      "dragstart",
+      () => {
+        isDraggingRef.current = true;
+      }
+    );
+
+    const dragEndListener = window.naver.maps.Event.addListener(
+      map,
+      "dragend",
+      () => {
+        isDraggingRef.current = false;
+      }
+    );
+
+    const clickListener = window.naver.maps.Event.addListener(
+      map,
+      "click",
+      () => {
+        if (isDraggingRef.current) return; // 드래그 중이면 무시
+        setSelectedBooth(null);
+      }
+    );
+
+    return () => {
+      window.naver.maps.Event.removeListener(dragStartListener);
+      window.naver.maps.Event.removeListener(dragEndListener);
+      window.naver.maps.Event.removeListener(clickListener);
+    };
+  }, [map]);
+
+  const openBooth = useCallback(
+    (id: number) => {
+      if (selectedBooth === id) {
+        setSelectedBooth(null);
+      } else {
+        setSelectedBooth(id);
+      }
+    },
+    [selectedBooth]
+  );
+
   return (
     <div className="relative overflow-hidden">
       {/* 헤더 */}
       <MapHeader />
-      {/* 축제 맵 */}
-      <div className="relative top-0 left-0 min-h-dvh w-full">
-        <div
+      {!myLocation.isLoading && (
+        <MapDiv
           style={{
-            width: "430px",
-            height: "100%",
-            overflow: "hidden",
+            width: "100%",
+            height: "600px",
           }}
         >
-          <motion.div
-            drag
-            dragElastic={false}
-            dragTransition={{
-              power: 0,
-              timeConstant: 0,
-            }}
-            dragConstraints={{
-              left: -(1100 - viewportWidth),
-              right: 0,
-              top: -(1100 - viewportHeight),
-              bottom: 0,
-            }}
-            // 클릭, 드래그 구분
-            onPointerDown={() => setIsDragging(false)}
-            onDragStart={() => setIsDragging(true)}
-            onPointerUp={(e) => {
-              if (!isDragging) {
-                if ((e.target as HTMLElement).closest("button")) return;
-                setSelectedBooth(null);
-              }
-            }}
-            style={{
-              width: "1100px",
-              height: "1100px",
-              position: "relative",
-              cursor: "grab",
-              x: positionX,
-              y: positionY,
-            }}
+          <NaverMap
+            defaultCenter={myLocation.center}
+            defaultZoom={16}
+            ref={setMap}
           >
-            {/* <img
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "block",
-                pointerEvents: "none",
-                userSelect: "none",
-              }}
-              src={BoothMap}
-              alt="축제 맵 이미지"
-            /> */}
-            {/* 마커 */}
-            <ul className="absolute top-0 left-0 w-full h-full">
-              {boothsWithPosition?.map((booth) => (
-                <li
-                  key={booth.storeId}
-                  className="absolute"
-                  style={{
-                    top: booth.top,
-                    left: booth.left,
-                    transform: "translate(-50%, -100%)",
-                  }}
-                >
-                  <button
-                    className={`transition-transform origin-bottom duration-200 ${
-                      selectedBooth === booth.storeId
-                        ? "scale-120"
-                        : "scale-100"
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openBoothButton(booth.storeId);
-                    }}
-                  >
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </div>
+            <MapControlButtons center={myLocation.center} map={map} />
+            <UniversityPolygon paths={paths} />
+            {!myLocation.isLoading && <Marker position={myLocation.center} />}
+            <BoothMarkers
+              booths={booths}
+              openBooth={openBooth}
+              zoomLevel={zoomLevel}
+            />
+          </NaverMap>
+        </MapDiv>
+      )}
       {/* 부스 리스트 */}
       {selectedBooth !== null ? (
         <BoothDetail

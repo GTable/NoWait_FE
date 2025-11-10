@@ -1,6 +1,6 @@
 import { motion, useMotionValue, animate } from "framer-motion";
 import BoothListItem from "./BoothListItem";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import type { StoreType } from "../../../../types/wait/store";
 
@@ -8,7 +8,7 @@ interface PanInfo {
   offset: { x: number; y: number };
 }
 
-const BoothList = ({
+const BoothList = React.memo(({
   booths,
   totalBooth,
 }: {
@@ -16,7 +16,6 @@ const BoothList = ({
   totalBooth: number | undefined;
 }) => {
   const y = useMotionValue(0);
-  console.log(y);
 
   // 가상 스크롤을 위한 ref
   const parentRef = useRef<HTMLDivElement>(null);
@@ -116,6 +115,6 @@ const BoothList = ({
       </div>
     </motion.div>
   );
-};
+});
 
 export default BoothList;
