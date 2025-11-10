@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useGetPopularMenu } from "../../hooks/analytics/useGetPopularMenu";
 import { useGetSalesByDate } from "../../hooks/analytics/useGetSalesByDate";
 import { useGetTopSales } from "../../hooks/analytics/useGetTopSalse";
@@ -18,19 +19,21 @@ interface BoothRanking {
 const AdminAnalytics = () => {
   const today = new Date();
   const formatted = today.toISOString().slice(0, 10);
+  const [currentDate, setCurrentDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().slice(0, 10);
+  });
+  console.log(formatted, "오늘날짜");
+
   const width = useWindowWidth();
   const isTablet = width >= 768;
   const isMobile = width < 432;
   const { data: boothRank } = useGetTopSales();
-  const { data: sales } = useGetSalesByDate(formatted);
+  const { data: sales } = useGetSalesByDate(currentDate);
   const { data: popularMenu } = useGetPopularMenu();
 
   const boothDisabled = boothRank?.length === 0;
   const storeId = localStorage.getItem("storeId");
-  const saleDisabled =
-    typeof sales === "string" ||
-    sales === undefined ||
-    (sales?.todaySalesSum === 0 && sales?.yesterdaySalesSum === 0);
   const poupularMenuDisabled = popularMenu?.length === 0;
 
   const boothRankingData: BoothRanking[] =
@@ -46,7 +49,14 @@ const AdminAnalytics = () => {
         }))
       : [];
 
+  const changeDate = (days: number) => {
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() + days);
+    setCurrentDate(newDate.toISOString().slice(0, 10));
+  };
+
   console.log(popularMenu, "인기메뉴 원래데이터");
+  console.log(sales, "날짜별 조회");
 
   return (
     <div
@@ -58,9 +68,10 @@ const AdminAnalytics = () => {
         isTablet={isTablet}
         isMobile={isMobile}
         sales={sales}
+        currentDate={currentDate}
         popularMenu={popularMenu}
-        saleDisabled={saleDisabled}
         poupularMenuDisabled={poupularMenuDisabled}
+        onDateChange={changeDate}
       />
       <BoothSalesRankingCard
         isTablet={isTablet}

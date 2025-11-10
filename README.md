@@ -65,8 +65,8 @@ yarn dev:user    # 사용자용 앱 실행
 yarn dev:admin   # 관리자용 앱 실행
 ```
 
-## 🔗배포주소
+## 🔗 배포주소
 ```txt
-사용자: https://www.nowait.co.kr
+사용자: https://www.nowait-user.vercel.app
 관리자: https://www.nowait-admin.com
 ```

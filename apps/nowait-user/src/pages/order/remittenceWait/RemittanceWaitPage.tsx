@@ -4,10 +4,12 @@ import { sumTotalPrice } from "../../../utils/sumUtils";
 import { createOrder } from "../../../api/order";
 import { useState } from "react";
 import remittanceWait from "../../../assets/remittanceWait.webp";
+import remittanceWaitFallback from "../../../assets/remittanceWaitFallback.webp";
 import CenteredContentLayout from "../../../components/layout/CenteredContentLayout";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useToastStore } from "../../../stores/toastStore";
+import { useFallbackImage } from "../../../hooks/useFallbackImage";
 
 const RemittanceWaitPage = () => {
   const navigate = useNavigate();
@@ -18,7 +20,8 @@ const RemittanceWaitPage = () => {
   const { cart, clearCart } = useCartStore();
   const { showToast } = useToastStore();
   const totalPrice = sumTotalPrice(cart);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 중복 요청 방지
+  const { isLoaded, loadedSrc } = useFallbackImage(remittanceWait);
 
   const orderButton = async () => {
     try {
@@ -62,10 +65,10 @@ const RemittanceWaitPage = () => {
         }
       >
         <img
-          src={remittanceWait}
-          width="150px"
-          height="150px"
-          alt="이체 대기중인 이미지"
+          src={isLoaded ? loadedSrc : remittanceWaitFallback}
+          alt="입금 대기중인 이미지"
+          width={"150px"}
+          height={"150px"}
         />
         <h1 className="text-headline-24-bold mb-2">이체가 진행되고 있어요</h1>
         <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-3.5">

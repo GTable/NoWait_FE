@@ -5,13 +5,13 @@ import type {
   OrderType,
   StorePaymentsResponse,
 } from "../types/order/order";
+const API_URI = import.meta.env.VITE_SERVER_URI;
 
 const api = axios.create({
-  baseURL: "/",
+  baseURL: `${API_URI}`,
   withCredentials: true,
 });
 
-const API_URI = import.meta.env.VITE_SERVER_URI;
 
 //주문 생성
 export const createOrder = async (
