@@ -1,4 +1,5 @@
-import BoothMarker from "../../../../assets/icon/BoothMarker.svg?url";
+// import BoothMarker from "../../../../assets/icon/BoothMarker.svg?url";
+import MarkerTest from "../../../../assets/markerTest2.svg?url"
 import DotMarker from "../../../../assets/icon/DotMarker.svg?url";
 import React from "react";
 import { Marker } from "react-naver-maps";
@@ -19,7 +20,7 @@ const BoothMarkers = React.memo(
             key={booth.storeId}
             position={{ lat: booth.lat, lng: booth.lng }}
             icon={{
-              url: zoomLevel >= 17 ? BoothMarker : DotMarker,
+              url: zoomLevel >= 18 ? MarkerTest : DotMarker,
             }}
             onClick={() => openBooth(booth.storeId)}
           />
