@@ -1,5 +1,5 @@
 import BoothList from "./components/BoothList";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import BoothDetail from "./components/BoothDetail";
 import MapHeader from "./components/MapHeader";
 import UniversityPolygon from "./components/UniversityPolygon";
@@ -20,7 +20,7 @@ const MapPage = () => {
   const [zoomLevel, setZoomLevel] = useState(14);
   console.log(zoomLevel);
   // const { setIsCompassMode } = isCompassModeStore();
-  // const isDraggingRef = useRef(false);
+  const isDraggingRef = useRef(false);
   //대학교 폴리곤(영역) 설정
   const paths = useGeoPolygon();
   //좌표를 포함한 부스들 가져오기
@@ -28,6 +28,7 @@ const MapPage = () => {
   //내 위치 좌표 가져오기
   const myLocation = useMyLocation();
 
+  //줌 레벨 가져오기
   useEffect(() => {
     if (!map) return;
 
@@ -42,6 +43,42 @@ const MapPage = () => {
 
     return () => {
       window.naver.maps.Event.removeListener(listener);
+    };
+  }, [map]);
+
+  //맵 드래그, 클릭 컨트롤
+  useEffect(() => {
+    if (!map) return;
+
+    const dragStartListener = window.naver.maps.Event.addListener(
+      map,
+      "dragstart",
+      () => {
+        isDraggingRef.current = true;
+      }
+    );
+
+    const dragEndListener = window.naver.maps.Event.addListener(
+      map,
+      "dragend",
+      () => {
+        isDraggingRef.current = false;
+      }
+    );
+
+    const clickListener = window.naver.maps.Event.addListener(
+      map,
+      "click",
+      () => {
+        if (isDraggingRef.current) return; // 드래그 중이면 무시
+        setSelectedBooth(null);
+      }
+    );
+
+    return () => {
+      window.naver.maps.Event.removeListener(dragStartListener);
+      window.naver.maps.Event.removeListener(dragEndListener);
+      window.naver.maps.Event.removeListener(clickListener);
     };
   }, [map]);
 
@@ -74,7 +111,6 @@ const MapPage = () => {
           >
             <MapControlButtons center={myLocation.center} map={map} />
             <UniversityPolygon paths={paths} />
-
             {!myLocation.isLoading && <Marker position={myLocation.center} />}
             <BoothMarkers
               booths={booths}
