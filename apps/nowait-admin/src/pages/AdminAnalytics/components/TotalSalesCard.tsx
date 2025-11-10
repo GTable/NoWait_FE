@@ -4,7 +4,6 @@ interface TotalSalesCardProps {
   title: string; // 예: "누적매출"
   date: string; // 예: "2025. 07.18 - 07.19"
   amount: number; // 예: 1800000
-  disabled: boolean;
   isTablet: boolean;
 }
 
@@ -12,7 +11,6 @@ const TotalSalesCard: React.FC<TotalSalesCardProps> = ({
   title,
   date,
   amount,
-  disabled,
   isTablet,
 }) => {
   return (
@@ -30,7 +28,7 @@ const TotalSalesCard: React.FC<TotalSalesCardProps> = ({
       {/* 금액 + 퍼센트 변화 */}
       <div className="flex items-baseline gap-2 mt-4">
         <p className="text-headline-22-bold text-[#1C1C1C]">
-          {disabled ? 0 : amount.toLocaleString()}원
+          {amount.toLocaleString()}원
         </p>
       </div>
     </div>
