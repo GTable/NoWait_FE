@@ -66,6 +66,7 @@ const RemittanceWaitPage = () => {
       >
         <img
           src={isLoaded ? loadedSrc : remittanceWaitFallback}
+          // src={remittanceWait}
           alt="입금 대기중인 이미지"
           width={"150px"}
           height={"150px"}
