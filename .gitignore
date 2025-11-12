@@ -20,7 +20,7 @@ node_modules
 !.yarn/cache
 !.yarn/patches
 !.yarn/plugins
-!.yarn/releases
+# !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
 !.yarn/install-state.gz   # 브랜치 전환 시 재설치 방지에 도움
