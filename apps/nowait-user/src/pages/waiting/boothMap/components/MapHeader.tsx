@@ -90,7 +90,7 @@ const HomeHeader = React.memo(() => {
             >
               <div className="max-w-[430px] min-w-[360px] w-full h-svh bg-white mx-auto flex flex-col">
                 {/* 고정된 헤더 */}
-                <div className="flex justify-between items-center pt-4 px-5 flex-shrink-0">
+                <div className="flex justify-between items-center pt-4 px-5 shrink-0">
                   <button
                     onClick={() => {
                       closeMenu();

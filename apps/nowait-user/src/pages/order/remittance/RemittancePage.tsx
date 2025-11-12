@@ -72,7 +72,7 @@ const RemittancePage = () => {
   };
   console.log(remittance);
   return (
-    <div className="flex flex-col flex-grow mt-[48px] mb-[116px]">
+    <div className="flex flex-col grow mt-12 mb-[116px]">
       <BackHeader title="주문하기" />
       <section className="px-5">
         <OrderSummary cart={cart} />

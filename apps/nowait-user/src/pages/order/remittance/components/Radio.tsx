@@ -41,7 +41,7 @@ const Radio = ({
           className="peer sr-only"
         />
         <div className="w-[18px] h-[18px] rounded-full border border-[#CCCCCC] flex items-center justify-center peer-checked:border-black transition" />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[10px] h-[10px] rounded-full bg-transparent peer-checked:bg-black transition" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-2.5 h-2.5 rounded-full bg-transparent peer-checked:bg-black transition" />
       </div>
     </label>
   );

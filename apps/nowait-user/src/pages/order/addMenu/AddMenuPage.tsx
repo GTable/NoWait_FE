@@ -45,7 +45,7 @@ const AddMenuPage = () => {
 
   return (
     <div className="flex flex-col min-h-dvh bg-white">
-      <div className="flex flex-col flex-grow px-5">
+      <div className="flex flex-col grow px-5">
         <h1 className="-mx-5 h-[246px] object-cover">
           <img
             className="w-full h-full object-cover"
@@ -63,7 +63,7 @@ const AddMenuPage = () => {
         </div>
       </div>
       {/* 메뉴 가격 및 수량 컨트롤 */}
-      <div className="fixed bottom-[112px] w-full max-w-[430px] min-w-[320px]  bg-white">
+      <div className="fixed bottom-28 w-full max-w-[430px] min-w-[320px]  bg-white">
         <div className="w-full flex justify-between items-center px-5">
           <h1 className="text-[24px] font-semibold">
             <NumberFlow value={menu!.price * quantity} suffix="원" />
