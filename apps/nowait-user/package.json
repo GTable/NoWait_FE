@@ -19,7 +19,6 @@
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.10.0",
     "color-thief-react": "^2.1.0",
-    "firebase": "^12.5.0",
     "framer-motion": "^12.20.1",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
