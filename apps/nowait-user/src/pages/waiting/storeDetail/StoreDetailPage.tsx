@@ -69,7 +69,7 @@ const StoreDetailPage = () => {
         {/* 주점 배너 이미지 */}
         <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
         {/* 학과 정보 섹션 */}
-        <section className="border-b-1 border-[#f4f4f4]">
+        <section className="border-b border-[#f4f4f4]">
           <div className="flex justify-between items-center py-[21px]">
             <div className="flex flex-col justify-between gap-[3px]">
               <p className="text-14-regular text-black-70">
@@ -86,14 +86,14 @@ const StoreDetailPage = () => {
           {/* 주점 대기팀 인원 수 */}
           {store?.waitingCount !== 0 && (
             <div className="pb-5">
-              <p className="inline-block text-[12px] font-bold rounded-[6px] px-2 py-[7px] bg-[#ffeedf] text-[#ff5e07]">
+              <p className="inline-block text-[12px] font-bold rounded-md px-2 py-[7px] bg-[#ffeedf] text-[#ff5e07]">
                 대기 {store?.waitingCount}팀
               </p>
             </div>
           )}
         </section>
         {/* 주점 정보(위치,운영 시간, 공지사항) */}
-        <section className="pt-5 pb-[28px]">
+        <section className="pt-5 pb-7">
           <div className="mb-6">
             <p className="flex items-center mb-1.5 text-16-regular text-black-80">
               <span className="w-[18px] flex justify-center  mr-1.5">

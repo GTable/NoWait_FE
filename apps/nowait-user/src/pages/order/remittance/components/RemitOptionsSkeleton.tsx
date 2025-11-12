@@ -16,7 +16,7 @@ const RemitOptionsSkeleton = () => {
             return (
               <div
                 key={i}
-                className="w-full h-[21px] bg-black-25 rounded-[4px]"
+                className="w-full h-[21px] bg-black-25 rounded-sm"
               ></div>
             );
           })}

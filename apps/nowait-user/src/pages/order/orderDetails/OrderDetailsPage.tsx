@@ -37,7 +37,7 @@ const OrderDetailsPage = () => {
   return (
     <div>
       <BackOnlyHeader />
-      <div className="bg-black-15 min-h-screen py-[64px] px-5">
+      <div className="bg-black-15 min-h-screen py-16 px-5">
         <h1 className="text-headline-22-bold mb-[23px] text-black-90">
           주문내역 <span className="text-primary">{orderDetails.length}건</span>
         </h1>
@@ -61,7 +61,7 @@ const OrderDetailsPage = () => {
                     {order.createdAt}
                   </p>
                 </div>
-                <ul className="border-b-1 border-[#ececec] pb-5 mb-5">
+                <ul className="border-b border-[#ececec] pb-5 mb-5">
                   {order.items?.map((item: OrderDetailsType) => {
                     return (
                       <li
