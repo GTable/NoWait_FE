@@ -65,13 +65,13 @@ const WaitingSummaryPage = () => {
         <BackOnlyHeader />
         <div className="flex flex-col flex-1">
           <div className="px-5 mt-[74px]">
-            <h1 className="text-headline-24-bold mb-[40px]">
+            <h1 className="text-headline-24-bold mb-10">
               현재 <span className="text-primary">{store?.waitingCount}</span>
               팀이
               <br />
               대기하고 있어요
             </h1>
-            <div className="p-5.5 rounded-[16px] bg-black-10 mb-[30px]">
+            <div className="p-5.5 rounded-2xl bg-black-10 mb-[30px]">
               <div className="flex justify-between items-start mb-2.5 ">
                 <p className="text-16-semibold text-black-50">부스</p>
                 <div className="max-w-[205px] text-16-medium text-black-90 text-right break-keep">
@@ -79,7 +79,7 @@ const WaitingSummaryPage = () => {
                   <span
                     className={`${
                       store!.departmentName.length > 14 ? "block" : "inline"
-                    } w-[100%] truncate`}
+                    } w-full truncate`}
                   >
                     {store?.departmentName}
                   </span>
@@ -91,8 +91,8 @@ const WaitingSummaryPage = () => {
               </div>
             </div>
           </div>
-          <div className="bg-black-10 px-5 py-[30px] flex-grow">
-            <h1 className="text-title-14-semibold text-black-80 mb-[12px]">
+          <div className="bg-black-10 px-5 py-[30px] grow">
+            <h1 className="text-title-14-semibold text-black-80 mb-3">
               대기 등록 전 꼭 확인해주세요
             </h1>
             <ul>
@@ -100,7 +100,7 @@ const WaitingSummaryPage = () => {
                 return (
                   <li
                     key={i}
-                    className="text-[14px] text-regular text-black-60 mb-[12px] whitespace-pre-line break-keep list-disc ml-[24px]"
+                    className="text-[14px] text-regular text-black-60 mb-3 whitespace-pre-line break-keep list-disc ml-6"
                   >
                     {guide.description}
                   </li>
@@ -126,7 +126,7 @@ const WaitingSummaryPage = () => {
             onClick={() => modal.close()}
           >
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-40px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]">
-              <h1 className="text-title-20-bold text-black-90 text-center mb-[20px] break-keep">
+              <h1 className="text-title-20-bold text-black-90 text-center mb-5 break-keep">
                 주점 웨이팅은 <br />
                 {MAX_RESERVATIONS}개까지 가능 합니다
               </h1>

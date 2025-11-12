@@ -55,7 +55,7 @@ const BoothList = React.memo(({
       className="fixed -bottom-[615px] left-0 w-full bg-white rounded-t-[36px] z-30"
     >
       <div>
-        <p className="w-[40px] h-[4px] rounded-full bg-black-30 mx-auto mt-2.5 mb-[26px]"></p>
+        <p className="w-10 h-1 rounded-full bg-black-30 mx-auto mt-2.5 mb-[26px]"></p>
         <div className="px-5">
           <div className="mb-[30px]">
             <h1 className="text-title-20-semibold mb-1">부스 리스트</h1>

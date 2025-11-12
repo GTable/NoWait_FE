@@ -13,7 +13,7 @@ const UniversityListModal = ({
     <div className="fixed inset-0 z-50 bg-black/50" onClick={onClose}>
       <ul
         onClick={(e) => e.stopPropagation()}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-35px)] max-w-[430px] bg-white rounded-[20px] px-[8px] py-[8px]"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-35px)] max-w-[430px] bg-white rounded-[20px] px-2 py-2"
       >
         {UNIVERSITY.map((university) => (
           <li

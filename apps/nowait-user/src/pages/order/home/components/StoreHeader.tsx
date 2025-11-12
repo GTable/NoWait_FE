@@ -16,14 +16,14 @@ const StoreHeader = ({
         {!isLoading ? (
           <h1 className="text-headline-24-bold mb-1.5">{storeName}</h1>
         ) : (
-          <h1 className="w-[230px] h-[24px] mb-1.5 bg-black-20 rounded-[4px]"></h1>
+          <h1 className="w-[230px] h-6 mb-1.5 bg-black-20 rounded-sm"></h1>
         )}
 
         <h2 className="text-16-medium text-black-70">{tableId}번 테이블</h2>
       </div>
       <button
         onClick={() => navigate(`/${storeId}/orderDetails`)}
-        className="text-14-semibold bg-black-20 py-2 px-2.5 rounded-[8px] text-black-70 cursor-pointer"
+        className="text-14-semibold bg-black-20 py-2 px-2.5 rounded-lg text-black-70 cursor-pointer"
       >
         주문내역
       </button>

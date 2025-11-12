@@ -37,7 +37,7 @@ const OrderSummary = ({ cart }: PropsType) => {
                 className="flex justify-between items-center pb-5"
                 key={item.menuId}
               >
-                <div className="max-w-[224px]">
+                <div className="max-w-56">
                   <h1 className="text-16-medium text-black-80 mb-1 text-ellipsis line-clamp-2">
                     {item.name}
                   </h1>
@@ -52,7 +52,7 @@ const OrderSummary = ({ cart }: PropsType) => {
                   </div>
                 </div>
                 <img
-                  className="w-[76px] h-[76px] rounded-[12px] object-cover"
+                  className="w-[76px] h-[76px] rounded-xl object-cover"
                   src={item?.image || defaultMenuImageSm}
                   alt="음식 메뉴 이미지"
                 />

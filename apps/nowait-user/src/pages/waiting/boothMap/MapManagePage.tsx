@@ -73,7 +73,7 @@ const MapManagePage = () => {
           })}
         </NaverMap>
       </MapDiv>
-      <div className="flex gap-1 fixed left-1/2 bottom-[10px] -translate-x-1/2 w-full z-50 px-[10px]">
+      <div className="flex gap-1 fixed left-1/2 bottom-2.5 -translate-x-1/2 w-full z-50 px-2.5">
         <Button className="text-15-medium" onClick={() => setStatus(true)}>
           시작
         </Button>

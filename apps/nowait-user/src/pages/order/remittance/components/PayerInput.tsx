@@ -31,7 +31,7 @@ const PayerInput = ({
           </h2>
         </div>
         <input
-          className="w-full text-16-medium bg-black-10 rounded-[12px] placeholder-black-55 py-3.5 px-4 outline-none text-black-80"
+          className="w-full text-16-medium bg-black-10 rounded-xl placeholder-black-55 py-3.5 px-4 outline-none text-black-80"
           placeholder="입금자명 입력"
           value={value}
           onChange={(e) => setValue(e.target.value)}

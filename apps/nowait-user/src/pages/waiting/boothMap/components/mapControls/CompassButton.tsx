@@ -62,7 +62,7 @@ const CompassButton = ({
   };
   return (
     <button
-      className={`relative z-30 p-[6px] rounded-[2px]  transition-colors ${
+      className={`relative z-30 p-1.5 rounded-xs  transition-colors ${
         isCompassMode ? "bg-[#FF4103]" : "bg-white"
       }`}
       onClick={handleClick}

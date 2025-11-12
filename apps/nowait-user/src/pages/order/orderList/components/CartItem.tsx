@@ -24,7 +24,7 @@ const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
     >
       <div className="w-full p-5">
         <div className="flex justify-between items-start">
-          <div className="max-w-[12.5rem]">
+          <div className="max-w-50">
             <h1 className="text-title-18-semibold text-black-90 text-ellipsis line-clamp-2">
               {name}
             </h1>

@@ -62,7 +62,7 @@ const OrderListPage = () => {
   return (
     <div>
       <BackHeader title="장바구니" />
-      <section className="flex flex-col flex-grow min-h-[calc(100dvh-164px)] pt-7 px-5 mt-[48px]">
+      <section className="flex flex-col grow min-h-[calc(100dvh-164px)] pt-7 px-5 mt-12">
         <h1 className="text-headline-22-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
         </h1>
@@ -132,7 +132,7 @@ const OrderListPage = () => {
               onClick={(e) => e.stopPropagation()}
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-35px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]"
             >
-              <h1 className="text-title-20-bold text-black-90 text-center mb-[20px] break-keep">
+              <h1 className="text-title-20-bold text-black-90 text-center mb-5 break-keep">
                 현재{" "}
                 {soldOutMenus?.map((menu: CartType, idx: number) => (
                   <span key={menu.menuId}>

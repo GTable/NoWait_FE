@@ -54,7 +54,7 @@ const BoothListItem = ({
             alt="북마크한 주점 메인 이미지"
           />
           {waitingCount !== 0 && (
-            <p className="absolute top-[12px] right-[12px] text-primary bg-[#ffe9df] px-2 py-[7px] font-bold text-[12px] rounded-[6px]">
+            <p className="absolute top-3 right-3 text-primary bg-[#ffe9df] px-2 py-[7px] font-bold text-[12px] rounded-md">
               대기 {waitingCount}팀
             </p>
           )}
@@ -76,7 +76,7 @@ const BoothListItem = ({
           </Link>
         </div>
         <button
-          className="!opacity-100 !cursor-pointer mr-[5px]"
+          className="opacity-100! cursor-pointer! mr-[5px]"
           onClick={handleBookmarkButton}
         >
           <BookmarkIcon isBookmarked={isBookmarked} />

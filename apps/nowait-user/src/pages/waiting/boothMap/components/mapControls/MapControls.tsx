@@ -14,13 +14,13 @@ const MapControlButtons = ({
   const modal = useModal();
 
   return (
-    <div className="absolute left-[4px] top-[60px] flex flex-col gap-1">
+    <div className="absolute left-1 top-[60px] flex flex-col gap-1">
       <div className="relative left-0 top-0 z-30 w-full flex gap-1">
         <button
           onClick={() => {
             modal.open();
           }}
-          className="bg-white p-[6px] rounded-[2px]"
+          className="bg-white p-1.5 rounded-xs"
         >
           <University width="22px" height="22px" />
         </button>
