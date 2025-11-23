@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import Cropper from "react-easy-crop";
 import type { Area } from "react-easy-crop";
 import { getCroppedFile } from "../../../../utils/cropUserSelect";
+import { useWindowWidth } from "../../../../hooks/useWindowWidth";
 
 type Props = {
   /** 원본 파일 */
