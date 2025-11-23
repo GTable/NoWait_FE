@@ -232,6 +232,127 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cropper/element-canvas@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element-canvas@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/d925adb622cecb33dd7dd0340230ed94ef5b82e600ccb72008b60bc4b9638b988a77ed2c0fb2302af155c9076063305d49862f5527f5039cb27a2ed8037a3e22
+  languageName: node
+  linkType: hard
+
+"@cropper/element-crosshair@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element-crosshair@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/8a120b1471519297e7226d1e4048d33a4176dd96a6e436d7c020955e658e81d10d141a4c06ecfaea82afe1f706c94978fac43ddf71141c7287a0e040ccb3b9fb
+  languageName: node
+  linkType: hard
+
+"@cropper/element-grid@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element-grid@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/81a45fa138e189badc376a0cd5890222535843687a35b0eec7d9869b38d99e6b2c55f004ef505415ffe62c8a0243c5b3110c940c9e3837bb7fffd99a43582218
+  languageName: node
+  linkType: hard
+
+"@cropper/element-handle@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element-handle@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/177ec767b5d9c6f71886ed2e60cff992f4841f979f9a1504cfdf5c88d5d12dbab169b54e4b6023d750972ca0aa0dda36115666c70812d75b2883c220ecb4f41a
+  languageName: node
+  linkType: hard
+
+"@cropper/element-image@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element-image@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/element-canvas": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/af67bac2d22423ac6548031dd54861a6c0d193c8ea39f9754096d59294eee9fdb9a52a033322039fe23eec9983ca1091539d3f3749cd43d9bc4b511725579c04
+  languageName: node
+  linkType: hard
+
+"@cropper/element-selection@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element-selection@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/element-canvas": "npm:^2.1.0"
+    "@cropper/element-image": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/24e077c1fe34ab08eb75f56194e40911bc35ed9380dd28590784983c049a607c3765d9ddbc9d43049e91bc8cb5c57ffc0a944b929d0116abc61de3cca849f77b
+  languageName: node
+  linkType: hard
+
+"@cropper/element-shade@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element-shade@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/element-canvas": "npm:^2.1.0"
+    "@cropper/element-selection": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/0bb97b5620c02d52ed64a643f53fd9fabc3f9f9edf1b4c0dd96ff48bd916441aa219c48a5634c8a003a72cb93dd31227577492258e9e2ea8769707079825cafd
+  languageName: node
+  linkType: hard
+
+"@cropper/element-viewer@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element-viewer@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/element-canvas": "npm:^2.1.0"
+    "@cropper/element-image": "npm:^2.1.0"
+    "@cropper/element-selection": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/dde388e8a499cb58e08e8267dd47bfa7731c123ece22e20e901d83975a16ca3ec5a44866e9063a0474aae481e1fe839342ca9856ab811774cfe1d60ae3e1d983
+  languageName: node
+  linkType: hard
+
+"@cropper/element@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/element@npm:2.1.0"
+  dependencies:
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/b4b961a30c8c5f4e301f6ce2333123337188b0be818942c9bb7c88be5a5f6e8367352f5097806cab9684b6345028555826836a9d81759d52c161d868174836bd
+  languageName: node
+  linkType: hard
+
+"@cropper/elements@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/elements@npm:2.1.0"
+  dependencies:
+    "@cropper/element": "npm:^2.1.0"
+    "@cropper/element-canvas": "npm:^2.1.0"
+    "@cropper/element-crosshair": "npm:^2.1.0"
+    "@cropper/element-grid": "npm:^2.1.0"
+    "@cropper/element-handle": "npm:^2.1.0"
+    "@cropper/element-image": "npm:^2.1.0"
+    "@cropper/element-selection": "npm:^2.1.0"
+    "@cropper/element-shade": "npm:^2.1.0"
+    "@cropper/element-viewer": "npm:^2.1.0"
+  checksum: 10c0/dd5daac30a2768b52bf45454fe9ae01380679072b3af721778d3e2828122836e0324782aca78cc3634459c6e8c370465f0d4a19c26c0f353267c1adf5f81e2a4
+  languageName: node
+  linkType: hard
+
+"@cropper/utils@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@cropper/utils@npm:2.1.0"
+  checksum: 10c0/a41ad0cfdc8ecbceddf7a12f3da59fe7f90bc5cdd65dbc5abee7623e1fa2d5f52c27cc8faa26193dd53bd885e8a1aa6bb40ec8b4fe95fe304caf9196d2713a97
+  languageName: node
+  linkType: hard
+
 "@emnapi/core@npm:^1.5.0, @emnapi/core@npm:^1.6.0":
   version: 1.7.0
   resolution: "@emnapi/core@npm:1.7.0"
@@ -2666,6 +2787,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/prop-types@npm:*":
+  version: 15.7.15
+  resolution: "@types/prop-types@npm:15.7.15"
+  checksum: 10c0/b59aad1ad19bf1733cf524fd4e618196c6c7690f48ee70a327eb450a42aab8e8a063fbe59ca0a5701aebe2d92d582292c0fb845ea57474f6a15f6994b0e260b2
+  languageName: node
+  linkType: hard
+
 "@types/quill@npm:^1.3.10":
   version: 1.3.10
   resolution: "@types/quill@npm:1.3.10"
@@ -2681,6 +2809,15 @@ __metadata:
   dependencies:
     "@types/react": "npm:*"
   checksum: 10c0/ccdd4b2aa9e35cba4e51f3c673c2caa5bb67b6dee562d4b07ac3d3547cd68fd1ee9f21b95d55972087bdd4bdb340e256cccedb20f7129c273f24214f334708aa
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:18.3.1":
+  version: 18.3.1
+  resolution: "@types/react-dom@npm:18.3.1"
+  dependencies:
+    "@types/react": "npm:*"
+  checksum: 10c0/8b416551c60bb6bd8ec10e198c957910cfb271bc3922463040b0d57cf4739cdcd24b13224f8d68f10318926e1ec3cd69af0af79f0291b599a992f8c80d47f1eb
   languageName: node
   linkType: hard
 
@@ -2720,6 +2857,16 @@ __metadata:
   dependencies:
     csstype: "npm:^3.0.2"
   checksum: 10c0/f830b1204aca4634ce3c6cb3477b5d3d066b80a4dd832a4ee0069acb504b6debd2416548a43a11c1407c12bc60e2dc6cf362934a18fe75fe06a69c0a98cba8ab
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:18.3.1":
+  version: 18.3.1
+  resolution: "@types/react@npm:18.3.1"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 10c0/18d856c12a4ec93f3cda2d58ef3d77a9480818afd3af895f812896fb82cfca1f35a692ab1add4ce826a4eb58a071624c7d1c8c6c4ccfb81c100d2916dc607614
   languageName: node
   linkType: hard
 
@@ -3757,6 +3904,16 @@ __metadata:
   version: 1.0.6
   resolution: "crelt@npm:1.0.6"
   checksum: 10c0/e0fb76dff50c5eb47f2ea9b786c17f9425c66276025adee80876bdbf4a84ab72e899e56d3928431ab0cb057a105ef704df80fe5726ef0f7b1658f815521bdf09
+  languageName: node
+  linkType: hard
+
+"cropperjs@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "cropperjs@npm:2.1.0"
+  dependencies:
+    "@cropper/elements": "npm:^2.1.0"
+    "@cropper/utils": "npm:^2.1.0"
+  checksum: 10c0/34cf02dd42e684e05eaaf402912833390adc41ba0000ce144bd83b07451dfc2ab922156166acbd6f9af90624cf2bcc6fac4fd489baa963501638bcbc2b00bf31
   languageName: node
   linkType: hard
 
@@ -6062,7 +6219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -6707,13 +6864,14 @@ __metadata:
     "@toast-ui/editor": "npm:^3.2.2"
     "@toast-ui/react-editor": "npm:^3.2.3"
     "@types/node": "npm:^24.0.3"
-    "@types/react": "npm:^19.1.2"
+    "@types/react": "npm:18.3.1"
     "@types/react-beautiful-dnd": "npm:^13"
-    "@types/react-dom": "npm:^19.1.2"
+    "@types/react-dom": "npm:18.3.1"
     "@vitejs/plugin-react": "npm:^4.4.1"
     autoprefixer: "npm:^10.4.20"
     axios: "npm:^1.10.0"
     clsx: "npm:^2.1.1"
+    cropperjs: "npm:^2.1.0"
     dompurify: "npm:^3.2.6"
     eslint: "npm:^9.25.0"
     eslint-plugin-react-hooks: "npm:^5.2.0"
@@ -6726,9 +6884,9 @@ __metadata:
     prosemirror-model: "npm:^1.25.2"
     prosemirror-state: "npm:^1.4.3"
     prosemirror-transform: "npm:^1.10.4"
-    react: "npm:^19.1.0"
+    react: "npm:18.3.1"
     react-beautiful-dnd: "npm:^13.1.1"
-    react-dom: "npm:^19.1.0"
+    react-dom: "npm:18.3.1"
     react-easy-crop: "npm:^5.5.1"
     react-hot-toast: "npm:^2.5.2"
     react-icons: "npm:^5.5.0"
@@ -7749,6 +7907,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:18.3.1":
+  version: 18.3.1
+  resolution: "react-dom@npm:18.3.1"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+    scheduler: "npm:^0.23.2"
+  peerDependencies:
+    react: ^18.3.1
+  checksum: 10c0/a752496c1941f958f2e8ac56239172296fcddce1365ce45222d04a1947e0cc5547df3e8447f855a81d6d39f008d7c32eab43db3712077f09e3f67c4874973e85
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^19.1.0":
   version: 19.2.0
   resolution: "react-dom@npm:19.2.0"
@@ -8014,6 +8184,15 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: 10c0/d122199f3edd056bfd866837b0f19a44366e77c7535c6c2c5eb5f400409eae4c9b1fe73c9d35073c8434080eee388ca8fe49a68d09d6f794ccaa35a4ae2112a9
+  languageName: node
+  linkType: hard
+
+"react@npm:18.3.1":
+  version: 18.3.1
+  resolution: "react@npm:18.3.1"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+  checksum: 10c0/283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
   languageName: node
   linkType: hard
 
@@ -8300,6 +8479,15 @@ __metadata:
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
   checksum: 10c0/7e3c8b2e88a1841c9671094bbaeebd94448111dd90a81a1f606f3f67708a6ec57763b3b47f06da09fc6054193e0e6709e77325415dc8422b04497a8070fa02d4
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.23.2":
+  version: 0.23.2
+  resolution: "scheduler@npm:0.23.2"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+  checksum: 10c0/26383305e249651d4c58e6705d5f8425f153211aef95f15161c151f7b8de885f24751b377e4a0b3dd42cce09aad3f87a61dab7636859c0d89b7daf1a1e2a5c78
   languageName: node
   linkType: hard
 
