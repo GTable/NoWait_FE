@@ -12,6 +12,8 @@ const MapManagePage = () => {
     { storeId: string; lat: number; lng: number }[]
   >([]);
   const [status, setStatus] = useState(false);
+  const [coordinateText, setCoordinateText] = useState("");
+  const [coordinate, setCoordinate] = useState("");
   const [map, setMap] = useState<any | null>(null);
   const paths = useGeoPolygon();
   const myLocation = useMyLocation();
@@ -52,10 +54,7 @@ const MapManagePage = () => {
   return (
     <div className="relative top-0 left-0 min-h-dvh w-full">
       <MapHeader />
-      <MapDiv
-        style={{ width: "100%", height: "100vh" }}
-
-      >
+      <MapDiv style={{ width: "100%", height: "100vh" }}>
         <NaverMap
           defaultCenter={myLocation.center}
           defaultZoom={16}
@@ -73,6 +72,30 @@ const MapManagePage = () => {
           })}
         </NaverMap>
       </MapDiv>
+      <form
+        className="fixed left-1/2 bottom-[100px] -translate-x-1/2 w-full z-50 px-2.5"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setCoordinate(
+            JSON.parse(coordinateText).map((p: any) => [p.lon, p.lat])
+          );
+        }}
+      >
+        <input
+          className="w-full bg-white p-2.5 rounded-sm"
+          value={coordinateText}
+          onChange={(e) => setCoordinateText(e.target.value)}
+        />
+
+        <Button className="my-2.5">좌표변환</Button>
+        <p
+          className={`bg-white overflow-y-scroll w-full ${
+            coordinate ? "h-[400px]" : "h-0"
+          }`}
+        >
+          {JSON.stringify(coordinate)}
+        </p>
+      </form>
       <div className="flex gap-1 fixed left-1/2 bottom-2.5 -translate-x-1/2 w-full z-50 px-2.5">
         <Button className="text-15-medium" onClick={() => setStatus(true)}>
           시작
