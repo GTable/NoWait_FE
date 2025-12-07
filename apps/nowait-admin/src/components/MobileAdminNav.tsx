@@ -57,17 +57,21 @@ const MobileAdminNav = ({
       <div className="flex flex-col justify-between h-full">
         <ul className="flex flex-col gap-2">
           {menuItems.map(({ label, icon, activeIcon, path }) => {
-            const isActive = pathname === path;
+            //주문의 경우 클릭시 경로에 storeId가 붙기 때문에 추가 검증
             if (label === "주문") {
               path = `/admin/orders/${storeId}`;
             }
+            const isActive = pathname === path;
             return (
               <li
                 key={label}
                 className={`flex items-center gap-3 px-3 py-2 rounded-md text-title-18-semibold ${
                   isActive ? "bg-[#f5f5f5] text-black" : "text-black-50"
                 }`}
-                onClick={() => navigate(path)}
+                onClick={() => {
+                  navigate(path);
+                  onClose();
+                }}
               >
                 {isActive ? (
                   <img src={activeIcon} alt={label} className="w-5 h-5" />

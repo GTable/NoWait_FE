@@ -10,6 +10,7 @@ import PreviewModal from "./Modal/PreviewModal";
 import { useDeleteBannerImage } from "../../../hooks/booth/menu/useDeleteBannerImage";
 import { useRemoveEmoji } from "../../../hooks/useRemoveEmoji";
 import ImageCropModal from "./Modal/ImageCropModal";
+import { useWindowWidth } from "../../../hooks/useWindowWidth";
 
 const BoothSection = ({
   location,
@@ -69,6 +70,7 @@ const BoothSection = ({
   isMobile: boolean;
 }) => {
   const [showPreview, setShowPreview] = useState(false);
+  const width = useWindowWidth();
   const { mutate: deleteBannerImage } = useDeleteBannerImage();
   const { removeEmojiAll } = useRemoveEmoji();
   const [cropSpec, setCropSpec] = useState<{
@@ -406,7 +408,7 @@ const BoothSection = ({
         setNotice={setBoothNotice}
       />
 
-      {cropSpec && (
+      {cropSpec && width > 1279 && (
         <ImageCropModal
           file={cropSpec.file}
           aspect={cropSpec.aspect}
@@ -416,11 +418,7 @@ const BoothSection = ({
           quality={0.95}
           onDone={handleCropDone}
           onClose={() => setCropSpec(null)}
-          title={
-            cropSpec.target === "profile"
-              ? "프로필 이미지 1:1 자르기"
-              : "배너 이미지 375:246 자르기"
-          }
+          title={"이미지 편집하기"}
         />
       )}
     </>
