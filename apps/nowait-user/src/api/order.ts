@@ -5,6 +5,7 @@ import type {
   OrderType,
   StorePaymentsResponse,
 } from "../types/order/order";
+
 const API_URI = import.meta.env.VITE_SERVER_URI;
 
 const api = axios.create({
@@ -20,7 +21,7 @@ export const createOrder = async (
   payload: OrderType
 ): Promise<CreateOrderServerResponse> => {
   const res = await api.post(
-    `/orders/create/${publicCode}/${tableId}`,
+    `v1/stores/${publicCode}/tables/${tableId}/orders`,
     payload
   );
   return res.data;
@@ -31,7 +32,7 @@ export const getOrderDetails = async (
   publicCode: string,
   tableId: number
 ): Promise<OrderDetailsServerResponse> => {
-  const res = await api.get(`/orders/items/${publicCode}/${tableId}`);
+  const res = await api.get(`v1/stores/${publicCode}/tables/${tableId}/orders`);
   return res.data;
 };
 
@@ -39,7 +40,7 @@ export const getOrderDetails = async (
 export const getStorePayments = async (publicCode: string) => {
   try {
     const res = await axios.get<StorePaymentsResponse>(
-      `${API_URI}/v1/store-payments/${publicCode}`
+      `${API_URI}/v1/stores/${publicCode}/payments`
     );
     return res.data;
   } catch (error) {
