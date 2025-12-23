@@ -23,7 +23,7 @@ interface MenuServerResponse {
 export const getStoreMenus = async (publicCode: string) => {
   try {
     const res = await axios.get<AllMenuServerResponse>(
-      `${API_URI}/v1/menus/all-menus/stores/${publicCode}`
+      `${API_URI}/v1/stores/${publicCode}/menus`
     );
     if (res?.data.success) return res.data;
   } catch (error) {
@@ -36,6 +36,6 @@ export const getStoreMenu = async (
   publicCode: string,
   menuId: number
 ): Promise<MenuServerResponse> => {
-  const res = await axios.get(`${API_URI}/v1/menus/${publicCode}/${menuId}`);
+  const res = await axios.get(`${API_URI}/v1/stores/${publicCode}/menus/${menuId}`);
   return res.data;
 };

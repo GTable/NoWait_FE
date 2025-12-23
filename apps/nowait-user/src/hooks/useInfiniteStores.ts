@@ -45,7 +45,7 @@ const fetchStores = async ({
   try {
     // UserApi 사용으로 헤더 설정 자동화 (인터셉터에서 최신 토큰 처리)
     const response = await UserApi.get<ServerResponse>(
-      "/v1/stores/all-stores",
+      "/v1/stores",
       {
         params: {
           page: pageParam,
