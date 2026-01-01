@@ -15,27 +15,22 @@ import SectionDivider from "../../../components/SectionDivider";
 import { formatTimeRange } from "../../../utils/formatTimeRange";
 import DepartmentImage from "../../../components/DepartmentImage";
 import NotFound from "../../NotFound/NotFound";
-import { getStoreMenus } from "../../../api/menu";
 import FullPageLoader from "../../../components/FullPageLoader";
 import { useEffect } from "react";
+import { useStoreMenus } from "../../../hooks/order/useStoreMenus";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
+  const { data: menus, isLoading: menusIsLoading } = useStoreMenus(storeId);
 
   const {
     data: store,
-    isLoading,
+    isLoading: storeIsLoading,
     isError,
   } = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => getStore(storeId!),
-    select: (data) => data?.response,
-  });
-
-  const { data: menus, isLoading: menusIsLoading } = useQuery({
-    queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response,
   });
 
@@ -61,7 +56,7 @@ const StoreDetailPage = () => {
       console.log(error);
     }
   };
-  if (isLoading) return <FullPageLoader />;
+  if (storeIsLoading) return <FullPageLoader />;
   if (isError) return <NotFound />;
   return (
     <div>
