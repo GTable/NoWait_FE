@@ -14,44 +14,48 @@ import { useFallbackImage } from "../../../hooks/useFallbackImage";
 const RemittanceWaitPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const payer = location.state as string;
   const { storeId } = useParams();
+
   const tableId = localStorage.getItem("tableId");
+  const payer = location.state as string;
+
   const { cart, clearCart } = useCartStore();
   const { showToast } = useToastStore();
-  const totalPrice = sumTotalPrice(cart);
+
   const [isLoading, setIsLoading] = useState(false); // 중복 요청 방지
   const { isLoaded, loadedSrc } = useFallbackImage(remittanceWait);
 
+  const totalPrice = sumTotalPrice(cart);
+
+  const payload = {
+    depositorName: payer,
+    items: cart.map((item) => ({
+      menuId: item.menuId,
+      quantity: item.quantity,
+    })),
+    totalPrice,
+  };
+
   const orderButton = async () => {
+    if (isLoading) return;
     try {
       setIsLoading(true);
-      const payload = {
-        depositorName: payer,
-        items: cart.map((item) => ({
-          menuId: item.menuId,
-          quantity: item.quantity,
-        })),
-        totalPrice,
-      };
       const res = await createOrder(storeId!, Number(tableId!), payload);
-      console.log(res, "주문 생성");
-      if (res?.success) {
-        //입금자명 로컬스토리지 저장
-        localStorage.setItem("depositorName", res.response.depositorName);
-        //장바구니 비우기
-        clearCart();
-        navigate(`/${storeId}/order/success`, { replace: true });
-      } else {
-        // 서버가 success:false 반환한 경우
-        console.error("주문 실패:", res);
+      if (!res?.success) {
         showToast("주문에 실패했습니다. 다시 시도해 주세요");
         return;
       }
+
+      //입금자명 로컬스토리지 저장
+      localStorage.setItem("depositorName", res.response.depositorName);
+      //장바구니 비우기
+      clearCart();
+      navigate(`/${storeId}/order/success`, { replace: true });
     } catch (error) {
       console.log(error);
+      showToast("주문 처리 중 오류가 발생했습니다");
     } finally {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   };
 
@@ -66,7 +70,6 @@ const RemittanceWaitPage = () => {
       >
         <img
           src={isLoaded ? loadedSrc : remittanceWaitFallback}
-          // src={remittanceWait}
           alt="입금 대기중인 이미지"
           width={"150px"}
           height={"150px"}

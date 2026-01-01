@@ -4,14 +4,20 @@ import { useCartStore } from "../../../../stores/cartStore";
 import { motion } from "framer-motion";
 
 interface PropsType {
-  id: number;
+  menuId: number;
   name: string;
   originPrice: number;
   price: number;
   quantity: number;
 }
 
-const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
+const CartItem = ({
+  menuId,
+  name,
+  originPrice,
+  price,
+  quantity,
+}: PropsType) => {
   const { removeFromCart, increaseQuantity, decreaseQuantity } = useCartStore();
   return (
     <motion.li
@@ -32,13 +38,13 @@ const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
               {originPrice.toLocaleString()}원
             </h2>
           </div>
-          <button onClick={() => removeFromCart(id)} className="p-1">
+          <button onClick={() => removeFromCart(menuId)} className="p-1">
             <Close color="#AAAAAA" />
           </button>
         </div>
         <QuantitySelector
           mode="store"
-          id={id}
+          id={menuId}
           quantity={quantity}
           price={price / quantity}
           increaseQuantity={increaseQuantity}
