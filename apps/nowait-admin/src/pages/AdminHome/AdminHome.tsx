@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import RoundTabButton from "./components/RoundTabButton";
 import refreshIcon from "../../assets/refresh.svg";
 import { WaitingCard } from "./components/WaitingCard";
@@ -104,74 +104,83 @@ const AdminHome = () => {
   }, [reservations, activeTab]);
 
   // 호출 버튼 클릭 이벤트
-  const handleCall = (id: number, reservationNumber: number) => {
-    updateStatus(
-      { storeId, reservationNumber, status: "CALLING" },
-      {
-        onSuccess: () => {
-          setReservations((prev) =>
-            prev.map((res) =>
-              res.id === id
-                ? (() => {
-                    // 입장/취소 기록은 흐름상 초기화하는게 보통 자연스러움
-                    return {
-                      ...res,
-                      status: "CALLING",
-                      calledAt: new Date().toISOString(),
-                      confirmedAt: undefined,
-                      cancelledAt: undefined,
-                    };
-                  })()
-                : res
-            )
-          );
-        },
-      }
-    );
-  };
+  const handleCall = useCallback(
+    (id: number, reservationNumber: number) => {
+      updateStatus(
+        { storeId, reservationNumber, status: "CALLING" },
+        {
+          onSuccess: () => {
+            setReservations((prev) =>
+              prev.map((res) =>
+                res.id === id
+                  ? (() => {
+                      // 입장/취소 기록은 흐름상 초기화하는게 보통 자연스러움
+                      return {
+                        ...res,
+                        status: "CALLING",
+                        calledAt: new Date().toISOString(),
+                        confirmedAt: undefined,
+                        cancelledAt: undefined,
+                      };
+                    })()
+                  : res
+              )
+            );
+          },
+        }
+      );
+    },
+    [storeId, updateStatus]
+  );
 
-  const handleEnter = (id: number, reservationNumber: number) => {
-    const now = new Date().toISOString();
-    updateStatus(
-      { storeId, reservationNumber, status: "CONFIRMED" },
-      {
-        onSuccess: () => {
-          setReservations((prev) =>
-            prev.map((res) => {
-              if (res.id !== id) return res;
-              return { ...res, status: "CONFIRMED", confirmedAt: now };
-            })
-          );
-        },
-      }
-    );
-  };
+  const handleEnter = useCallback(
+    (id: number, reservationNumber: number) => {
+      const now = new Date().toISOString();
+      updateStatus(
+        { storeId, reservationNumber, status: "CONFIRMED" },
+        {
+          onSuccess: () => {
+            setReservations((prev) =>
+              prev.map((res) => {
+                if (res.id !== id) return res;
+                return { ...res, status: "CONFIRMED", confirmedAt: now };
+              })
+            );
+          },
+        }
+      );
+    },
+    [storeId, updateStatus]
+  );
 
-  const handleClose = (id: number, reservationNumber: number) => {
-    const now = new Date().toISOString();
-    updateStatus(
-      { storeId, reservationNumber, status: "CANCELLED" },
-      {
-        onSuccess: () => {
-          setReservations((prev) =>
-            prev.map((res) => {
-              if (res.id !== id) return res;
-              return { ...res, status: "CANCELLED", cancelledAt: now };
-            })
-          );
-        },
-      }
-    );
-  };
+  const handleClose = useCallback(
+    (id: number, reservationNumber: number) => {
+      const now = new Date().toISOString();
+      updateStatus(
+        { storeId, reservationNumber, status: "CANCELLED" },
+        {
+          onSuccess: () => {
+            setReservations((prev) =>
+              prev.map((res) => {
+                if (res.id !== id) return res;
+                return { ...res, status: "CANCELLED", cancelledAt: now };
+              })
+            );
+          },
+        }
+      );
+    },
+    [storeId, updateStatus]
+  );
 
-  const handleNoShow = (id: number) => {
+  const handleNoShow = useCallback((id: number) => {
     setNoShowIds((prev) => {
       if (!prev.includes(id)) return [...prev, id];
       return prev;
     });
-  };
+  }, []);
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     if (isRefreshing) return; // 중복 클릭 방지
     setIsRefreshing(true);
     try {
@@ -180,7 +189,7 @@ const AdminHome = () => {
       // 살짝 딜레이를 주면 회전이 끊기지 않고 보여짐 (선택)
       setTimeout(() => setIsRefreshing(false), 300);
     }
-  };
+  }, [isRefreshing, refetchWaiting, refetchCompleted]);
 
   useEffect(() => {
     if (!Array.isArray(waitingList) || !Array.isArray(completedList)) return;

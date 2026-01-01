@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCartStore } from "../../../stores/cartStore";
+import { useCartStore } from "../../../../stores/cartStore";
 
 const RedirectToStorePage = () => {
   const { storeId, tableId } = useParams();

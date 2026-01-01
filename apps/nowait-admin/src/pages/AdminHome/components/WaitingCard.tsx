@@ -2,7 +2,7 @@ import CloseButton from "../../../components/closeButton";
 import callIcon from "../../../assets/Call.svg";
 import openDoorIcon from "../../../assets/door_open.svg";
 import alarmIcon from "../../../assets/alarm.svg";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 const totalDurationSec = 10; // 10초, 10분은 600
 
@@ -37,7 +37,24 @@ const diffMinutes = (start?: string, end?: string) => {
   );
 };
 
-export function WaitingCard({
+const areEqual = (prev: WaitingCardProps, next: WaitingCardProps) => {
+  return (
+    prev.number === next.number &&
+    prev.time === next.time &&
+    prev.waitMinutes === next.waitMinutes &&
+    prev.peopleCount === next.peopleCount &&
+    prev.name === next.name &&
+    prev.phoneNumber === next.phoneNumber &&
+    prev.status === next.status &&
+    prev.requestedAt === next.requestedAt &&
+    prev.calledAt === next.calledAt &&
+    prev.confirmedAt === next.confirmedAt &&
+    prev.cancelledAt === next.cancelledAt &&
+    prev.isNoShow === next.isNoShow
+  );
+};
+
+export const WaitingCard = memo(function WaitingCard({
   number,
   time,
   waitMinutes,
@@ -222,4 +239,4 @@ export function WaitingCard({
       </div>
     </div>
   );
-}
+}, areEqual);

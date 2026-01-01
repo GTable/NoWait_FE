@@ -3,7 +3,7 @@ import HomePage from "../pages/home/HomePage";
 import WaitingSuccessPage from "../pages/waiting/waitingSuccess/WaitingSuccessPage";
 import MapPage from "../pages/waiting/boothMap/MapPage";
 import StoreDetailPage from "../pages/waiting/storeDetail/StoreDetailPage";
-import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
+import RedirectToStorePage from "../pages/order/home/components/RedirectToStorePage";
 import StorePage from "../pages/order/home/StorePage";
 import OrderListPage from "../pages/order/orderList/OrderListPage";
 import OrderSuccessPage from "../pages/order/orderSuccess/OrderSuccessPage";
