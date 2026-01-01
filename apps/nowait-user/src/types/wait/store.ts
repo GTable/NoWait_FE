@@ -31,7 +31,8 @@ export interface StoreResponse {
     isActive: boolean;
     deleted: boolean;
     createdAt: string;
-    isBookmarked: boolean;
+    bookmarkId: number;
+    isBookmark: boolean;
   };
 }
 
@@ -57,7 +58,7 @@ export interface StoreType {
   departmentName: string;
   description: string;
   isActive: boolean;
-  isBookmark: boolean;
+  isBookmarked: boolean;
   location: string;
   name: string;
   noticeTitle: string | null;
