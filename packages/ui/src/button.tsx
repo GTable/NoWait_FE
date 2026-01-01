@@ -76,7 +76,7 @@ export const Button: React.FC<ButtonProps> = ({
       ? "var(--black-25)"
       : backgroundColor || buttonConfig.defaultBg,
     color: disabled ? "var(--black-55)" : textColor || buttonConfig.defaultText,
-    borderColor: borderColor || undefined,
+    borderColor: borderColor,
     width: fullWidth ? "100%" : buttonConfig.width,
     height: buttonConfig.height,
   };

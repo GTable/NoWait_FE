@@ -26,7 +26,7 @@ const CartList = ({ cart, storeId }: Props) => {
             className="py-5 border-none"
           >
             메뉴 추가하기
-            <span className="w-4 h-4">
+            <span className="flex justify-center items-center w-4 h-4">
               <Add />
             </span>
           </SmallActionButton>
