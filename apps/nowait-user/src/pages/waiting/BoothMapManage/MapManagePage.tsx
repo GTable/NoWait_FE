@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { Button } from "@repo/ui";
-import MapHeader from "./components/MapHeader";
-import UniversityPolygon from "./components/UniversityPolygon";
-import { useGeoPolygon } from "./hooks/useGeoPolygon";
-import { useMyLocation } from "./hooks/useMyLocation";
-import MapControlButtons from "./components/mapControls/MapControls";
 import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
+import { useGeoPolygon } from "../boothMap/hooks/useGeoPolygon";
+import { useMyLocation } from "../boothMap/hooks/useMyLocation";
+import UniversityPolygon from "../boothMap/components/UniversityPolygon";
+import MapControlButtons from "../boothMap/components/mapControls/MapControls";
 
 const MapManagePage = () => {
   const [markers, setMarkers] = useState<
     { storeId: string; lat: number; lng: number }[]
   >([]);
   const [status, setStatus] = useState(false);
+  const [geoData, setGeoData] = useState<string>("");
   const [map, setMap] = useState<any | null>(null);
   const paths = useGeoPolygon();
   const myLocation = useMyLocation();
@@ -51,11 +51,7 @@ const MapManagePage = () => {
 
   return (
     <div className="relative top-0 left-0 min-h-dvh w-full">
-      <MapHeader />
-      <MapDiv
-        style={{ width: "100%", height: "100vh" }}
-
-      >
+      <MapDiv style={{ width: "100%", height: "100vh" }}>
         <NaverMap
           defaultCenter={myLocation.center}
           defaultZoom={16}
@@ -73,6 +69,28 @@ const MapManagePage = () => {
           })}
         </NaverMap>
       </MapDiv>
+      <div className="fixed left-1/2 -translate-x-1/2 bottom-20 w-full z-50 px-2.5">
+        <form
+          onSubmit={() => {
+            const parsed = JSON.parse(geoData);
+            const polygon = [
+              parsed.map(({ lat, lon }: { lat: number; lon: number }) => [
+                lon,
+                lat,
+              ]),
+            ];
+            navigator.clipboard.writeText(JSON.stringify(polygon, null, 2));
+            alert("복사가 완료 되었습니다.");
+          }}
+        >
+          <textarea
+            className="bg-white w-full min-h-48"
+            onChange={(e) => setGeoData(e.target.value)}
+            value={geoData}
+          />
+          <Button>데이터 변경</Button>
+        </form>
+      </div>
       <div className="flex gap-1 fixed left-1/2 bottom-2.5 -translate-x-1/2 w-full z-50 px-2.5">
         <Button className="text-15-medium" onClick={() => setStatus(true)}>
           시작
