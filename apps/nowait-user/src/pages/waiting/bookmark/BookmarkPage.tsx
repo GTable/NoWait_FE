@@ -6,6 +6,7 @@ import { getBookmark } from "../../../api/reservation";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import BookmarkListItemSkeleton from "./components/BookmarkListItemSkeleton";
+import NotFound from "../../NotFound/NotFound";
 
 const BookmarkPage = () => {
   const { id: storeId } = useParams();
@@ -19,7 +20,8 @@ const BookmarkPage = () => {
     select: (data) => data.response,
   });
 
-  if (!bookmarkList && !isLoading && isError) return <div>에러....</div>;
+  if (!bookmarkList && !isLoading && isError) return <NotFound />;
+  
   return (
     <div>
       <HomeHeader />

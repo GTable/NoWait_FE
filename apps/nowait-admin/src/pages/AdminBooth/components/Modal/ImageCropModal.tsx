@@ -67,10 +67,10 @@ export default function ImageCropModal({
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60">
-      <div className="w-full max-w-[520px] rounded-2xl bg-white p-4">
+      <div className="w-full max-w-[520px] rounded-2xl bg-white py-4 px-5">
         <div className="mb-3 text-16-semibold">{title}</div>
 
-        <div className="relative h-[360px] w-full overflow-hidden rounded-xl bg-black">
+        <div className="relative h-[360px] w-full overflow-hidden rounded-xl bg-black cropper-wrapper">
           <Cropper
             image={url}
             crop={crop}
@@ -95,7 +95,12 @@ export default function ImageCropModal({
             max={6}
             step={0.01}
             value={zoom}
-            onChange={(e) => setZoom(Number(e.target.value))}
+            onChange={(e) => {
+              const v = Number(e.target.value);
+              setZoom(v);
+              const percent = ((v - 1) / (6 - 1)) * 100;
+              e.target.style.setProperty("--value", `${percent}%`);
+            }}
           />
         </div>
 

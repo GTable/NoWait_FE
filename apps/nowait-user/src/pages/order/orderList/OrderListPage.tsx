@@ -1,59 +1,21 @@
-import CartItem from "./components/CartItem";
-import PageFooterButton from "../../../components/order/PageFooterButton";
-import { Button } from "@repo/ui";
-import { useNavigate, useParams } from "react-router-dom";
-import TotalButton from "../../../components/order/TotalButton";
-import { useCartStore } from "../../../stores/cartStore";
-import { AnimatePresence } from "framer-motion";
+import SoldOutModal from "./components/SoldOutModal";
+import { useOrderListLogic } from "./hooks/useOrderListLogic";
+import CartList from "./components/CartList";
+import OrderFooter from "./components/OrderFooter";
 import EmptyCart from "./components/EmptyCart";
-import { SmallActionButton } from "../../../components/SmallActionButton";
-import Add from "../../../assets/icon/Add.svg?react";
 import BackHeader from "../../../components/BackHeader";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getStoreMenus } from "../../../api/menu";
-import { getSoldOutMenusInCart } from "../../../utils/checkSoldOutMenus";
-import useModal from "../../../hooks/useModal";
-import Portal from "../../../components/common/modal/Portal";
-import type { CartType } from "../../../types/order/cart";
-import { motion } from "framer-motion";
 
 const OrderListPage = () => {
-  const navigate = useNavigate();
-  const { storeId } = useParams();
-  const { cart, removeFromCart } = useCartStore();
-  const modal = useModal();
-  const [soldOutMenus, setSoldOutMenus] = useState<CartType[] | undefined>();
-  const [isAnimatingOut, setIsAnimatingOut] = useState<boolean>(false);
-
-  const { data: menus } = useQuery({
-    queryKey: ["storeMenuList", storeId],
-    queryFn: () => getStoreMenus(storeId!),
-    select: (data) => data?.response?.menuReadDto,
-  });
-
-  // 맨위로 위치 초기화
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    let timerId: number | undefined;
-
-    if (cart.length === 0) {
-      if (!isAnimatingOut) {
-        timerId = window.setTimeout(() => {
-          setIsAnimatingOut(true);
-        }, 350);
-      }
-    } else {
-      if (isAnimatingOut) setIsAnimatingOut(false);
-    }
-
-    return () => {
-      if (timerId) clearTimeout(timerId);
-    };
-  }, [cart, isAnimatingOut]);
+  
+  const {
+    cart,
+    storeId,
+    isAnimatingOut,
+    modal,
+    soldOutMenus,
+    handleOrder,
+    handleRemoveSoldOutMenus,
+  } = useOrderListLogic();
 
   if (cart.length === 0 && isAnimatingOut) {
     return <EmptyCart />;
@@ -66,97 +28,14 @@ const OrderListPage = () => {
         <h1 className="text-headline-22-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
         </h1>
-        <motion.ul className="flex justify-center flex-col mb-[116px]" layout>
-          <AnimatePresence mode="sync">
-            {cart.map((item) => {
-              return (
-                <CartItem
-                  key={item.menuId}
-                  id={item.menuId}
-                  name={item.name}
-                  originPrice={item.originPrice}
-                  price={item.price}
-                  quantity={item.quantity}
-                />
-              );
-            })}
-            <motion.li className="flex justify-center" layout>
-              <SmallActionButton
-                mode="default"
-                type="button"
-                ariaLabel="메뉴 추가하기"
-                onClick={() =>
-                  navigate(`/${storeId}`, { state: { isBack: true } })
-                }
-                className="py-5 border-none"
-              >
-                메뉴 추가하기
-                <span className="block w-4 h-4 mb-0.5">
-                  <Add className="w-full h-full" fill="currentColor" />
-                </span>
-              </SmallActionButton>
-            </motion.li>
-          </AnimatePresence>
-        </motion.ul>
+        <CartList cart={cart} storeId={storeId} />
       </section>
-      <PageFooterButton background="gradient">
-        <Button
-          textColor="white"
-          onClick={() => {
-            if (!menus) return;
-            // 장바구니와 최신 메뉴 데이터 동기화
-            const soldOut = getSoldOutMenusInCart(cart, menus);
-            if (soldOut.length > 0) {
-              setSoldOutMenus(soldOut);
-              modal.open();
-            } else {
-              navigate(`/${storeId}/remittance`);
-            }
-          }}
-        >
-          <TotalButton variant="orderPage" actionText="주문하기" />
-        </Button>
-      </PageFooterButton>
-      {modal.isOpen && soldOutMenus!.length > 0 && (
-        <Portal>
-          <div
-            className="fixed inset-0 z-50 bg-black/50"
-            onClick={() => {
-              modal.close();
-              soldOutMenus?.forEach((menu: CartType) =>
-                removeFromCart(menu.menuId)
-              );
-            }}
-          >
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-35px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]"
-            >
-              <h1 className="text-title-20-bold text-black-90 text-center mb-5 break-keep">
-                현재{" "}
-                {soldOutMenus?.map((menu: CartType, idx: number) => (
-                  <span key={menu.menuId}>
-                    {menu.name}
-                    {idx < soldOutMenus.length - 1 && ", "}
-                  </span>
-                ))}
-                는(은) 품절 상태입니다.
-              </h1>
-              <Button
-                backgroundColor="#F4F4F4"
-                textColor="#666666"
-                onClick={() => {
-                  modal.close();
-                  soldOutMenus?.forEach((menu: CartType) =>
-                    removeFromCart(menu.menuId)
-                  );
-                }}
-              >
-                주문 계속하기
-              </Button>
-            </div>
-          </div>
-        </Portal>
+      <OrderFooter onOrder={handleOrder} />
+      {modal.isOpen && soldOutMenus && soldOutMenus!.length > 0 && (
+        <SoldOutModal
+          menus={soldOutMenus}
+          onConfirm={handleRemoveSoldOutMenus}
+        />
       )}
     </div>
   );

@@ -1,9 +1,9 @@
-import EmptyOrderDetails from "./components/EmptyOrderDetails";
 import { useQuery } from "@tanstack/react-query";
-import { getOrderDetails } from "../../../api/order";
 import { useParams } from "react-router-dom";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import FullPageLoader from "../../../components/FullPageLoader";
+import EmptyOrderDetails from "./components/EmptyOrderDetails";
+import { getOrderDetails } from "../../../api/order";
 
 interface OrderDetailsType {
   menuId: number;
@@ -17,7 +17,8 @@ const statusMap = {
   WAITING_FOR_PAYMENT: { label: "입금 대기 중", color: "text-black-90" },
   COOKING: { label: "조리 중", color: "text-black-90" },
   COOKED: { label: "조리 완료", color: "text-black-60" },
-};
+} as const;
+
 type OrderStatus = keyof typeof statusMap;
 
 const OrderDetailsPage = () => {
@@ -29,8 +30,9 @@ const OrderDetailsPage = () => {
     queryFn: () => getOrderDetails(storeId!, Number(tableId!)),
     select: (data) => data?.response,
   });
-  console.log(orderDetails);
+
   if (isLoading) return <FullPageLoader />;
+
   //주문내역 없을 시
   if (!orderDetails || orderDetails?.length < 1) return <EmptyOrderDetails />;
 
