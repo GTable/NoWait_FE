@@ -18,10 +18,10 @@ import RemittancePage from "../pages/order/remittance/RemittancePage";
 import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
 import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
 import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
-import MapManagePage from "../pages/waiting/boothMap/MapManagePage";
 import NotFound from "../pages/NotFound/NotFound";
 import OnboardingPage from "../pages/login/onboarding/OnboardingPage";
 import OnboardingSuccessPage from "../pages/login/onboarding/OnboardingSuccessPage";
+import MapManagePage from "../pages/waiting/BoothMapManage/MapManagePage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (

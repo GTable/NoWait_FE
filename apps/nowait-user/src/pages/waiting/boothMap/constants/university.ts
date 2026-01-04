@@ -20,4 +20,13 @@ export const UNIVERSITY = [
     lat: 37.45958855687918,
     lng: 126.95368082522316,
   },
+  {
+    id: 1,
+    name: "영남대학교 서울캠퍼스",
+    logo: KonkukLogo,
+    period: "9.30-10.1",
+    festival: "녹색지대",
+    lat: 37.4209795,
+    lng: 126.6884082,
+  },
 ];
