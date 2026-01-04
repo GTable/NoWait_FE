@@ -13,7 +13,6 @@ const CompassButton = ({
   const { isCompassMode, setIsCompassMode } = isCompassModeStore();
   const navermaps = useNavermaps();
 
-  // const markerRef = useRef<kakao.maps.Marker | null>(null);
   const handleClick = async () => {
     if (!isCompassMode) {
       // 내 위치로 이동
