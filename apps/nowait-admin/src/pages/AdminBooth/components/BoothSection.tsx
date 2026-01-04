@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import BoothProfileImage from "./BoothProfileImage";
-import NoticeEditor from "./NoticeEditor";
 import OperatingTimeSelector from "./OperatingTimeSelector";
 import placeholderIcon from "../../../assets/image_placeholder.svg";
 import type { BannerImage } from "../types/booth";
@@ -9,8 +8,10 @@ import deleteBttn from "../../../assets/booth/del.svg";
 import PreviewModal from "./Modal/PreviewModal";
 import { useDeleteBannerImage } from "../../../hooks/booth/menu/useDeleteBannerImage";
 import { useRemoveEmoji } from "../../../hooks/useRemoveEmoji";
-import ImageCropModal from "./Modal/ImageCropModal";
 import { useWindowWidth } from "../../../hooks/useWindowWidth";
+
+const NoticeEditor = lazy(() => import("./NoticeEditor"));
+const ImageCropModal = lazy(() => import("./Modal/ImageCropModal"));
 
 const BoothSection = ({
   location,
@@ -401,25 +402,29 @@ const BoothSection = ({
         방문자에게 보여질 공지사항을 작성해주세요 (선택)
       </p>
       {/* 공지사항 */}
-      <NoticeEditor
-        noticeTitle={noticeTitle}
-        setNoticeTitle={setNoticeTitle}
-        notice={boothNotice}
-        setNotice={setBoothNotice}
-      />
+      <Suspense fallback={<div className="h-[340px] w-full rounded-xl bg-black-5" />}>
+        <NoticeEditor
+          noticeTitle={noticeTitle}
+          setNoticeTitle={setNoticeTitle}
+          notice={boothNotice}
+          setNotice={setBoothNotice}
+        />
+      </Suspense>
 
       {cropSpec && width > 1279 && (
-        <ImageCropModal
-          file={cropSpec.file}
-          aspect={cropSpec.aspect}
-          outWidth={cropSpec.outW}
-          outHeight={cropSpec.outH}
-          mime={cropSpec.target === "profile" ? "image/png" : "image/jpeg"}
-          quality={0.95}
-          onDone={handleCropDone}
-          onClose={() => setCropSpec(null)}
-          title={"이미지 편집하기"}
-        />
+        <Suspense fallback={<div className="fixed inset-0 z-[1000] bg-black/60" />}>
+          <ImageCropModal
+            file={cropSpec.file}
+            aspect={cropSpec.aspect}
+            outWidth={cropSpec.outW}
+            outHeight={cropSpec.outH}
+            mime={cropSpec.target === "profile" ? "image/png" : "image/jpeg"}
+            quality={0.95}
+            onDone={handleCropDone}
+            onClose={() => setCropSpec(null)}
+            title={"이미지 편집하기"}
+          />
+        </Suspense>
       )}
     </>
   );
