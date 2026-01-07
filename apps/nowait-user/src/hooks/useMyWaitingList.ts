@@ -29,7 +29,7 @@ interface MyWaitingResponse {
 const fetchMyWaitingList = async (): Promise<MyWaitingStore[]> => {
   try {
     const response = await UserApi.get<MyWaitingResponse>(
-      "/v1/users/me/waitings"
+      "/users/me/waitings"
     );
 
     console.log("내 대기 목록 서버 응답:", response.data);

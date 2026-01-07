@@ -59,7 +59,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
     setIsSearching(true);
     try {
       const response = await UserApi.get<SearchResponse>(
-        `/v1/stores/search?keyword=${encodeURIComponent(query)}`
+        `/stores/search?keyword=${encodeURIComponent(query)}`
       );
       if (response.data.success) {
         setSearchResults(response.data.response);

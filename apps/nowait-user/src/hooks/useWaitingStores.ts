@@ -26,7 +26,7 @@ const fetchWaitingStores = async (
 ): Promise<WaitingStore[]> => {
   try {
     const response = await UserApi.get<WaitingStoresResponse>(
-      "/v1/stores/waiting-count",
+      "/stores/waiting-count",
       {
         params: {
           order,

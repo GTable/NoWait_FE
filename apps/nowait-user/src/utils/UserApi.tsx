@@ -3,7 +3,7 @@ import axios from "axios";
 const API_URI = import.meta.env.VITE_SERVER_URI;
 
 const UserApi = axios.create({
-  baseURL: API_URI,
+  baseURL: `${API_URI}/v1`,
 });
 
 // 토큰 갱신 함수 (순환 참조 방지를 위해 여기서 직접 구현)
