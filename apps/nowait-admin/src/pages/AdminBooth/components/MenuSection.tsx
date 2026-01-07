@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
+import type { CSSProperties } from "react";
 import editOrderIcon from "../../../assets/edit_order_icon.svg";
 import ToggleSwitch from "../../AdminHome/components/ToggleSwitch";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import MenuModal from "./Modal/menuModal";
 import { useCreateMenu } from "../../../hooks/booth/menu/useCreateMenu";
 import { useUploadMenuImage } from "../../../hooks/booth/useUploadMenuImage";
@@ -15,9 +15,21 @@ import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort"
 import imgPlaceHolder from "../../../assets/menu_placeholder.png";
 import { SwipeableRow } from "./Swipe/SwipeableRow";
 
+const DragDropContext = lazy(() =>
+  import("react-beautiful-dnd").then((mod) => ({
+    default: mod.DragDropContext,
+  }))
+);
+const Droppable = lazy(() =>
+  import("react-beautiful-dnd").then((mod) => ({ default: mod.Droppable }))
+);
+const Draggable = lazy(() =>
+  import("react-beautiful-dnd").then((mod) => ({ default: mod.Draggable }))
+);
+
 function lockVertical(
-  style?: React.CSSProperties
-): React.CSSProperties | undefined {
+  style?: CSSProperties
+): CSSProperties | undefined {
   if (!style || !style.transform) return style;
   const t = String(style.transform);
   const m2d = t.match(/translate\((-?\d+\.?\d*)px,\s*(-?\d+\.?\d*)px\)/);
@@ -323,121 +335,123 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
       </div>
 
       <div className="border-t border-[#EEEEEE]">
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable
-            droppableId="menu-list"
-            isDropDisabled={!editMode}
-            direction="vertical"
-          >
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                {menus.map((menu, idx) => (
-                  <Draggable
-                    key={menu.id}
-                    draggableId={String(menu.id)}
-                    index={idx}
-                    isDragDisabled={!editMode}
-                  >
-                    {(provided) => {
-                      const lockedStyle = lockVertical(
-                        provided.draggableProps.style
-                      );
+        <Suspense fallback={<div className="min-h-[120px]" />}>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable
+              droppableId="menu-list"
+              isDropDisabled={!editMode}
+              direction="vertical"
+            >
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {menus.map((menu, idx) => (
+                    <Draggable
+                      key={menu.id}
+                      draggableId={String(menu.id)}
+                      index={idx}
+                      isDragDisabled={!editMode}
+                    >
+                      {(provided) => {
+                        const lockedStyle = lockVertical(
+                          provided.draggableProps.style
+                        );
 
-                      return editMode ? (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          style={lockedStyle}
-                          className="flex justify-between items-center py-4 w-full touch-pan-y select-none"
-                        >
-                          {/* rowContent 대신, 핸들 아이콘에만 dragHandleProps를 붙여줘야 해 */}
+                        return editMode ? (
                           <div
-                            className="flex items-center w-full gap-4"
-                            // 편집 모드에선 클릭으로 모달 열리지 않게 막고 싶다면 아래 조건 유지
-                            onClick={() => !editMode && openEditModal(menu)}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            style={lockedStyle}
+                            className="flex justify-between items-center py-4 w-full touch-pan-y select-none"
                           >
-                            <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
-                              <img
-                                src={
-                                  tempImages[menu.id] ??
-                                  menu.imageUrl ??
-                                  imgPlaceHolder
-                                }
-                                className="w-full h-full object-cover"
-                                alt="placeholder"
-                              />
+                            {/* rowContent 대신, 핸들 아이콘에만 dragHandleProps를 붙여줘야 해 */}
+                            <div
+                              className="flex items-center w-full gap-4"
+                              // 편집 모드에선 클릭으로 모달 열리지 않게 막고 싶다면 아래 조건 유지
+                              onClick={() => !editMode && openEditModal(menu)}
+                            >
+                              <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
+                                <img
+                                  src={
+                                    tempImages[menu.id] ??
+                                    menu.imageUrl ??
+                                    imgPlaceHolder
+                                  }
+                                  className="w-full h-full object-cover"
+                                  alt="placeholder"
+                                />
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-16-semibold">
+                                  {menu.name}
+                                </span>
+                                <span className="text-16-regular text-black-60">
+                                  {formatNumber(menu.price)}원
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex flex-col">
-                              <span className="text-16-semibold">
-                                {menu.name}
-                              </span>
-                              <span className="text-16-regular text-black-60">
-                                {formatNumber(menu.price)}원
-                              </span>
-                            </div>
-                          </div>
 
-                          <img
-                            src={editOrderIcon}
-                            alt="순서 변경"
-                            className="w-5 h-5 cursor-grab select-none"
-                            {...provided.dragHandleProps}
-                          />
-                        </div>
-                      ) : (
-                        <SwipeableRow
-                          ref={provided.innerRef}
-                          disabled={false}
-                          onDeleteClick={() => {
-                            setSelectedMenu(menu);
-                            setIsRemoveModalOpen(true);
-                          }}
-                          contentProps={{
-                            ...provided.draggableProps, // isDragDisabled=true라 드래그는 안됨
-                            style: lockedStyle,
-                            className:
-                              "flex justify-between items-center py-4 w-full",
-                          }}
-                        >
-                          <div
-                            className="flex items-center w-full gap-4"
-                            onClick={() => openEditModal(menu)}
+                            <img
+                              src={editOrderIcon}
+                              alt="순서 변경"
+                              className="w-5 h-5 cursor-grab select-none"
+                              {...provided.dragHandleProps}
+                            />
+                          </div>
+                        ) : (
+                          <SwipeableRow
+                            ref={provided.innerRef}
+                            disabled={false}
+                            onDeleteClick={() => {
+                              setSelectedMenu(menu);
+                              setIsRemoveModalOpen(true);
+                            }}
+                            contentProps={{
+                              ...provided.draggableProps, // isDragDisabled=true라 드래그는 안됨
+                              style: lockedStyle,
+                              className:
+                                "flex justify-between items-center py-4 w-full",
+                            }}
                           >
-                            <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
-                              <img
-                                src={
-                                  tempImages[menu.id] ??
-                                  menu.imageUrl ??
-                                  imgPlaceHolder
-                                }
-                                className="w-full h-full object-cover"
-                                alt="placeholder"
-                              />
+                            <div
+                              className="flex items-center w-full gap-4"
+                              onClick={() => openEditModal(menu)}
+                            >
+                              <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
+                                <img
+                                  src={
+                                    tempImages[menu.id] ??
+                                    menu.imageUrl ??
+                                    imgPlaceHolder
+                                  }
+                                  className="w-full h-full object-cover"
+                                  alt="placeholder"
+                                />
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-16-semibold">
+                                  {menu.name}
+                                </span>
+                                <span className="text-16-regular text-black-60">
+                                  {formatNumber(menu.price)}원
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex flex-col">
-                              <span className="text-16-semibold">
-                                {menu.name}
-                              </span>
-                              <span className="text-16-regular text-black-60">
-                                {formatNumber(menu.price)}원
-                              </span>
-                            </div>
-                          </div>
 
-                          <ToggleSwitch
-                            isOn={menu.soldOut}
-                            toggle={() => toggleSoldOut(idx)}
-                          />
-                        </SwipeableRow>
-                      );
-                    }}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+                            <ToggleSwitch
+                              isOn={menu.soldOut}
+                              toggle={() => toggleSoldOut(idx)}
+                            />
+                          </SwipeableRow>
+                        );
+                      }}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </Suspense>
       </div>
       {isAddModalOpen && (
         <MenuModal
