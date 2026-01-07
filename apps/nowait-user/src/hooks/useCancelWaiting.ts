@@ -6,7 +6,7 @@ import { useApiErrorHandler } from "./useApiErrorHandler";
 const cancelWaiting = async (storeId: number): Promise<void> => {
   try {
     const response = await UserApi.delete(
-      `/reservations/delete/queue/redis/${storeId}`
+      `/users/me/waitings/${storeId}`
     );
 
     console.log("대기 취소 성공:", response.data);

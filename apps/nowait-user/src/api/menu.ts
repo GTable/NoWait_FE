@@ -1,7 +1,5 @@
-import axios from "axios";
+import UserApi from "../utils/UserApi";
 import type { MenuType } from "../types/order/menu";
-
-const API_URI = import.meta.env.VITE_SERVER_URI;
 
 interface AllMenuServerResponse {
   success: boolean;
@@ -22,8 +20,8 @@ interface MenuServerResponse {
 //주점에 해당하는 모든 메뉴 조회
 export const getStoreMenus = async (publicCode: string) => {
   try {
-    const res = await axios.get<AllMenuServerResponse>(
-      `${API_URI}/v1/stores/${publicCode}/menus`
+    const res = await UserApi.get<AllMenuServerResponse>(
+      `/stores/${publicCode}/menus`
     );
     if (res?.data.success) return res.data;
   } catch (error) {
@@ -36,6 +34,6 @@ export const getStoreMenu = async (
   publicCode: string,
   menuId: number
 ): Promise<MenuServerResponse> => {
-  const res = await axios.get(`${API_URI}/v1/stores/${publicCode}/menus/${menuId}`);
+  const res = await UserApi.get(`/stores/${publicCode}/menus/${menuId}`);
   return res.data;
 };
