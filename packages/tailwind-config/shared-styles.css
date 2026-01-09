@@ -1,8 +1,8 @@
-/* ===== 폰트 Import ===== */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css");
+﻿/* ===== 폰트 로컬 Import ===== */
+@import url("/fonts/pretendard/pretendardvariable.css");
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
-/* ===== 공통 CSS 변수 ===== */
+/* ===== 공통 css 변수 ===== */
 :root {
   /* Primary Color */
   --primary: #ff4103;
@@ -50,7 +50,7 @@
   /* White */
   --white-100: #ffffff;
 
-  /* 상태 색상 */
+  /* ?곹깭 ?됱긽 */
   --success: #27ae60;
   --warning: #f2994a;
   --error: #eb5757;
@@ -93,7 +93,7 @@
   --layout-mobile-gutter: 12px;
 }
 
-/* ===== 폰트 패밀리 적용 ===== */
+/* ===== ?고듃 ?⑤?由??곸슜 ===== */
 * {
   font-family: "Pretendard Variable", "Pretendard", -apple-system,
     BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
@@ -127,7 +127,7 @@ pre {
     "Liberation Mono", "Courier New", monospace;
 }
 
-/* ===== 모바일 폰트 사이즈 유틸리티 ===== */
+/* ===== 紐⑤컮???고듃 ?ъ씠利??좏떥由ы떚 ===== */
 @layer utilities {
   /* Headline */
   .text-headline-28-bold {
@@ -157,7 +157,7 @@ pre {
     letter-spacing: -0.01em;
     font-weight: 700;
   }
-  /* 웨이팅 카드 테이블 번호 */
+  /* ?⑥씠??移대뱶 ?뚯씠釉?踰덊샇 */
   .text-20-bold {
     font-size: 20px;
     line-height: 136%;
@@ -208,7 +208,7 @@ pre {
   }
 
   /* Text */
-  /* 웨이팅 카드 인원수 */
+  /* ?⑥씠??移대뱶 ?몄썝??*/
   .text-17-bold {
     font-size: 17px;
     line-height: 136%;
@@ -342,14 +342,14 @@ pre {
     font-weight: 600;
   }
 
-  /* 미리보기 학과명 폰트 */
+  /* 誘몃━蹂닿린 ?숆낵紐??고듃 */
   .text-major {
     font-size: 8.81px;
     line-height: 144%;
     letter-spacing: -1%;
     font-weight: 400;
   }
-  /* 부스명 */
+  /* 遺?ㅻ챸 */
   .text-boothname {
     font-size: 13.85px;
     line-height: 136%;
@@ -357,14 +357,14 @@ pre {
     font-weight: 700;
   }
 
-  /* 부스 위치 */
+  /* 遺???꾩튂 */
   .text-location {
     font-size: 10.07px;
     line-height: 144%;
     letter-spacing: -1%;
     font-weight: 400;
   }
-  /* 미리보기 빨간 뱃지 폰트 */
+  /* 誘몃━蹂닿린 鍮④컙 諭껋? ?고듃 */
   .text-8-bold {
     font-size: 8px;
     line-height: 100%;
@@ -393,7 +393,7 @@ pre {
     font-weight: 700;
   }
 
-  /* 미리보기 하단 "공지" 폰트 */
+  /* 誘몃━蹂닿린 ?섎떒 "怨듭?" ?고듃 */
   .text-notice {
     font-size: 9px;
     line-height: 144%;
@@ -408,7 +408,7 @@ pre {
     font-weight: 500;
   }
 
-  /* 이용약관 폰트 */
+  /* ?댁슜?쎄? ?고듃 */
   .term-text-13-semibold {
     font-size: 13px;
     line-height: 160%;
@@ -425,15 +425,15 @@ pre {
     color: var(--black-70);
   }
 
-  /* Work Sans 폰트 유틸리티 */
+  /* Work Sans ?고듃 ?좏떥由ы떚 */
   .font-work-sans {
     font-family: "Work Sans", sans-serif;
   }
 }
 
-/* ===== 공통 컴포넌트 클래스 ===== */
+/* ===== 怨듯넻 而댄룷?뚰듃 ?대옒??===== */
 @layer components {
-  /* 브랜드 버튼 */
+  /* 釉뚮옖??踰꾪듉 */
   .btn-brand {
     @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
     background: var(--brand-primary);
@@ -446,7 +446,7 @@ pre {
     box-shadow: var(--shadow-medium);
   }
 
-  /* 카드 스타일 */
+  /* 移대뱶 ?ㅽ???*/
   .card-base {
     @apply rounded-2xl backdrop-blur-sm transition-all duration-300;
     box-shadow: var(--shadow-soft);
@@ -457,7 +457,7 @@ pre {
     transform: translateY(-4px);
   }
 
-  /* 그라디언트 배경 */
+  /* 洹몃씪?붿뼵??諛곌꼍 */
   .bg-gradient-purple-blue {
     background: var(--gradient-purple-blue);
   }
@@ -470,14 +470,14 @@ pre {
     background: var(--gradient-sunset);
   }
 
-  /* 텍스트 그라디언트 */
+  /* ?띿뒪??洹몃씪?붿뼵??*/
   .text-gradient-purple {
     background: linear-gradient(135deg, var(--purple-600), var(--blue-600));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  /* Primary 색상 유틸리티 */
+  /* Primary ?됱긽 ?좏떥由ы떚 */
   .text-primary {
     color: var(--primary);
   }
@@ -485,7 +485,7 @@ pre {
     background-color: var(--primary);
   }
 
-  /* Black 색상 유틸리티 */
+  /* Black ?됱긽 ?좏떥由ы떚 */
   .text-black-100 {
     color: var(--black-100);
   }
@@ -596,7 +596,7 @@ pre {
     background-color: var(--black-5);
   }
 
-  /* Navy 색상 유틸리티 */
+  /* Navy ?됱긽 ?좏떥由ы떚 */
   .text-navy-100 {
     color: var(--navy-100);
   }
@@ -731,7 +731,7 @@ pre {
     border-color: var(--black-20);
   }
 
-  /* White 색상 유틸리티 */
+  /* White ?됱긽 ?좏떥由ы떚 */
   .text-white-100 {
     color: var(--white-100);
   }
@@ -739,7 +739,7 @@ pre {
     background-color: var(--white-100);
   }
 
-  /* 상태 색상 유틸리티 */
+  /* ?곹깭 ?됱긽 ?좏떥由ы떚 */
   .text-success {
     color: var(--success);
   }
@@ -760,7 +760,7 @@ pre {
     background-color: var(--error);
   }
 
-  /* Sub Color 유틸리티 */
+  /* Sub Color ?좏떥由ы떚 */
   .text-purple {
     color: var(--purple);
   }
@@ -805,7 +805,7 @@ pre {
     background-color: var(--gray);
   }
 
-  /* Icon Size 유틸리티 */
+  /* Icon Size ?좏떥由ы떚 */
   .icon-xs {
     width: var(--icon-xs);
     height: var(--icon-xs);
@@ -827,7 +827,7 @@ pre {
     height: var(--icon-xl);
   }
 
-  /* Layout 컨테이너 유틸리티 */
+  /* Layout 而⑦뀒?대꼫 ?좏떥由ы떚 */
   .container-pc {
     max-width: 1920px;
     margin: 0 auto;
@@ -863,7 +863,7 @@ pre {
     padding-right: var(--layout-mobile-margin);
   }
 
-  /* 반응형 컨테이너 */
+  /* 諛섏쓳??而⑦뀒?대꼫 */
   .container-responsive {
     max-width: 1920px;
     margin: 0 auto;
@@ -899,7 +899,7 @@ pre {
     }
   }
 
-  /* Grid Gutter 유틸리티 */
+  /* Grid Gutter ?좏떥由ы떚 */
   .grid-gutter-pc {
     gap: var(--layout-pc-gutter);
   }
@@ -920,7 +920,7 @@ pre {
     gap: var(--layout-mobile-gutter);
   }
 
-  /* 반응형 Grid Gutter */
+  /* 諛섏쓳??Grid Gutter */
   .grid-gutter-responsive {
     gap: var(--layout-mobile-gutter);
   }
@@ -950,7 +950,7 @@ pre {
   }
 }
 
-/* ===== 애니메이션 ===== */
+/* ===== ?좊땲硫붿씠??===== */
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.5s ease-in-out;
@@ -1021,3 +1021,4 @@ pre {
     box-shadow: 0 0 30px rgba(167, 139, 250, 0.6);
   }
 }
+
