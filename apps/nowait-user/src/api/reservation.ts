@@ -51,10 +51,7 @@ export const createReservation = async (
   storeId: number,
   payload: { partySize: number }
 ) => {
-  const res = await UserApi.post(
-    `/users/me/waitings/legacy/${storeId}`,
-    payload
-  );
+  const res = await UserApi.post(`/users/me/waitings/${storeId}`, payload);
   return res.data;
 };
 
@@ -82,6 +79,8 @@ export const deleteBookmark = async (
   storeId: number | undefined,
   signal: AbortSignal
 ) => {
-  const res = await UserApi.delete(`/users/me/bookmarks/${storeId}`, { signal });
+  const res = await UserApi.delete(`/users/me/bookmarks/${storeId}`, {
+    signal,
+  });
   return res.data;
 };
