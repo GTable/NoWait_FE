@@ -4,7 +4,6 @@ import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
 import { useGeoPolygon } from "../boothMap/hooks/useGeoPolygon";
 import { useMyLocation } from "../boothMap/hooks/useMyLocation";
 import UniversityPolygon from "../boothMap/components/UniversityPolygon";
-import MapControlButtons from "../boothMap/components/mapControls/MapControls";
 
 const MapManagePage = () => {
   const [markers, setMarkers] = useState<
@@ -50,7 +49,8 @@ const MapManagePage = () => {
   }, [map, status, markers]);
 
   return (
-    <div className="relative top-0 left-0 min-h-dvh w-full">
+    // <div className="relative top-0 left-0 min-h-dvh w-full">
+    <div className="fixed top-0 left-0 min-h-dvh w-[1194px]! my-0!">
       <MapDiv style={{ width: "100%", height: "100vh" }}>
         <NaverMap
           defaultCenter={myLocation.center}
@@ -58,7 +58,7 @@ const MapManagePage = () => {
           ref={setMap}
         >
           <UniversityPolygon paths={paths} />
-          <MapControlButtons center={myLocation.center} map={map} />
+          {/* <MapControlButtons center={myLocation.center} map={map} /> */}
           {markers.map((marker) => {
             return (
               <Marker
@@ -84,18 +84,31 @@ const MapManagePage = () => {
           }}
         >
           <textarea
-            className="bg-white w-full min-h-48"
+            className="bg-white w-full min-h-48 outline-none"
+            placeholder="데이터를 입력해주세요."
             onChange={(e) => setGeoData(e.target.value)}
             value={geoData}
           />
-          <Button>데이터 변경</Button>
+          <Button>데이터 변경 및 복사</Button>
         </form>
       </div>
       <div className="flex gap-1 fixed left-1/2 bottom-2.5 -translate-x-1/2 w-full z-50 px-2.5">
-        <Button className="text-15-medium" onClick={() => setStatus(true)}>
+        <Button
+          disabled={status}
+          className="text-15-medium"
+          onClick={() => {
+            setStatus(true);
+          }}
+        >
           시작
         </Button>
-        <Button className="text-15-medium" onClick={() => setStatus(false)}>
+        <Button
+          disabled={!status}
+          className="text-15-medium"
+          onClick={() => {
+            setStatus(false);
+          }}
+        >
           중지
         </Button>
         <Button

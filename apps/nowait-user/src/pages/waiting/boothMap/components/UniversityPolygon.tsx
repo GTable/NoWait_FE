@@ -10,10 +10,10 @@ const UniversityPolygon = ({
   return (
     <Polygon
       paths={paths}
-      strokeWeight={2}
-      strokeColor="#ffffff"
+      strokeWeight={1}
+      strokeColor="#5e5e5e"
       strokeOpacity={0.8}
-      fillColor="#686868"
+      fillColor="#5c5c5c"
       fillOpacity={0.6}
     />
   );
