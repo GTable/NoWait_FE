@@ -70,7 +70,7 @@ const RemittancePage = () => {
     setErrorMessage(null);
     modal.open();
   };
-  console.log(remittance);
+
   return (
     <div className="flex flex-col grow mt-12 mb-[116px]">
       <BackHeader title="주문하기" />
