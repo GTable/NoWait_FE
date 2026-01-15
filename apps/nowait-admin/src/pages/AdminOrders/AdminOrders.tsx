@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { PaymentCard, CookCard, CookedCard } from "./OrderCard";
 import { DetailCard } from "./DetailCard";
@@ -67,11 +67,19 @@ const AdminOrders = () => {
   };
 
   // 상태별 데이터 필터링
-  const paymentWaitingData = orders.filter(
-    (order) => order.status === "WAITING_FOR_PAYMENT"
-  );
-  const cookingData = orders.filter((order) => order.status === "COOKING");
-  const cookedData = orders.filter((order) => order.status === "COOKED");
+  const { paymentWaitingData, cookingData, cookedData } = useMemo(() => {
+    const waiting: Order[] = [];
+    const cooking: Order[] = [];
+    const cooked: Order[] = [];
+
+    orders.forEach((order) => {
+      if (order.status === "WAITING_FOR_PAYMENT") waiting.push(order);
+      else if (order.status === "COOKING") cooking.push(order);
+      else if (order.status === "COOKED") cooked.push(order);
+    });
+
+    return { paymentWaitingData: waiting, cookingData: cooking, cookedData: cooked };
+  }, [orders]);
 
   // 새로고침 핸들러
   const handleRefresh = () => {
