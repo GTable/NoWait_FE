@@ -14,7 +14,7 @@ interface ServerResponse {
 
 // 모든 주점 정보 가져오기
 export const getAllStores = async () => {
-  const response = await UserApi.get<ServerResponse>("/v1/stores", {
+  const response = await UserApi.get<ServerResponse>("/stores", {
     params: {
       page: 0,
       size: 50,
@@ -27,7 +27,7 @@ export const getAllStores = async () => {
 export const getInfiniteAllStores = async (
   pageParam: number
 ): Promise<{ storePageReadResponses: StoreType[]; hasNext: boolean }> => {
-  const response = await UserApi.get<ServerResponse>("/v1/stores", {
+  const response = await UserApi.get<ServerResponse>("/stores", {
     params: {
       page: pageParam,
       size: 5,
@@ -39,7 +39,7 @@ export const getInfiniteAllStores = async (
 // 주점 상세 정보 가져오기
 export const getStore = async (publicCode: string) => {
   try {
-    const res = await UserApi.get<StoreResponse>(`/v1/stores/${publicCode}`);
+    const res = await UserApi.get<StoreResponse>(`/stores/${publicCode}`);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -51,18 +51,18 @@ export const createReservation = async (
   storeId: number,
   payload: { partySize: number }
 ) => {
-  const res = await UserApi.post(`/v1/users/me/waitings/${storeId}`, payload);
+  const res = await UserApi.post(`/users/me/waitings/${storeId}`, payload);
   return res.data;
 };
 
 export const getMyReservations = async () => {
-  const res = await UserApi.get("/v1/users/me/waitings");
+  const res = await UserApi.get("/users/me/waitings");
   return res.data;
 };
 
 // 북마크 조회
 export const getBookmark = async (): Promise<BookmarkResponse> => {
-  const res = await UserApi.get("/v1/users/me/bookmarks");
+  const res = await UserApi.get("/users/me/bookmarks");
   return res.data;
 };
 
@@ -71,7 +71,7 @@ export const createBookmark = async (
   storeId: number | undefined,
   signal: AbortSignal
 ) => {
-  await UserApi.post(`/v1/users/me/bookmarks/${storeId}`, null, { signal });
+  await UserApi.post(`/users/me/bookmarks/${storeId}`, null, { signal });
 };
 
 // 북마크 삭제
@@ -79,7 +79,7 @@ export const deleteBookmark = async (
   storeId: number | undefined,
   signal: AbortSignal
 ) => {
-  const res = await UserApi.delete(`/v1/users/me/bookmarks/${storeId}`, {
+  const res = await UserApi.delete(`/users/me/bookmarks/${storeId}`, {
     signal,
   });
   return res.data;
