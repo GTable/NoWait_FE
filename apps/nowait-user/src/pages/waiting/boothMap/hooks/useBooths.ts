@@ -8,7 +8,9 @@ export const useBooths = () => {
     queryKey: ["storesMarkers"],
     queryFn: getAllStores,
     select: (data) => data?.response?.storePageReadResponses,
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 5, // 5분
+    gcTime: 1000 * 60 * 10, // 10분
+    refetchOnWindowFocus: false,
   });
 
   // 부스 + 마커 좌표

@@ -13,7 +13,7 @@ export const createOrder = async (
   payload: OrderType
 ): Promise<CreateOrderServerResponse> => {
   const res = await UserApi.post(
-    `/stores/${publicCode}/tables/${tableId}/orders`,
+    `/v1/stores/${publicCode}/tables/${tableId}/orders`,
     payload
   );
   return res.data;
@@ -24,7 +24,7 @@ export const getOrderDetails = async (
   publicCode: string,
   tableId: number
 ): Promise<OrderDetailsServerResponse> => {
-  const res = await UserApi.get(`/stores/${publicCode}/tables/${tableId}/orders`);
+  const res = await UserApi.get(`/v1/stores/${publicCode}/tables/${tableId}/orders`);
   return res.data;
 };
 
@@ -32,7 +32,7 @@ export const getOrderDetails = async (
 export const getStorePayments = async (publicCode: string) => {
   try {
     const res = await UserApi.get<StorePaymentsResponse>(
-      `/stores/${publicCode}/payments`
+      `/v1/stores/${publicCode}/payments`
     );
     return res.data;
   } catch (error) {
