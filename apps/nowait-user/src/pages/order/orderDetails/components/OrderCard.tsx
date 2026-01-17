@@ -2,6 +2,7 @@ import type {
   OrderDetailsType,
   OrderStatus,
 } from "../../../../types/order/order";
+import { formatKoreanDateTime } from "../../../../utils/formatKoreanDateTime";
 
 interface OrderCardProps {
   order: {
@@ -21,7 +22,6 @@ const ORDER_STATUS_MAP = {
 } as const;
 
 const OrderCard = ({ order }: OrderCardProps) => {
-    
   const status = ORDER_STATUS_MAP[order.status];
 
   return (
@@ -30,7 +30,9 @@ const OrderCard = ({ order }: OrderCardProps) => {
         <h2 className={`text-title-18-bold mb-2 ${status.color}`}>
           {status.label}
         </h2>
-        <p className="text-14-regular text-black-60">{order.createdAt}</p>
+        <p className="text-14-regular text-black-60">
+          {formatKoreanDateTime(order.createdAt)}
+        </p>
       </header>
 
       <ul className="border-b border-[#ececec] pb-5 mb-5">

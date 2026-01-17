@@ -2,7 +2,7 @@ import SubStract from "../../../../assets/icon/subtract.svg?react";
 import Clock from "../../../../assets/icon/clock.svg?react";
 import Arrow from "../../../../assets/icon/arrow-right.svg?react";
 import { useNavigate } from "react-router-dom";
-import { formatTimeRange } from "../../../../utils/formatTimeRange";
+import { formatBusinessHours } from "../../../../utils/formatBusinessHours";
 
 interface PropsType {
   storeId: string;
@@ -32,7 +32,7 @@ const StoreInfoSection = ({
         </p>
         <p className="flex items-center text-16-regular">
           <Clock className="mr-1.5" />
-          {formatTimeRange(openTime)}
+          {formatBusinessHours(openTime)}
         </p>
       </div>
 
