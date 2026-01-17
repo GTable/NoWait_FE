@@ -16,6 +16,23 @@ import { useQuery } from "@tanstack/react-query";
 import { getStorePayments } from "../../../api/order";
 import { AnimatePresence } from "framer-motion";
 
+const REMIT_TYPE = {
+  KAKAO: "kakao",
+  TOSS: "toss",
+  NAVER: "naver",
+  DIRECT: "direct",
+} as const;
+
+type RemitType = (typeof REMIT_TYPE)[keyof typeof REMIT_TYPE];
+
+const getDefaultRemitValue = (remittance: any): RemitType | "" => {
+  if (remittance.kakaoPayUrl) return REMIT_TYPE.KAKAO;
+  if (remittance.tossUrl) return REMIT_TYPE.TOSS;
+  if (remittance.naverPayUrl) return REMIT_TYPE.NAVER;
+  if (remittance.accountNumber) return REMIT_TYPE.DIRECT;
+  return "";
+};
+
 const RemittancePage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
@@ -45,32 +62,52 @@ const RemittancePage = () => {
       navigate(`/${storeId}`, { replace: true });
     }
   }, []);
+
   // 기본 선택 값 지정하기
   useEffect(() => {
     if (!remittance) return;
-
-    if (!(remittance.kakaoPayUrl === "")) setRemitValue("kakao");
-    else if (!(remittance.tossUrl === "")) setRemitValue("toss");
-    else if (!(remittance.naverPayUrl === "")) setRemitValue("naver");
-    else if (!(remittance.accountNumber === "")) setRemitValue("direct");
+    setRemitValue(getDefaultRemitValue(remittance));
   }, [remittance]);
 
-  const orderHandleButton = () => {
+  const validatePayer = () => {
     //입금자명을 입력하지 않고 이체 버튼 클릭 시 입금자명 input으로 포커스
     if (payer.trim() === "") {
-      payerFocus?.current?.focus();
       setErrorMessage("입금자명을 입력해주세요");
-      return;
-    }
-    if (payer.length > 10) {
       payerFocus?.current?.focus();
-      setErrorMessage("입금자명은 10자 이하로 입력해주세요");
-      return;
+      return false;
     }
+
+    if (payer.length > 10) {
+      setErrorMessage("입금자명은 10자 이하로 입력해주세요");
+      payerFocus?.current?.focus();
+      return false;
+    }
+
     setErrorMessage(null);
+    return true;
+  };
+
+  const handleOrderClick = () => {
+    if (!validatePayer()) return;
     modal.open();
   };
-  console.log(remittance);
+
+  const handleConfirm = () => {
+    if (!remittance) return;
+
+    const urlMap: Record<RemitType, string | undefined> = {
+      kakao: remittance.kakaoPayUrl,
+      toss: remittance.tossUrl,
+      naver: remittance.naverPayUrl,
+      direct: undefined,
+    };
+
+    const url = urlMap[remitValue as RemitType];
+    if (url) window.open(url, "_blank");
+
+    navigate(`/${storeId}/remittanceWait`, { state: payer });
+  };
+
   return (
     <div className="flex flex-col grow mt-12 mb-[116px]">
       <BackHeader title="주문하기" />
@@ -105,23 +142,14 @@ const RemittancePage = () => {
         </section>
       </section>
       <PageFooterButton background="gradient">
-        <Button textColor="white" onClick={orderHandleButton}>
+        <Button textColor="white" onClick={handleOrderClick}>
           <TotalButton variant="orderPage" actionText="이체하기" />
         </Button>
       </PageFooterButton>
       <AnimatePresence>
         {modal.isOpen && (
           <ConfirmModal
-            open={() => {
-              if (remitValue === "kakao") {
-                window.open(`${remittance?.kakaoPayUrl}`, "_blank");
-              } else if (remitValue === "toss") {
-                window.open(`${remittance?.tossUrl}`, "_blank");
-              } else if (remitValue === "naver") {
-                window.open(`${remittance?.naverPayUrl}`, "_blank");
-              }
-              navigate(`/${storeId}/remittanceWait`, { state: payer });
-            }}
+            open={handleConfirm}
             close={modal.close}
             title={`${
               remitValue === "direct" ? "직접 " : ""
