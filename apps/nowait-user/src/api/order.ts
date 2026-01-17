@@ -4,13 +4,7 @@ import type {
   OrderType,
   StorePaymentsResponse,
 } from "../types/order/order";
-import axios from "axios";
-
-const API_URI = import.meta.env.VITE_SERVER_URI;
-
-const UserApi = axios.create({
-  baseURL: `${API_URI}/v1`,
-});
+import { authApi, publicApi } from "./client";
 
 //주문 생성
 export const createOrder = async (
@@ -18,7 +12,7 @@ export const createOrder = async (
   tableId: number,
   payload: OrderType
 ): Promise<CreateOrderServerResponse> => {
-  const res = await UserApi.post(
+  const res = await authApi.post(
     `/stores/${publicCode}/tables/${tableId}/orders`,
     payload
   );
@@ -30,7 +24,7 @@ export const getOrderDetails = async (
   publicCode: string,
   tableId: number
 ): Promise<OrderDetailsServerResponse> => {
-  const res = await UserApi.get(
+  const res = await authApi.get(
     `/stores/${publicCode}/tables/${tableId}/orders`
   );
   return res.data;
@@ -38,7 +32,7 @@ export const getOrderDetails = async (
 
 //주점 QR, 계좌번호 조회
 export const getStorePayments = async (publicCode: string) => {
-  const res = await UserApi.get<StorePaymentsResponse>(
+  const res = await publicApi.get<StorePaymentsResponse>(
     `/stores/${publicCode}/payments`
   );
   return res.data;
