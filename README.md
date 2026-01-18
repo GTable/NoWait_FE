@@ -1,3 +1,37 @@
+![alt text](<노웨잇 노션 커버.png>)
+# 프로젝트 개요
+노웨잇 서비스는 대학교 축제에서 불필요한 주점 웨이팅, 수기로 작성되는 주문 시스템을 개선하기 위해 만들어졌습니다.
+
+관리자와 사용자 모두 고려한 기획과 설계가 이루어졌으며, 1명의 디자이너와 프론트엔드 3명, 백엔드 2명이 팀을 이루어 기획 및 디자인, 개발을 진행 하였고, 주 2회 오프라인 회의와 Discord, Figma, Swagger를 통해 원활한 소통과 협업을 진행했습니다.
+
+현재는 더 좋은 서비스 제공을 위해 웹 서비스에서 앱 서비스로 마이그레이션 진행중 입니다.
+# 팀원 소개
+
+<table>
+  <tr>
+    <td align="center" style="border:1px solid #333; padding:16px; border-radius:8px;">
+    <a href="https://github.com/hwangdae">
+      <img src="https://avatars.githubusercontent.com/hwangdae" width="120" height="120" style="border-radius:50%; margin-bottom:4px;"/></a><br/>
+      <b>황대성</b><br/><span style="border-top:solid 1px #666">
+      Frontend</span>
+    </td>
+    <td align="center" style="border:1px solid #333; padding:16px; border-radius:8px;">
+    <a href="https://github.com/dgKim1">
+      <img src="https://avatars.githubusercontent.com/dgKim1" width="120" height="120" style="border-radius:50%; margin-bottom:4px;"/></a><br/>
+      <b>김도경</b><br/>
+      <span style="border-top:solid 1px #666">
+      Frontend</span>
+    </td>
+    <td align="center" style="border:1px solid #333; padding:16px; border-radius:8px;">
+    <a href="https://github.com/oriNuguri25">
+      <img src="https://avatars.githubusercontent.com/oriNuguri25" width="120" height="120" style="border-radius:50%; margin-bottom:4px;"/></a><br/>
+      <b>이병준</b><br/>
+      <span style="border-top:solid 1px #666">
+      Frontend</span>
+    </td>
+  </tr>
+</table>
+
 # 🧩 NoWait_FE - Frontend Monorepo
 
 이 프로젝트는 **Admin**과 **User** 애플리케이션이 공존하는 **프론트엔드 모노레포**입니다.<br/>
@@ -67,6 +101,6 @@ yarn dev:admin   # 관리자용 앱 실행
 
 ## 🔗 배포주소
 ```txt
-사용자: https://www.nowait-user.vercel.app
+사용자: https://app.nowait.co.kr
 관리자: https://www.nowait-admin.com
 ```
