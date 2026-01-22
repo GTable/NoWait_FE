@@ -1,16 +1,15 @@
 // import { useRef } from "react";
 import MyLocation from "../../../../../assets/icon/myLocation.svg?react";
 import { isCompassModeStore } from "../../../../../stores/mapStore";
-import { useNavermaps } from "react-naver-maps";
+import { useMap, useNavermaps } from "react-naver-maps";
 
 const CompassButton = ({
-  map,
   center,
 }: {
-  map: any;
   center: { lat: number; lng: number };
 }) => {
   const { isCompassMode, setIsCompassMode } = isCompassModeStore();
+  const map = useMap();
   const navermaps = useNavermaps();
 
   const handleClick = async () => {

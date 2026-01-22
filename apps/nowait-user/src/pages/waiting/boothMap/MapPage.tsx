@@ -8,7 +8,12 @@ import BoothMarkers from "./components/BoothMarkers";
 import { useBooths } from "./hooks/useBooths";
 import { useMyLocation } from "./hooks/useMyLocation";
 import MapControlButtons from "./components/mapControls/MapControls";
-import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
+import {
+  Container as MapDiv,
+  NaverMap,
+  Marker,
+  useMap,
+} from "react-naver-maps";
 import { useMapZoom } from "./hooks/useMapZoom";
 import { useMapEvents } from "./hooks/useMapEvents";
 
@@ -20,8 +25,7 @@ declare global {
 
 const MapPage = () => {
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
-  const [map, setMap] = useState<any | null>(null);
-
+  const map = useMap();
   // const { setIsCompassMode } = isCompassModeStore();
   //대학교 폴리곤(영역) 설정
   const paths = useGeoPolygon();
@@ -31,6 +35,7 @@ const MapPage = () => {
   const myLocation = useMyLocation();
   //줌레벨 가져오기
   const zoom = useMapZoom(map);
+  // const isInsideServiceArea = useIsInsidePolygon(paths, myLocation.center);
   //맵 드래그, 클릭 컨트롤
   useMapEvents(map, () => setSelectedBooth(null));
 
@@ -42,7 +47,7 @@ const MapPage = () => {
         setSelectedBooth(id);
       }
     },
-    [selectedBooth]
+    [selectedBooth],
   );
 
   return (
@@ -56,12 +61,8 @@ const MapPage = () => {
             height: "600px",
           }}
         >
-          <NaverMap
-            defaultCenter={myLocation.center}
-            defaultZoom={16}
-            ref={setMap}
-          >
-            <MapControlButtons center={myLocation.center} map={map} />
+          <NaverMap center={myLocation.center} zoom={16}>
+            <MapControlButtons center={myLocation.center}/>
             <UniversityPolygon paths={paths} />
             {!myLocation.isLoading && <Marker position={myLocation.center} />}
             <BoothMarkers

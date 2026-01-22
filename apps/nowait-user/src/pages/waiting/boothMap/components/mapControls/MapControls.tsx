@@ -5,10 +5,8 @@ import UniversityListModal from "./UniversityListModal";
 import CompassButton from "./CompassButton";
 
 const MapControlButtons = ({
-  map,
   center,
 }: {
-  map: any
   center: { lat: number; lng: number };
 }) => {
   const modal = useModal();
@@ -24,11 +22,11 @@ const MapControlButtons = ({
         >
           <University width="22px" height="22px" />
         </button>
-        <CompassButton map={map} center={center} />
+        <CompassButton center={center} />
       </div>
       {modal.isOpen === true && (
         <Portal>
-          <UniversityListModal  onClose={modal.close} map={map}/>
+          <UniversityListModal onClose={modal.close} />
         </Portal>
       )}
     </div>

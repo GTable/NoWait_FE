@@ -1,33 +1,19 @@
-// import BoothMarker from "../../../../assets/icon/BoothMarker.svg?url";
-import MarkerTest from "../../../../assets/markerTest2.svg?url"
-import DotMarker from "../../../../assets/icon/DotMarker.svg?url";
-import React from "react";
-import { Marker } from "react-naver-maps";
+import BoothMarker from "./BoothMarker";
 
-interface BoothMarkersProps {
-  booths: { storeId: number; lat: number; lng: number }[];
-  openBooth: (id: number) => void;
-  zoomLevel: number;
-}
-
-const BoothMarkers = React.memo(
-  ({ booths, openBooth, zoomLevel }: BoothMarkersProps) => {
-
-    return (
-      <>
-        {booths.map((booth) => (
-          <Marker
-            key={booth.storeId}
-            position={{ lat: booth.lat, lng: booth.lng }}
-            icon={{
-              url: zoomLevel >= 18 ? MarkerTest : DotMarker,
-            }}
-            onClick={() => openBooth(booth.storeId)}
-          />
-        ))}
-      </>
-    );
-  }
-);
+const BoothMarkers = ({ booths, zoomLevel, openBooth }:any) => {
+  console.log(booths)
+  return (
+    <>
+      {booths.map((booth:any) => (
+        <BoothMarker
+          key={booth.storeId}
+          booth={booth}
+          zoomLevel={zoomLevel}
+          openBooth={openBooth}
+        />
+      ))}
+    </>
+  );
+};
 
 export default BoothMarkers;
