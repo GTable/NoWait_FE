@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from "react";
-import jsQR from "jsqr";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import banner from "../../../assets/booth/banner.svg";
 import RedBadge from "../../../components/RedBadge";
 import naverLogo from "../../../assets/booth/naver.png";
@@ -16,7 +15,39 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { FaFileUpload } from "react-icons/fa";
 import { DropdownSelect } from "./DropDown/DropDownSelect";
 
+const loadJsQr = () => import("jsqr").then((mod) => mod.default);
+
 const bankOptions = ["IBK 기업", "신한은행", "국민은행", "하나은행"];
+
+type PaymentId = "kakao" | "toss" | "naver";
+
+type PaymentOption = {
+  id: PaymentId;
+  name: string;
+  logo: string;
+  placeholder: string;
+};
+
+const paymentOptions: PaymentOption[] = [
+  {
+    id: "kakao",
+    name: "카카오페이",
+    logo: kakaoLogo,
+    placeholder: "https://qr.kakaopay.com/",
+  },
+  {
+    id: "toss",
+    name: "토스",
+    logo: tossLogo,
+    placeholder: "supertoss://send",
+  },
+  {
+    id: "naver",
+    name: "네이버페이",
+    logo: naverLogo,
+    placeholder: "https://new-m.pay.naver.com/",
+  },
+];
 
 const AccountPage = () => {
   const [bank, setBank] = useState("");
@@ -39,7 +70,6 @@ const AccountPage = () => {
   const isMobile = width < 768;
   const isSmall = width < 415;
 
-  // 각 결제수단별 입력값 관리
   const [urls, setUrls] = useState<Record<PaymentId, string>>({
     kakao: "",
     toss: "",
@@ -50,8 +80,6 @@ const AccountPage = () => {
     toss: "",
     naver: "",
   });
-
-  // qr 인지 텍스트 입력인지 구별
   const [sources, setSources] = useState<{
     [key in PaymentId]: "text" | "image" | null;
   }>({
@@ -60,38 +88,7 @@ const AccountPage = () => {
     naver: null,
   });
 
-  type PaymentId = "kakao" | "toss" | "naver";
-
-  const paymentOptions: {
-    id: PaymentId;
-    name: string;
-    logo: string;
-    placeholder: string;
-  }[] = [
-    {
-      id: "kakao",
-      name: "카카오페이",
-      logo: kakaoLogo,
-      placeholder: "https://qr.kakaopay.com/",
-    },
-    {
-      id: "toss",
-      name: "토스",
-      logo: tossLogo,
-      placeholder: "supertoss://send",
-    },
-    {
-      id: "naver",
-      name: "네이버페이",
-      logo: naverLogo,
-      placeholder: "https://new-m.pay.naver.com/",
-    },
-  ];
-
-  const fileInputs: Record<
-    PaymentId,
-    React.RefObject<HTMLInputElement | null>
-  > = {
+  const fileInputs: Record<PaymentId, React.RefObject<HTMLInputElement | null>> = {
     kakao: useRef<HTMLInputElement | null>(null),
     toss: useRef<HTMLInputElement | null>(null),
     naver: useRef<HTMLInputElement | null>(null),
@@ -101,13 +98,16 @@ const AccountPage = () => {
     fileInputs[id].current?.click();
   };
 
-  const handleQrUpload = (
+  const handleQrUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
     id: PaymentId
   ) => {
-    const file = event.target.files?.[0];
+    const input = event.target;
+    const file = input.files?.[0];
+    input.value = "";
     if (!file) return;
 
+    const jsQR = await loadJsQr();
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -132,12 +132,10 @@ const AccountPage = () => {
           } else {
             setInputs((prev) => ({ ...prev, [id]: res.value }));
             setErrors((prev) => ({ ...prev, [id]: res.error }));
-            console.log(res.error!);
           }
         } else {
           console.log("QR 코드를 인식할 수 없습니다.");
         }
-        event.target.value = "";
       };
       if (e.target?.result) img.src = e.target.result as string;
     };
@@ -153,13 +151,11 @@ const AccountPage = () => {
   const serverNaver = storePayment?.response.naverPayUrl;
   const serverAccount = storePayment?.response.accountNumber;
 
-  // 현재 입력값
   const curKakao = inputs.kakao;
   const curToss = inputs.toss;
   const curNaver = inputs.naver;
-  const curAccount = `${accountNumber} ${accountName} ${bank}`;
+  const curAccount = `${accountNumber} ${accountName} ${bank}`.trim();
 
-  // 각각 동일 여부
   const sameUrls =
     curKakao === serverKakao &&
     curToss === serverToss &&
@@ -167,55 +163,43 @@ const AccountPage = () => {
 
   const sameAccount = curAccount === serverAccount;
 
-  console.log(curAccount, "즉각 반영", sameAccount);
-
   const hasError = !(
     errors.kakao === null &&
     errors.toss === null &&
     errors.naver === null
   );
 
-  // 입력된 정보가 없거나 변경된 사항이 없을 경우
-
   const saveDisabled = useMemo(() => {
-    return saving || (sameUrls && sameAccount) || !paymentFilled;
+    return saving || (sameUrls && sameAccount) || !paymentFilled || hasError;
   }, [saving, sameUrls, sameAccount, paymentFilled, hasError]);
 
   const handleSave = () => {
-    // 1) 입력값 검증
     const nextUrls: Record<PaymentId, string> = { ...urls };
     const nextErrors: Record<PaymentId, string | null> = { ...errors };
 
-    (["kakao", "toss", "naver"] as PaymentId[]).forEach((id) => {
-      const val = inputs[id]?.trim() || ""; // inputs에서 가져오기
+    (['kakao', 'toss', 'naver'] as PaymentId[]).forEach((pid) => {
+      const val = inputs[pid]?.trim() || "";
       if (!val) {
-        nextUrls[id] = "";
-        nextErrors[id] = null;
+        nextUrls[pid] = "";
+        nextErrors[pid] = null;
         return;
       }
-
-      const res = validateUrlPrefix(id, val);
+      const res = validateUrlPrefix(pid, val);
       if (res.ok) {
-        nextUrls[id] = res.value;
-        nextErrors[id] = null;
+        nextUrls[pid] = res.value;
+        nextErrors[pid] = null;
       } else {
-        nextUrls[id] = "";
-        setInputs((prev) => ({ ...prev, [id]: "" }));
-        nextErrors[id] = res.error;
+        nextUrls[pid] = "";
+        nextErrors[pid] = res.error;
       }
     });
 
     setUrls(nextUrls);
     setErrors(nextErrors);
 
-    // 2) 에러 있으면 저장 중단
     const hasErr = Object.values(nextErrors).some((e) => e !== null);
-    if (hasErr) {
-      console.log("유효하지 않은 URL이 있어 저장할 수 없습니다.");
-      return;
-    }
+    if (hasErr) return;
 
-    // 3) 서버 전송용 payload 구성
     const payload = {
       tossUrl: nextUrls.toss,
       kakaoPayUrl: nextUrls.kakao,
@@ -225,31 +209,26 @@ const AccountPage = () => {
 
     setSaving(true);
 
-    console.log(payload.accountNumber, "전송 계좌 정보");
+    const onSettled = () => setSaving(false);
 
     if (!storePayment || typeof storePayment.response === "string") {
       createPayment(payload, {
-        onSuccess: () => {
-          console.log("결제 정보가 생성되었습니다.");
-          setSaving(false);
-        },
-        onError: () => console.log("결제 정보 생성 실패"),
+        onSuccess: onSettled,
+        onError: onSettled,
       });
     } else {
       updatePayment(payload, {
         onSuccess: () => {
-          console.log("결제 정보가 수정되었습니다.", payload);
+          onSettled();
           refetch();
-          setSaving(false);
         },
-        onError: () => console.log("결제 정보 수정 실패"),
+        onError: onSettled,
       });
     }
   };
 
   useEffect(() => {
     const res = storePayment?.response;
-
     if (!res || typeof res === "string") {
       setUrls({ kakao: "", toss: "", naver: "" });
       setInputs({ kakao: "", toss: "", naver: "" });
@@ -267,28 +246,16 @@ const AccountPage = () => {
 
     setUrls(next);
     setInputs(next);
-    const accountInfo = res.accountNumber.split(" ");
-    console.log(storePayment, "서버 데이터");
 
-    let bankInfo = accountInfo[2];
-    let nameInfo = accountInfo[1];
-    let numberInfo = accountInfo[0];
-    if (accountInfo.length === 4) {
-      bankInfo = accountInfo[2] + accountInfo[3];
-    } else if (accountInfo.length < 3) {
-      bankInfo = "";
-      nameInfo = "";
-      numberInfo = "";
-    }
-
-    if (!numberInfo || !nameInfo || !bankInfo) {
-      setBank("");
-      setAccountName("");
-      setAccountNumber("");
+    const accountInfo = (res.accountNumber || "").split(" ").filter(Boolean);
+    if (accountInfo.length >= 3) {
+      setAccountNumber(accountInfo[0] ?? "");
+      setAccountName(accountInfo[1] ?? "");
+      setBank(accountInfo.slice(2).join(" "));
     } else {
-      setBank(bankInfo);
-      setAccountName(nameInfo);
-      setAccountNumber(numberInfo);
+      setAccountNumber("");
+      setAccountName("");
+      setBank("");
     }
   }, [storePayment]);
 
@@ -314,8 +281,7 @@ const AccountPage = () => {
           간편 송금 QR코드 <RedBadge label="필수" small={true} />
         </h2>
         <p className="text-14-regular text-black-60 mt-[14px] mb-[30px]">
-          카카오페이, 토스, 네이버페이에서 발급한 QR코드를 등록하면 사용자가
-          계좌번호 입력 없이 바로 이체할 수 있어요
+          카카오페이, 토스, 네이버페이에서 발급한 QR코드를 등록하면 사용자가 계좌번호 입력 없이 바로 이체할 수 있어요
         </p>
 
         <div className="space-y-[20px] w-full">
@@ -351,33 +317,22 @@ const AccountPage = () => {
                           setInputs((prev) => ({ ...prev, [option.id]: "" }));
                           setErrors((prev) => ({ ...prev, [option.id]: null }));
                         }
-                        setSources((prev) => ({
-                          ...prev,
-                          [option.id]: "text",
-                        }));
+                        setSources((prev) => ({ ...prev, [option.id]: "text" }));
                       }}
                       onChange={(e) => {
                         setInputs((prev) => ({
                           ...prev,
                           [option.id]: e.target.value,
                         }));
-                        setSources((prev) => ({
-                          ...prev,
-                          [option.id]: "text",
-                        }));
+                        setSources((prev) => ({ ...prev, [option.id]: "text" }));
                       }}
                       onPaste={(e) => {
                         e.preventDefault();
                         const pasted = e.clipboardData.getData("text");
                         setInputs((prev) => ({ ...prev, [option.id]: pasted }));
-                        setSources((prev) => ({
-                          ...prev,
-                          [option.id]: "text",
-                        }));
+                        setSources((prev) => ({ ...prev, [option.id]: "text" }));
                       }}
-                      placeholder={
-                        errors[option.id] ? "" : REQUIRED_PREFIX[option.id]
-                      }
+                      placeholder={errors[option.id] ? "" : REQUIRED_PREFIX[option.id]}
                       className={`flex-1 w-[calc(100%-4px)] bg-transparent outline-none text-14-regular text-black-90`}
                       readOnly={sources[option.id] === "image"}
                     />
@@ -419,7 +374,7 @@ const AccountPage = () => {
                       handleButtonClick(option.id);
                     }}
                   >
-                    {isMobile ? <FaFileUpload /> : "이미지로 업로드"}
+                    {isMobile ? <FaFileUpload /> : "파일 업로드"}
                   </button>
                 )}
               </div>
@@ -434,7 +389,7 @@ const AccountPage = () => {
         <div className="flex space-x-[10px]">
           <DropdownSelect
             type="bank"
-            value={bank === "IBK기업" ? "IBK 기업" : bank}
+            value={bank}
             onChange={setBank}
             options={bankOptions}
             placeholder="은행 선택"

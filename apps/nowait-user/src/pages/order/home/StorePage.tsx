@@ -29,12 +29,12 @@ const StorePage = () => {
     }
   }, [added]);
 
+  const hasCartItems = cart.length > 0;
+  const pagePaddingBottom = hasCartItems ? "pb-[116px]" : "";
   return (
     <div>
       <div
-        className={`flex flex-col grow min-h-dvh pt-7.5 ${
-          cart && cart.length > 0 ? "pb-[116px]" : ""
-        } px-5`}
+        className={`flex flex-col grow min-h-dvh pt-7.5 ${pagePaddingBottom} px-5`}
       >
         <div className="grow">
           <StoreHeader storeName={menus?.storeName} isLoading={isLoading} />
@@ -46,14 +46,13 @@ const StorePage = () => {
           />
         </div>
       </div>
-      {cart && cart.length > 0 && (
+      {hasCartItems && (
         <PageFooterButton background="gradient">
           <Button
             textColor="white"
             onClick={() => navigate(`/${storeId}/order`)}
           >
             <TotalButton
-              key={cart.length}
               addedPrice={addedPrice}
               actionText="주문하기"
             />

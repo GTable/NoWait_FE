@@ -19,7 +19,7 @@ const StoreDetailPage = () => {
 
   return (
     <div>
-      <div className="px-5 min-h-dvh">
+      <div className="px-5 pb-[100px] min-h-dvh">
         <StoreHeaderSection
           bannerImages={store?.bannerImages}
           departmentName={store?.departmentName}
