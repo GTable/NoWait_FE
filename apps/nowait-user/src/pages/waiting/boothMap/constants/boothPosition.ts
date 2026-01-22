@@ -6,5 +6,6 @@ export const BOOTHPOSITION: Record<number, { lat: number; lng: number }> = {
   2: { lat: 37.4547305, lng: 127.1350393 },
   3: { lat: 37.4547837, lng: 127.1350393 },
   4: { lat: 37.454837, lng: 127.1350286 },
-  5: { lat: 37.4548944, lng: 127.1350205 },
+  24: { lat: 37.4548944, lng: 127.1350205 },
+
 };

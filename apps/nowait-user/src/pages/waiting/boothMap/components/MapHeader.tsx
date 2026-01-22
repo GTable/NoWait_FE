@@ -8,11 +8,11 @@ import Cancel from "../../../../assets/icon/cancel.svg?react";
 import Portal from "../../../../components/common/modal/Portal";
 import SearchModal from "../../../../components/common/modal/SearchModal";
 
-const HomeHeader = React.memo(() => {
+const MapHeader = React.memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
-  console.log("헤더 렌더링")
+  
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -187,4 +187,4 @@ const HomeHeader = React.memo(() => {
   );
 });
 
-export default HomeHeader;
+export default MapHeader;

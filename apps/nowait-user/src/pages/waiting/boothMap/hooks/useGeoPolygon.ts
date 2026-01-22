@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 
 export const useGeoPolygon = () => {
   const [paths, setPaths] = useState<{ lat: number; lng: number }[][]>([]);
+
   useEffect(() => {
     const fetchPolygons = async () => {
       try {
         const { data } = await axios.get("/geojson/university.geojson");
+
         // 좌표 변환
         const coords = data.features.map((feature: any) => {
           return feature.geometry.coordinates[0].map(

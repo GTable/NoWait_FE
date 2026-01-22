@@ -1,12 +1,7 @@
 import { UNIVERSITY } from "../../constants/university";
-import { useNavermaps } from "react-naver-maps";
-const UniversityListModal = ({
-  map,
-  onClose,
-}: {
-  map: any;
-  onClose: () => void;
-}) => {
+import { useMap, useNavermaps } from "react-naver-maps";
+const UniversityListModal = ({ onClose }: { onClose: () => void }) => {
+  const map = useMap();
   const navermaps = useNavermaps();
 
   return (
