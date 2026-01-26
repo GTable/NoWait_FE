@@ -6,10 +6,17 @@
 관리자와 사용자 모두 고려한 기획과 설계가 이루어졌으며, 1명의 디자이너와 프론트엔드 3명, 백엔드 2명이 팀을 이루어 기획 및 디자인, 개발을 진행 하였고, 주 2회 오프라인 회의와 Discord, Figma, Swagger를 통해 원활한 소통과 협업을 진행했습니다.
 
 현재는 더 좋은 서비스 제공을 위해 웹 서비스에서 앱 서비스로 마이그레이션 진행중 입니다.
-### 결제 플로우
+
+### 🔗 배포주소
+```txt
+사용자: https://app.nowait.co.kr
+관리자: https://www.nowait-admin.com
+```
+
+### 📱 결제 플로우
 <img width="800" height="610" alt="Image" src="https://github.com/user-attachments/assets/57003ffa-a4fc-4024-b935-381c2c2e3d2b" />
 
-### 웨이팅 플로우
+### 📱 웨이팅 플로우
 <img width="800" height="388" alt="Image" src="https://github.com/user-attachments/assets/2e0f3c73-994b-4e95-ac50-2fcf79ce28cf" />
 
 ## ⚙️ 사용 기술
@@ -52,40 +59,27 @@
   </tbody>
 </table>
 
-## 👥 팀원 소개
 
-<table>
-  <tr>
-    <td align="center" style="border:1px solid #333; padding:16px; border-radius:8px;">
-    <a href="https://github.com/hwangdae">
-      <img src="https://avatars.githubusercontent.com/hwangdae" width="120" height="120" style="border-radius:50%; margin-bottom:4px;"/></a><br/>
-      <b>황대성</b><br/><span style="border-top:solid 1px #666">
-      Frontend</span>
-    </td>
-    <td align="center" style="border:1px solid #333; padding:16px; border-radius:8px;">
-    <a href="https://github.com/dgKim1">
-      <img src="https://avatars.githubusercontent.com/dgKim1" width="120" height="120" style="border-radius:50%; margin-bottom:4px;"/></a><br/>
-      <b>김도경</b><br/>
-      <span style="border-top:solid 1px #666">
-      Frontend</span>
-    </td>
-    <td align="center" style="border:1px solid #333; padding:16px; border-radius:8px;">
-    <a href="https://github.com/oriNuguri25">
-      <img src="https://avatars.githubusercontent.com/oriNuguri25" width="120" height="120" style="border-radius:50%; margin-bottom:4px;"/></a><br/>
-      <b>이병준</b><br/>
-      <span style="border-top:solid 1px #666">
-      Frontend</span>
-    </td>
-  </tr>
-</table>
+## 🧩 모노레포 설계
 
-## 🧩 Frontend Monorepo
+Admin과 User 애플리케이션을 하나의 저장소에서 관리하는 프론트엔드 모노레포 구조로 설계했습니다.
+```txt
+- Zero-install 환경
+  - 의존성 중복 제거
+  - 신규 개발자 세팅 및 CI 시간 단축
 
-이 프로젝트는 **Admin**과 **User** 애플리케이션이 공존하는 **프론트엔드 모노레포**입니다.<br/>
-**Yarn Workspaces**와 **Yarn Berry**, **Turborepo** 기반으로 구성되어 있어 Zero-install 및 디자인 통일성, 캐시 최적화가 가능합니다<br/>
-스타일은 **TailwindCSS**를 사용하였으며, 배포는 **Vercel**을 사용했습니다.
+- 캐시 기반 빌드 파이프라인
+  - 변경된 패키지만 빌드
+  - 로컬 개발 속도 및 CI 성능 개선
 
----
+- 공통 UI & 타입 패키지 분리
+  - UI 일관성 확보
+  - 타입 안정성 강화 및 중복 코드 제거
+
+- 서비스 단위 독립 배포
+  - 모노레포 구조에서도 앱별 배포 가능
+```
+
 
 ## 📁 프로젝트 구조
 ```txt
@@ -146,8 +140,36 @@ yarn dev:user    # 사용자용 앱 실행
 yarn dev:admin   # 관리자용 앱 실행
 ```
 
-## 🔗 배포주소
-```txt
-사용자: https://app.nowait.co.kr
-관리자: https://www.nowait-admin.com
-```
+## 👥 팀원 소개
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/hwangdae">
+        <img src="https://avatars.githubusercontent.com/hwangdae" width="120" height="120" />
+      </a>
+      <br />
+      <strong>황대성</strong>
+      <br />
+      Frontend
+    </td>
+    <td align="center">
+      <a href="https://github.com/dgKim1">
+        <img src="https://avatars.githubusercontent.com/dgKim1" width="120" height="120" />
+      </a>
+      <br />
+      <strong>김도경</strong>
+      <br />
+      Frontend
+    </td>
+    <td align="center">
+      <a href="https://github.com/oriNuguri25">
+        <img src="https://avatars.githubusercontent.com/oriNuguri25" width="120" height="120" />
+      </a>
+      <br />
+      <strong>이병준</strong>
+      <br />
+      Frontend
+    </td>
+  </tr>
+</table>
