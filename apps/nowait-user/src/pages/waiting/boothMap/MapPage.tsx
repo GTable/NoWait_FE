@@ -58,7 +58,7 @@ const MapPage = () => {
         <MapDiv
           style={{
             width: "100%",
-            height: "600px",
+            height: "100vh",
           }}
         >
           <NaverMap center={myLocation.center} zoom={16}>

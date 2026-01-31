@@ -5,11 +5,10 @@ import GeoDataForm from "./components/GeoDataForm";
 import MapCanvas from "./components/MapCanvas";
 import { useMapClick } from "./hooks/useMapClick";
 import { useMarkerManager } from "./hooks/useMarkerManager";
-import { useMap } from "react-naver-maps";
+import { useState } from "react";
 
 const MapManagePage = () => {
-  const map = useMap();
-
+  const [map, setMap] = useState<any | null>(null);
   const paths = useGeoPolygon();
   const myLocation = useMyLocation();
 
@@ -36,6 +35,7 @@ const MapManagePage = () => {
         center={myLocation.center}
         paths={paths}
         markers={markers}
+        setMap={setMap}
       />
       <GeoDataForm />
       <MapControls
