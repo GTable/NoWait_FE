@@ -6,12 +6,13 @@ interface PropsType {
   center: { lat: number; lng: number };
   paths: any;
   markers: { storeId: string; lat: number; lng: number }[];
+  setMap: (map: any) => void;
 }
 
-const MapCanvas = ({ center, paths, markers }: PropsType) => {
+const MapCanvas = ({ center, paths, markers,setMap }: PropsType) => {
   return (
     <MapDiv style={{ width: "100%", height: "100vh" }}>
-      <NaverMap defaultCenter={center} defaultZoom={16}>
+      <NaverMap defaultCenter={center} defaultZoom={16} ref={setMap}>
         <MapControlButtons center={center} />
 
         <UniversityPolygon paths={paths} />
